@@ -1,0 +1,10 @@
+img, a {-webkit-user-drag: none;user-drag: none;}
+.description-title {font-size: 1.8rem; color: #d40000; margin-bottom: 10px; text-align: center;}
+.download-btn {display: inline-block;background-color: #00796b;color: #fff;font-size: 1.4rem;padding: 0.5rem 1rem;margin-top: 2rem;border: none;border-radius: 6px;cursor: pointer;text-transform: uppercase;font-weight: bold;text-align: center;transition: background-color 0.3s ease;margin-left: auto;margin-right: auto;}
+.download-btn:hover {background-color: #004d40;}
+.movie-description {font-size: 1.5rem;color: #ffffff;line-height: 1.6;padding: 20px;margin-top: 2rem;max-width: 80%;max-height: 250px;overflow-y: auto;box-sizing: border-box;margin-left: auto;margin-right: auto;text-align: center;background-color: rgba(0, 0, 0, 0.8);border-radius: 15px;border: 2px solid #444;box-shadow: 0 6px 18px rgba(0, 0, 0, 0.9);margin-bottom: 1.5rem;}
+.movie-description p {margin: 0; overflow-wrap: break-word;}
+.movie-iframe-container {position: relative; display: inline-block;}
+.movie-category-container {width: 800px;background-color: #ff0000;border-radius: 0 0 15px 15px;display: flex;justify-content: center;align-items: center;padding: 10px 0;box-sizing: border-box;margin: 0 auto;flex-wrap: wrap;height: auto;}
+.movie-category {font-size: 1.2rem;color: white;font-weight: bold;margin: 0 10px;text-align: center;}
+.movie-duration, .movie-release-date, .movie-size {text-align: center; font-size: 16px;margin-top: 7px;color: white;}

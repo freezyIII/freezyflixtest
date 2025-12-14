@@ -1,0 +1,80 @@
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #181818}
+.container {display: flex;flex-direction: column;gap: 10px;}
+
+
+
+.movie-grid-row {display: flex;justify-content: center;gap: 10px;width: 100%;box-sizing: border-box;}
+#movieIframeContainer {display: flex;justify-content: center;align-items: center;margin-top: 20px;}
+#movieIframeContainer iframe {width: 800px; height: 450px; border: none;border-radius: 20px 20px 0 0;}
+#movieTitle {font-size: 2rem;margin-bottom: 20px;margin-top: 20px;text-align: center;color: #ef2626;}
+#resultsCountMessage {font-size: 1rem; color: #ffffff;margin-top: 0.3rem;margin-bottom: 1.8rem;}
+
+
+strong {font-weight: bold;}
+::-webkit-scrollbar {width: 0px;}
+.main-content {min-height: 100%;padding-bottom: 50px;}
+.titan-one-regular {font-family: "Titan One", serif;font-weight: 400;font-style: normal;}
+.federant-regular {font-family: "Federant", serif;font-weight: 400;font-style: normal;}
+
+
+#random-movie-box {transition: all 0.2s ease;}
+#random-movie-box:hover {transform: scale(1.05);box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);}
+
+
+.movie-item {animation: featured-movie-animation 0.8s ease-out forwards;}
+@keyframes featured-movie-animation {
+    from {
+        transform: translateX(-30px) scale(1.03);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+
+#filter-panel {display: none;}
+#filter-panel label,
+#filter-panel select {font-family: 'Federant', cursive;font-size: 1rem;color: #0077cc;}
+.category-pill {background: #e0f5ff;color: #007acc;border: 2px solid #00aaff;border-radius: 30px;padding: 8px 16px;font-weight: 600;font-size: 1em;cursor: pointer;user-select: none;display: flex;align-items: center;gap: 8px;transition: all 0.3s ease;}
+.category-pill:hover {background: #00aaff;color: white;}
+.category-pill.selected {background: #007acc;color: white;border-color: #005f8a;}
+.category-pill i {font-size: 1.1em;}
+#year-filter {min-width: 120px;padding: 8px;font-size: 1em;border: 2px solid #00aaff;border-radius: 5px;cursor: pointer;font-family: 'Federant', cursive;}
+#reset-filters {background: #00aaff;color: #fff;border: none;border-radius: 5px;font-weight: 700;padding: 10px 24px;cursor: pointer;transition: background 0.3s ease;font-family: 'Federant', cursive;}
+#reset-filters:hover {background-color: #008ecc;}
+.filters-group {display: flex;flex-wrap: wrap;gap: 15px;align-items: center;justify-content: center;}
+label {font-weight: 700;color: #004466;font-size: 1.1em;margin-right: 8px;font-family: 'Titan One', cursive;}
+.category-pill {cursor: pointer;padding: 6px 12px;border: 2px solid #00aaff;border-radius: 20px;font-family: 'Federant', cursive;color: #0077cc;user-select: none;position: relative;transition: background-color 0.3s, color 0.3s;font-weight: 700;}
+.category-pill.selected {background-color: #000;color: white;}
+.category-pill.selected::before {content: '';position: absolute;left: 8px;top: 50%;transform: translateY(-50%);width: 10px;height: 10px;background: white;border-radius: 50%;}
+
+
+/* Bouton doré */
+.gold-button {display: inline-block;width: auto;background: linear-gradient(45deg, #FFD700, #FFA500);border: none;color: white;padding: 8px 16px;margin: 1.5rem auto 0 auto;font-size: 1.4rem;font-weight: bold;cursor: pointer;border-radius: 6px;transition: background 0.3s ease;text-transform: uppercase;}
+.gold-button:hover {background: linear-gradient(45deg, #FFA500, #FFD700);}
+
+
+
+
+
+#snow-container {position: fixed;top: 0;left: 0;width: 100%;height: 100%;pointer-events: none;overflow: hidden;z-index: 9999;}
+.snowflake {position: absolute;top: -10px;color: white;animation-name: fall;animation-timing-function: linear;animation-iteration-count: 1;}
+@keyframes fall {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(110vh);
+    }
+}
+
+
+
+
+
+
+

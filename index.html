@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FreezyFlix</title>
+<link rel="stylesheet" href="css/index.css" />
+<link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
+</head>
+<body class="page_index">
+<div id="snow-container"></div>
+
+<link rel="stylesheet" href="css/navbar.css">
+
+<header>
+<a href="index.html" class="logo" aria-label="Accueil"><img src="https://i.imgur.com/7Ddaoy6.png" alt="Logo FreezyFlix" /></a>
+
+<ul class="federant-regular">
+<li><a href="index.html">Accueil</a></li>
+<li><a href="#categories" id="categories-link">Catégories</a></li>
+<li><a href="faq.html">FAQ</a></li><li>
+<a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
+<span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> <span>u</span><span>n</span> <span>d</span><span>o</span><span>n</span></a></li></ul>
+
+<div class="search-container">
+<input type="text" id="search-input" class="search-box" placeholder="Rechercher..." />
+<button class="search-icon">🔍</button></div>
+
+<!-- LOGIN / PROFILE -->
+<div class="login-container">
+<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="profileAvatar" class="profile-avatar" alt="Avatar de l'utilisateur">
+<div class="dropdown-menu" id="dropdownMenu">
+<a href="#" id="menuProfile">Profil</a>
+<a href="#" id="menuSettings">Paramètres</a>
+<a href="#" id="menuLogout">Déconnexion</a></div></div>
+<button class="login-button" id="loginBtn">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
+</header>
+
+
+<section class="content"><h2 class="titan-one-regular">Films à la une</h2><div id="movieCarousel" class="movie-carousel"><div class="movie-container">
+<div class="movie-item"><a href="movie-details.html?title=Minecraft, le film"><img src="https://i.imgur.com/OT3zPtV.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-item"><a href="movie-details.html?title=God Save the Tuche"><img src="https://i.imgur.com/bBWXdk3.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-item"><a href="movie-details.html?title=Lilo et Stitch"><img src="https://i.imgur.com/xHMZw3T.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-item"><a href="movie-details.html?title=Red One"><img src="https://fr.web.img6.acsta.net/c_310_420/img/11/4d/114d28897d8f491d67f12b943711e9b0.jpg" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-item"><a href="movie-details.html?title=Vaiana 2"><img src="https://i.imgur.com/2S351lZ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+</section>
+
+<section style="text-align:center; margin: 20px 0;"><div id="random-movie-box" style="display:inline-block; padding: 20px 40px; border: 3px solid #00aaff; border-radius: 10px; cursor:pointer; font-weight:bold; font-size: 1.2em; color:#00aaff; user-select:none;">🎬 Film Aléatoire</div></section>
+
+<section class="movie-grid-section"><h2 class="titan-one-regular">Découvrir d'autres films</h2>
+
+<div id="filter-panel" style="margin: 20px auto; max-width: 700px; padding: 15px; border-radius: 8px; background: #00aaff22; border: 2px solid #00aaff; font-family: 'Federant', cursive;"><div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center;"><div style="flex: 1 1 200px; min-width: 180px;"><label for="category-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Catégorie :</label><select id="category-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<option value="" selected>Toutes les catégories</option>
+<option value="action">Action</option>
+<option value="animation">Animation</option>
+<option value="anime">Animé</option>
+<option value="aventure">Aventure</option>
+<option value="comédie">Comédie</option>
+<option value="comédie musicale">Comédie musicale</option>
+<option value="criminel">Criminel</option>
+<option value="detective">Détective</option>
+<option value="drame">Drame</option>
+<option value="fantastique">Fantastique</option>
+<option value="guerre">Guerre</option>
+<option value="historique">Historique</option>
+<option value="horreur">Horreur</option>
+<option value="policier">Policier</option>
+<option value="romance">Romance</option>
+<option value="science-fiction">Science-fiction</option>
+<option value="sport">Sport</option>
+<option value="surnaturel">Surnaturel</option>
+<option value="thriller">Thriller</option>
+<option value="western">Western</option>
+</select></div>
+
+<div style="flex: 1 1 120px; min-width: 120px;"><label for="type-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Type :</label><select id="type-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<option value="" selected>Tous</option>
+<option value="film">Film</option>
+<option value="serie">Série</option>
+</select></div>
+
+<div style="flex: 1 1 120px; min-width: 120px;"><label for="year-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Année :</label><select id="year-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<option value="all" selected>Toutes</option>
+<option value="2025">2025</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+<option value="2019">2019</option>
+<option value="2018">2018</option>
+<option value="2017">2017</option>
+<option value="2016">2016</option>
+<option value="2015">2015</option>
+<option value="2014">2014</option>
+<option value="2013">2013</option>
+<option value="2012">2012</option>
+<option value="2011">2011</option>
+<option value="2010">2010</option>
+<option value="2009">2009</option>
+</select></div>
+
+<div style="flex: 1 1 120px; min-width: 120px;"><label for="quality-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Qualité :</label><select id="quality-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<option value="" selected>Toutes</option>
+<option value="1080p">1080p</option>
+<option value="4K">4K</option>
+</select></div>
+
+<div style="flex: 0 0 auto; align-self: flex-end;"><button id="reset-filters" style="background-color: #00aaff; border: none; color: white; padding: 10px 20px; font-weight: 700; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: background-color 0.3s;">Réinitialiser</button></div></div></div>
+
+<!--
+<div class="movie-grid-item" category="" data-year=""><a href="movie-details.html?title="><img src="" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+  
+<div class="movie-grid-item" category="" data-year=""><a href="movie-details.html?title="><img src="" loading="lazy"><div class="resolution">1080p</div></a></div>
+-->
+
+<div class="movie-grid">
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Guerre" data-year="2014"><a href="movie-details.html?title=Le Hobbit : la bataille des cinq armées"><img src="https://i.imgur.com/Ajc8tVB.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame" data-year="2000"><a href="movie-details.html?title=Gladiator"><img src="https://i.imgur.com/G6p8KE9.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame / Romance" data-year="2025"><a href="movie-details.html?title=À contre-sens 3"><img src="https://i.imgur.com/FHOrwcK.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Fantasy / Comédie / Drame" data-year="2014"><a href="movie-details.html?title=Les Boxtrolls"><img src="https://i.imgur.com/PJTvWCZ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Horreur / Science-fiction / Thriller" data-year="2023"><a href="movie-details.html?title=The Last of Us"><img src="https://i.imgur.com/GGfHrJS.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Science-fiction" data-year="2023"><a href="movie-details.html?title=Transformers: Rise of the Beasts"><img src="https://i.imgur.com/G6hh7pT.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Aventure / Fantasy / Comédie / Détective / Drame / Horreur / Policier / Science-fiction / Surnaturel / Thriller" data-year="2022"><a href="movie-details.html?title=Mercredi"><img src="https://i.imgur.com/KNrLHLM.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Adaptation cinématographique / Drame / Horreur / Surnaturel / Thriller" data-year="2023"><a href="movie-details.html?title=Five Nights at Freddy's"><img src="https://i.imgur.com/RmLsy6u.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Comédie / Science-fiction" data-year="2025"><a href="movie-details.html?title=Les Quatre Fantastiques : Premiers Pas"><img src="https://i.imgur.com/jBX6jol.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Aventure / Drame" data-year="2025"><a href="movie-details.html?title=Zion"><img src="https://i.imgur.com/2iiNbqV.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Horreur / Thriller" data-year="2013"><a href="movie-details.html?title=Scary Movie 5"><img src="https://i.imgur.com/yBWFknc.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame" data-year="2022"><a href="movie-details.html?title=The Fallout"><img src="https://i.imgur.com/Rx3Cy3c.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Romance / Science-fiction / Thriller" data-year="2022"><a href="movie-details.html?title=House of the Dragon"><img src="https://i.imgur.com/D3xhXcn.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Sport" data-year="2023"><a href="movie-details.html?title=Gran Turismo"><img src="https://i.imgur.com/H2EJK69.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie" data-year="2025"><a href="movie-details.html?title=McWalter"><img src="https://i.imgur.com/tTrs93P.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Criminel / Drame / Thriller" data-year="2003"><a href="movie-details.html?title=La Cité de Dieu (City of God)"><img src="https://i.imgur.com/laohWrD.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame / Horreur / Policier / Thriller" data-year="2000"><a href="movie-details.html?title=American Psycho"><img src="https://i.imgur.com/NDHbQxp.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Horreur / Guerre / Policier" data-year="2009"><a href="movie-details.html?title=Inglourious Basterds"><img src="https://i.imgur.com/6UWbghC.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Comédie / Horreur" data-year="2006"><a href="movie-details.html?title=Scary Movie 4"><img src="https://i.imgur.com/luHY0jM.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Science-fiction" data-year="2025"><a href="movie-details.html?title=Jurassic World : Renaissance"><img src="https://i.imgur.com/Wk0sqpF.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Comédie / Fantasy / Horreur" data-year="2003"><a href="movie-details.html?title=Scary Movie 3"><img src="https://i.imgur.com/wTqSwbJ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Horreur" data-year="2001"><a href="movie-details.html?title=Scary Movie 2"><img src="https://i.imgur.com/CxPrNDp.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Horreur" data-year="2000"><a href="movie-details.html?title=Scary Movie"><img src="https://i.imgur.com/NgglHGR.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Fantasy / Romance" data-year="2011"><a href="movie-details.html?title=Game of Thrones"><img src="https://i.imgur.com/xh6RbDf.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Criminel / Détective / Drame / Policier / Thriller" data-year="2013"><a href="movie-details.html?title=No Pain No Gain"><img src="https://i.imgur.com/SIn3YOE.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame" data-year="1993"><a href="movie-details.html?title=Beavis et Butt-Head"><img src="https://i.imgur.com/zAEBKIK.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Aventure / Comédie / Science-fiction" data-year="2025"><a href="movie-details.html?title=Lilo et Stitch"><img src="https://i.imgur.com/Ou1Pd4U.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame" data-year="2023"><a href="movie-details.html?title=Dumb Money"><img src="https://i.imgur.com/BO9sjst.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Science-fiction / Suspense / Thriller" data-year="2015"><a href="movie-details.html?title=Jurassic World"><img src="https://i.imgur.com/XEnrUVp.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Horreur / Science-fiction / Thriller" data-year="2018"><a href="movie-details.html?title=Jurassic World: Fallen Kingdom"><img src="https://i.imgur.com/aDe2K8O.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Science-fiction / Thriller" data-year="2022"><a href="movie-details.html?title=Jurassic World : Le Monde d'après"><img src="https://i.imgur.com/UTqYRyS.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Science-fiction / Thriller" data-year="1993"><a href="movie-details.html?title=Jurassic Park"><img src="https://i.imgur.com/Zy1CshZ.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Horreur / Science-fiction / Thriller" data-year="1997"><a href="movie-details.html?title=Le Monde perdu : Jurassic Park"><img src="https://i.imgur.com/KoYGEFB.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Science-fiction / Suspense / Thriller" data-year="2001"><a href="movie-details.html?title=Jurassic Park 3"><img src="https://i.imgur.com/MoFYuDQ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Comédie" data-year="1997"><a href="movie-details.html?title=South Park"><img src="https://i.imgur.com/OrZtbG5.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2025"><a href="movie-details.html?title=God Save the Tuche"><img src="https://i.imgur.com/qWkuHlY.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Drame / Sport" data-year="2013"><a href="movie-details.html?title=Rush"><img src="https://i.imgur.com/z1PLq8e.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame" data-year="2025"><a href="movie-details.html?title=L'Attachement"><img src="https://i.imgur.com/JtOutxS.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Science-fiction" data-year="2016"><a href="movie-details.html?title=Batman v Superman : L'Aube de la justice"><img src="https://i.imgur.com/0rn7VAm.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Science-fiction" data-year="2013"><a href="movie-details.html?title=Man of Steel"><img src="https://i.imgur.com/qsFmwid.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Criminel / Drame / Thriller" data-year="1980"><a href="movie-details.html?title=Les Guerriers de la nuit"><img src="https://i.imgur.com/tgKngeh.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame / Policier" data-year="1995"><a href="movie-details.html?title=Hooligans"><img src="https://i.imgur.com/reMeDoU.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2023"><a href="movie-details.html?title=Inestimable"><img src="https://i.imgur.com/cSOtgzd.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame / Romance" data-year="1969"><a href="movie-details.html?title=Le Cirque"><img src="https://i.imgur.com/86aGOnx.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2023"><a href="movie-details.html?title=Le Clan"><img src="https://i.imgur.com/E7KwNmR.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Criminel / Détective / Drame / Policier / Thriller" data-year="1995"><a href="movie-details.html?title=La Haine"><img src="https://i.imgur.com/W7KjKr3.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Romance" data-year="1991"><a href="movie-details.html?title=Robin des Bois, prince des voleurs"><img src="https://i.imgur.com/5IixbK1.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame / Horreur / Thriller" data-year="2017"><a href="movie-details.html?title=Get Out"><img src="https://i.imgur.com/nh10BY9.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Drame / Romance" data-year="1993"><a href="movie-details.html?title=Malcolm X"><img src="https://i.imgur.com/jR6fX9n.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Comédie" data-year="2002"><a href="movie-details.html?title=Astérix et Obélix : Mission Cléopâtre"><img src="https://i.imgur.com/r35uyDb.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Criminel / Drame / Policier / Thriller" data-year="2023"><a href="movie-details.html?title=Mission impossible : Dead Reckoning"><img src="https://i.imgur.com/kMeU6u5.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Thriller" data-year="2018"><a href="movie-details.html?title=Mission impossible : Fallout"><img src="https://i.imgur.com/LSzMEPs.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Thriller" data-year="2015"><a href="movie-details.html?title=Mission impossible 5"><img src="https://i.imgur.com/aA2gjb5.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Thriller" data-year="2011"><a href="movie-details.html?title=Mission: Impossible - Protocole fantôme"><img src="https://i.imgur.com/8uX7PQ9.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Thriller" data-year="2006"><a href="movie-details.html?title=Mission impossible 3"><img src="https://i.imgur.com/vtg3qHQ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Thriller" data-year="2000"><a href="movie-details.html?title=Mission impossible 2"><img src="https://i.imgur.com/pJB3fGt.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Policier / Science-fiction / Thriller" data-year="1996"><a href="movie-details.html?title=Mission impossible"><img src="https://i.imgur.com/LcazSP2.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Crime / Drame / Policier" data-year="2014"><a href="movie-details.html?title=Gotham"><img src="https://i.imgur.com/qlyfFEu.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Fantasy / Comédie / Thriller" data-year="2019"><a href="movie-details.html?title=Ne Zha"><img src="https://i.imgur.com/zJWubQz.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Policier / Romance / Science-fiction / Thriller" data-year="2011"><a href="movie-details.html?title=Time Out"><img src="https://i.imgur.com/D8dOjew.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Fantasy / Comédie / Comédie Musicale" data-year="2024"><a href="movie-details.html?title=Vaiana 2"><img src="https://i.imgur.com/QSMT4CT.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Policier / Romance / Thriller" data-year="1988"><a href="movie-details.html?title=Y a-t-il un flic pour sauver la reine ?"><img src="https://i.imgur.com/4OdPKvQ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Comédie Musicale / Drame / Parodie / Policier / Romance / Thriller" data-year="1984"><a href="movie-details.html?title=Top secret !"><img src="https://i.imgur.com/Xyw8X6i.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame / Romance / Science-fiction" data-year="1982"><a href="movie-details.html?title=Y a-t-il enfin un pilote dans l'avion ?"><img src="https://i.imgur.com/PN0YWDj.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Comédie / Drame / Science-fiction" data-year="2022"><a href="movie-details.html?title=Les Animaux fantastiques : Les Secrets de Dumbledore"><img src="https://i.imgur.com/jAJ2L7X.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Comédie / Drame / Science-fiction" data-year="2018"><a href="movie-details.html?title=Les Animaux fantastiques : Les Crimes de Grindelwald"><img src="https://i.imgur.com/SYFCkgh.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Comédie / Drame / Science-fiction" data-year="2016"><a href="movie-details.html?title=Les Animaux fantastiques"><img src="https://i.imgur.com/EXvlwxw.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Guerre" data-year="2014"><a href="movie-details.html?title=Le Hobbit : la bataille des cinq armées"><img src="https://i.imgur.com/t8jpB8c.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Science-fiction" data-year="1977"><a href="movie-details.html?title=Star Wars, épisode IV : Un nouvel espoir"><img src="https://i.imgur.com/INlyhvo.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Guerre" data-year="1993"><a href="movie-details.html?title=Hot Shots! 2"><img src="https://i.imgur.com/yy1X2tN.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Guerre / Romance" data-year="1991"><a href="movie-details.html?title=Hot Shots!"><img src="https://i.imgur.com/FWIZUHa.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="1982"><a href="movie-details.html?title=Le père Noël est une ordure"><img src="https://i.imgur.com/pzfEM7m.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Criminel / Policier / Thriller" data-year="1991"><a href="movie-details.html?title=Y a-t-il un flic pour sauver le président ?"><img src="https://i.imgur.com/LWFhkhu.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Criminel / Policier" data-year="1994"><a href="movie-details.html?title=Y a-t-il un flic pour sauver Hollywood ?"><img src="https://i.imgur.com/MeFk2jS.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Policier" data-year="2003"><a href="movie-details.html?title=Mais qui a tué Pamela Rose ?"><img src="https://i.imgur.com/BCMtjR5.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie" data-year="1976"><a href="movie-details.html?title=L'Aile ou la Cuisse"><img src="https://i.imgur.com/7MtopjU.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Fantasy / Romance / Science-fiction / Thriller" data-year="2014"><a href="movie-details.html?title=The Giver"><img src="https://i.imgur.com/SC41UQz.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Fantasy / Comédie / Drame / Romance / Science-fiction" data-year="2023"><a href="movie-details.html?title=Super Mario Bros., le film"><img src="https://i.imgur.com/o49uJdh.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2011"><a href="movie-details.html?title=Suits : Avocats sur mesure"><img src="https://i.imgur.com/EDbz8LM.png" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Romance / Science-fiction / Thriller" data-year="2021"><a href="movie-details.html?title=Matrix Resurrections"><img src="https://i.imgur.com/MZVysx3.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Criminel / Drame / Policier / Thriller" data-year="1999"><a href="movie-details.html?title=Fight Club"><img src="https://i.imgur.com/WSSwhNa.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2015"><a href="movie-details.html?title=Babysitting 2"><img src="https://i.imgur.com/4ps1HPu.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie" data-year="2014"><a href="movie-details.html?title=Babysitting"><img src="https://i.imgur.com/tiIezTw.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Comédie / Drame" data-year="2017"><a href="movie-details.html?title=Cars 3"><img src="https://i.imgur.com/9KNmyDO.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Comédie / Fantastique" data-year="2009"><a href="movie-details.html?title=Tempête de boulettes géantes"><img src="https://i.imgur.com/HZKkI4T.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Drame / Policier / Science-fiction / Thriller" data-year="2012"><a href="movie-details.html?title=The Dark Knight Rises"><img src="https://i.imgur.com/j3JhffY.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Criminel / Drame / Science-fiction / Thriller" data-year="2008"><a href="movie-details.html?title=The Dark Knight : Le Chevalier noir"><img src="https://i.imgur.com/3cEXrS9.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Criminel / Drame / Science-fiction" data-year="2005"><a href="movie-details.html?title=Batman Begins"><img src="https://i.imgur.com/FEmJsJg.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame" data-year="1985"><a href="movie-details.html?title=Les Rois du gag"><img src="https://i.imgur.com/x1OBdot.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame" data-year="2020"><a href="movie-details.html?title=Miss"><img src="https://i.imgur.com/YcbXjQt.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Science-fiction / " data-year="2019"><a href="movie-details.html?title=Star Wars, épisode IX : L'Ascension de Skywalker"><img src="https://i.imgur.com/5EQLIqr.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Science-fiction" data-year="2017"><a href="movie-details.html?title=Star Wars, épisode VIII : Les Derniers Jedi"><img src="https://i.imgur.com/SmlGfn1.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Science-fiction" data-year="2015"><a href="movie-details.html?title=Star Wars, épisode VII : Le Réveil de la Force"><img src="https://i.imgur.com/DTFB2Wt.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Science-fiction" data-year="1983"><a href="movie-details.html?title=Star Wars, épisode VI : Le Retour du Jedi"><img src="https://i.imgur.com/fF2RYXA.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Science-fiction / Thriller" data-year="2016"><a href="movie-details.html?title=Captain America: Civil War"><img src="https://i.imgur.com/o7qfShU.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Drame / Guerre / Historique / Thriller" data-year="2014"><a href="movie-details.html?title=Imitation Game"><img src="https://i.imgur.com/I5GG6Dh.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Comédie / Criminel / Policier" data-year="2016"><a href="movie-details.html?title=Zootopie"><img src="https://i.imgur.com/RtkaWZy.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Drame / Fantasy / Science-fiction" data-year="2012"><a href="movie-details.html?title=Le Hobbit : Un voyage inattendu"><img src="https://i.imgur.com/Uvo67Hg.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Fantasy" data-year="2013"><a href="movie-details.html?title=Le Hobbit: La désolation de Smaug"><img src="https://i.imgur.com/i3jTBAP.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Science-fiction" data-year="1980"><a href="movie-details.html?title=Star Wars, épisode V : L'Empire contre-attaque"><img src="https://i.imgur.com/qsVlMYC.png"loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Fantasy / Sience-fiction" data-year="1999"><a href="movie-details.html?title=Star Wars - Épisode I : La Menace fantôme"><img src="https://i.imgur.com/Dwv03Lx.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantasy / Romance / Science-fiction" data-year="2002"><a href="movie-details.html?title=Star Wars, épisode II : L'Attaque des clones"><img src="https://i.imgur.com/NV10h3X.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Fantasy / Science-fiction" data-year="2005"><a href="movie-details.html?title=Star Wars, épisode III : La Revanche des Sith"><img src="https://i.imgur.com/Nr8pLPD.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Fantasy / Policier / Romance / Science-fiction / Western" data-year="2018"><a href="movie-details.html?title=Solo: A Star Wars Story"><img src="https://i.imgur.com/hhelN2G.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Science-fiction" data-year="2016"><a href="movie-details.html?title=Rogue One: A Star Wars Story"><img src="https://i.imgur.com/YFwJpC4.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Criminel / Drame" data-year="1975"><a href="movie-details.html?title=Le Parrain, 2e partie"><img src="https://i.imgur.com/RDC8xgG.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure" data-year="2024"><a href="movie-details.html?title=Flow"><img src="https://i.imgur.com/c1xt9Ju.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Drame / Sport" data-year="2002"><a href="movie-details.html?title=Ali"><img src="https://i.imgur.com/Wy01ShM.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame / Romance" data-year="2016"><a href="movie-details.html?title=Moonlight"><img src="https://i.imgur.com/pagdUm8.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Science-fiction / Thriller" data-year="2014"><a href="movie-details.html?title=Interstellar"><img src="https://i.imgur.com/Uc0cBa4.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Horreur / Science-fiction / Thriller" data-year="2022"><a href="movie-details.html?title=Prey"><img src="https://i.imgur.com/ljz7zjq.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Aventure / Drame / Science-fiction / Thriller" data-year="2019"><a href="movie-details.html?title=Ad Astra"><img src="https://i.imgur.com/ZDFxQ3P.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Anime / Aventure / Drame / Fantastique / Horreur / Science-fiction / Surnaturel / Thriller" data-year="1991"><a href="movie-details.html?title=Akira"><img src="https://i.imgur.com/TsDV4yF.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Crime / Détective / Drame / Policier" data-year="2014"><a href="movie-details.html?title=Night Call"><img src="https://i.imgur.com/05lSKAD.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame" data-year="2025"><a href="movie-details.html?title=Un parfait inconnu"><img src="https://i.imgur.com/woUXCRb.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Drame / Guerre / Historique" data-year="2003"><a href="movie-details.html?title=Master and Commander : De l'autre côté du monde"><img src="https://i.imgur.com/qetuycf.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Drame / Horreur / Science-fiction / Thriller" data-year="2019"><a href="movie-details.html?title=La Plateforme"><img src="https://i.imgur.com/pnt9cJ6.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Thriller" data-year="2017"><a href="movie-details.html?title=American Assassin"><img src="https://i.imgur.com/HXelDhT.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Comédie / Fantastique / Science-fiction" data-year="2022"><a href="movie-details.html?title=Sonic 2, le film"><img src="https://i.imgur.com/eCkKVwa.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Comédie / Fantastique" data-year="2024"><a href="movie-details.html?title=Red One"><img src="https://i.imgur.com/pDKXMz3.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantastique / Science-fiction" data-year="2023"><a href="movie-details.html?title=Aquaman et le Royaume perdu"><img src="https://i.imgur.com/LTHjf0H.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Aventure / Fantastique / Science-fiction" data-year="2018"><a href="movie-details.html?title=Aquaman"><img src="https://i.imgur.com/c05yvpE.jpeg" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Comédie" data-year="2025"><a href="movie-details.html?title=Minecraft, le film"><img src="https://i.imgur.com/ij81S7j.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Comédie / Science-fiction" data-year="2024"><a href="movie-details.html?title=Sonic 3, le film"><img src="https://i.imgur.com/7Yj3yRy.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Aventure / Comédie musicale / Fantastique" data-year="2023"><a href="movie-details.html?title=Wonka"><img src="https://i.imgur.com/E8u1cWC.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Comédie / Comédie Musicale / Fantastique" data-year="2018"><a href="movie-details.html?title=Astérix : Le Secret de la potion magique"><img src="https://i.imgur.com/pHwKexK.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Comédie / Fantastique" data-year="2014"><a href="movie-details.html?title=L'Île des Miam-nimaux : Tempête de boulettes géantes 2"><img src="https://i.imgur.com/vWFCNbd.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Comédie" data-year="2024"><a href="movie-details.html?title=South Park : la fin de l'obésité"><img src="https://i.imgur.com/WItI643.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Action / Animation / Aventure / Comédie / Fantastique" data-year="2023"><a href="movie-details.html?title=Ninja Turtles: Teenage Years"><img src="https://i.imgur.com/L7gLeDh.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Comédie / Fantastique" data-year="2023"><a href="movie-details.html?title=L'Étrange Noël du petit Batman"><img src="https://i.imgur.com/49k2NVQ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Comédie / Fantastique / Comédie musicale" data-year="2024"> <a href="movie-details.html?title=Descendants : L'Ascension de Red"><img src="https://i.imgur.com/UB6WbZR.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Animation / Aventure / Comédie / Fantastique" data-year="2024"><a href="movie-details.html?title=Garfield : Héros malgré lui"><img src="https://i.imgur.com/FxQKHhv.png" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Drame" data-year="2024"><a href="movie-details.html?title=Dear Santa"><img src="https://i.imgur.com/GM7Qb7d.png" loading="lazy"><div class="resolution">4K</div></a></div>
+<div class="movie-grid-item" category="Action / Comédie / Horreur / Thriller" data-year="2022"><a href="movie-details.html?title=Violent Night"><img src="https://i.imgur.com/PpkJr2u.jpeg" loading="lazy"><div class="resolution">1080p</div></a></div>
+<div class="movie-grid-item" category="Comédie / Horreur / Thriller" data-year="2023"><a href="movie-details.html?title=There's Something in the Barn"><img src="https://i.imgur.com/i3Tr6jB.jpeg" loading="lazy"><div class="resolution">4K</div></a></div>
+</div></section>
+
+
+
+<script src="js/index.js"></script>
+<script type="module" src="js/navbar.js"></script>
+</body>
+</html>
