@@ -8,3 +8,6 @@ img, a {-webkit-user-drag: none;user-drag: none;}
 .movie-category-container {width: 800px;background-color: #ff0000;border-radius: 0 0 15px 15px;display: flex;justify-content: center;align-items: center;padding: 10px 0;box-sizing: border-box;margin: 0 auto;flex-wrap: wrap;height: auto;}
 .movie-category {font-size: 1.2rem;color: white;font-weight: bold;margin: 0 10px;text-align: center;}
 .movie-duration, .movie-release-date, .movie-size {text-align: center; font-size: 16px;margin-top: 7px;color: white;}
+#movieIframeContainer {display: flex;justify-content: center;align-items: center;margin-top: 20px;}
+#movieIframeContainer iframe {width: 800px; height: 450px; border: none;border-radius: 20px 20px 0 0;}
+#movieTitle {font-size: 2rem;margin-bottom: 20px;margin-top: 20px;text-align: center;color: #ef2626;}
