@@ -1,23 +1,23 @@
+document.addEventListener("DOMContentLoaded", () => {
 
+  const randomBox = document.getElementById("random-movie-box");
+  if (randomBox) {
+    randomBox.addEventListener("click", () => {
 
+      const movies = [];
+      document.querySelectorAll(".movie-item a, .movie-grid-item a").forEach(link => {
+        const title = new URL(link.href, location.origin).searchParams.get("title");
+        if (title) movies.push(title);
+      });
 
-  const snowContainer = document.createElement('div');
-    snowContainer.id = 'snow-container';
-    document.body.appendChild(snowContainer);
+      if (!movies.length) {
+        alert("Aucun film trouvé");
+        return;
+      }
 
-    function createSnowflake() {
-        const snowflake = document.createElement("div");
-        snowflake.classList.add("snowflake");
-        snowflake.style.left = Math.random() * 100 + "vw";
-        snowflake.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        snowflake.style.opacity = Math.random();
-        snowflake.style.fontSize = Math.random() * 12 + 10 + "px";
-        snowflake.innerHTML = "❄";
+      const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+      window.location.href = `movie-details.html?title=${encodeURIComponent(randomMovie)}`;
+    });
+  }
 
-        snowContainer.appendChild(snowflake);
-
-        setTimeout(() => {
-            snowflake.remove();
-        }, 5000);
-    }
-    
+});

@@ -1,3 +1,4 @@
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #181818}
 :root {--faq-primary-color: #353333;--faq-secondary-color: #0f0f0f;--faq-accent-color: #4CAF50;--faq-text-color: #ffffff;--faq-background-color: #2d2d2d;--faq-white: #fff;--faq-link-color: blue;--faq-hover-color: #000000;}
 .faq-logo {position: absolute;left: 30px;top: 50%;transform: translateY(-50%);} 
 .faq-logo img {height: 60px;width: auto;}
@@ -14,4 +15,3 @@
 .faq-discord-link {color: var(--faq-link-color);text-decoration: none;}
 .faq-discord-link:hover {text-decoration: underline;}
 .FAQ-title {color: red;justify-content: center;display: flex;margin-top: 20px;text-decoration: underline;}
-  

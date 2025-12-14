@@ -1,3 +1,5 @@
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #181818}
+.container {display: flex;flex-direction: column;gap: 10px;}
 .description-title {font-size: 1.8rem; color: #d40000; margin-bottom: 10px; text-align: center;}
 .download-btn {display: inline-block;background-color: #00796b;color: #fff;font-size: 1.4rem;padding: 0.5rem 1rem;margin-top: 2rem;border: none;border-radius: 6px;cursor: pointer;text-transform: uppercase;font-weight: bold;text-align: center;transition: background-color 0.3s ease;margin-left: auto;margin-right: auto;}
 .download-btn:hover {background-color: #004d40;}
@@ -11,3 +13,7 @@
 #movieIframeContainer {display: flex; justify-content: center; align-items: center; margin-top: 20px;}
 #movieIframeContainer iframe {width: 800px; height: 450px; border: none; border-radius: 20px 20px 0 0;}
 #movieTitle {font-size: 2rem; margin-bottom: 20px; margin-top: 20px; text-align: center; color: #ef2626;}
+::-webkit-scrollbar {width: 0px;}
+.titan-one-regular {font-family: "Titan One", serif;font-weight: 400;font-style: normal;}
+.gold-button {display: inline-block;width: auto;background: linear-gradient(45deg, #FFD700, #FFA500);border: none;color: white;padding: 8px 16px;margin: 1.5rem auto 0 auto;font-size: 1.4rem;font-weight: bold;cursor: pointer;border-radius: 6px;transition: background 0.3s ease;text-transform: uppercase;}
+.gold-button:hover {background: linear-gradient(45deg, #FFA500, #FFD700);}

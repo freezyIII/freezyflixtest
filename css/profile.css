@@ -1,4 +1,4 @@
-body.profile-page { font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"; background-color: #181818; color: #ddd; margin: 0; padding: 0; }
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #181818}
 .profile-container { display: flex; align-items: center; gap: 30px; padding: 8% 20% 3% 20%; }
 .profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }

@@ -105,7 +105,6 @@ menuProfile.addEventListener('click', () => {
 document.getElementById('categories-link').onclick = e => {
   e.preventDefault();
   document.querySelector('.content').style.display = 'none';
-  document.getElementById('random-movie-box').parentElement.style.display = 'none';
   document.querySelector('.movie-grid-section').style.display = '';
   document.getElementById('filter-panel').style.display = '';
   document.querySelectorAll('.movie-grid-item').forEach(m => m.style.display = '');

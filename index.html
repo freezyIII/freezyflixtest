@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FreezyFlix</title>
-<link rel="stylesheet" href="css/index.css" />
 <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
-</head>
-<body class="page_index">
-<div id="snow-container"></div>
-
+<link rel="stylesheet" href="css/index.css" />
 <link rel="stylesheet" href="css/navbar.css">
+</head>
 
+<body>
 <header>
 <a href="index.html" class="logo" aria-label="Accueil"><img src="https://i.imgur.com/7Ddaoy6.png" alt="Logo FreezyFlix" /></a>
 
 <ul class="federant-regular">
 <li><a href="index.html">Accueil</a></li>
-<li><a href="#categories" id="categories-link">Catégories</a></li>
+<li><a href="categories.html">Catégories</a></li>
 <li><a href="faq.html">FAQ</a></li><li>
 <a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
 <span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> <span>u</span><span>n</span> <span>d</span><span>o</span><span>n</span></a></li></ul>
@@ -46,12 +44,16 @@
 <div class="movie-item"><a href="movie-details.html?title=Vaiana 2"><img src="https://i.imgur.com/2S351lZ.png" loading="lazy"><div class="resolution">1080p</div></a></div>
 </section>
 
-<section style="text-align:center; margin: 20px 0;"><div id="random-movie-box" style="display:inline-block; padding: 20px 40px; border: 3px solid #00aaff; border-radius: 10px; cursor:pointer; font-weight:bold; font-size: 1.2em; color:#00aaff; user-select:none;">🎬 Film Aléatoire</div></section>
+<section class="random-movie-section"><div id="random-movie-box">🎬 Film Aléatoire</div></section>
 
 <section class="movie-grid-section"><h2 class="titan-one-regular">Découvrir d'autres films</h2>
 
-<div id="filter-panel" style="margin: 20px auto; max-width: 700px; padding: 15px; border-radius: 8px; background: #00aaff22; border: 2px solid #00aaff; font-family: 'Federant', cursive;"><div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center;"><div style="flex: 1 1 200px; min-width: 180px;"><label for="category-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Catégorie :</label><select id="category-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
-<option value="" selected>Toutes les catégories</option>
+<div id="filter-panel">
+<div class="filter-container">
+<div class="filter-item">
+<label for="category-filter">Catégorie :</label>
+<select id="category-filter">
+<option value="" selected>Toutes</option>
 <option value="action">Action</option>
 <option value="animation">Animation</option>
 <option value="anime">Animé</option>
@@ -74,13 +76,17 @@
 <option value="western">Western</option>
 </select></div>
 
-<div style="flex: 1 1 120px; min-width: 120px;"><label for="type-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Type :</label><select id="type-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<div class="filter-item">
+<label for="type-filter">Type :</label>
+<select id="type-filter">
 <option value="" selected>Tous</option>
 <option value="film">Film</option>
 <option value="serie">Série</option>
 </select></div>
 
-<div style="flex: 1 1 120px; min-width: 120px;"><label for="year-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Année :</label><select id="year-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<div class="filter-item">
+<label for="year-filter">Année :</label>
+<select id="year-filter">
 <option value="all" selected>Toutes</option>
 <option value="2025">2025</option>
 <option value="2024">2024</option>
@@ -101,13 +107,14 @@
 <option value="2009">2009</option>
 </select></div>
 
-<div style="flex: 1 1 120px; min-width: 120px;"><label for="quality-filter" style="color: #0077cc; font-weight: 700; display: block; margin-bottom: 6px; font-size: 1rem;">Qualité :</label><select id="quality-filter" style="width: 100%; padding: 8px 12px; font-size: 1rem; border: 2px solid #00aaff; border-radius: 6px; background-color: white; color: #0077cc; cursor: pointer; transition: border-color 0.3s;">
+<div class="filter-item">
+<label for="quality-filter">Qualité :</label>
+<select id="quality-filter">
 <option value="" selected>Toutes</option>
 <option value="1080p">1080p</option>
-<option value="4K">4K</option>
-</select></div>
+<option value="4K">4K</option></select></div>
 
-<div style="flex: 0 0 auto; align-self: flex-end;"><button id="reset-filters" style="background-color: #00aaff; border: none; color: white; padding: 10px 20px; font-weight: 700; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: background-color 0.3s;">Réinitialiser</button></div></div></div>
+<div class="filter-item reset-button"><button id="reset-filters">Réinitialiser</button></div></div></div></section>
 
 <!--
 <div class="movie-grid-item" category="" data-year=""><a href="movie-details.html?title="><img src="" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
