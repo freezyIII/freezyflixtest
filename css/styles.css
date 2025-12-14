@@ -7,7 +7,6 @@ body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background
 #movieIframeContainer {display: flex;justify-content: center;align-items: center;margin-top: 20px;}
 #movieIframeContainer iframe {width: 800px; height: 450px; border: none;border-radius: 20px 20px 0 0;}
 #movieTitle {font-size: 2rem;margin-bottom: 20px;margin-top: 20px;text-align: center;color: #ef2626;}
-#resultsCountMessage {font-size: 1rem; color: #ffffff;margin-top: 0.3rem;margin-bottom: 1.8rem;}
 
 
 strong {font-weight: bold;}
