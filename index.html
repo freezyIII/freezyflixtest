@@ -15,7 +15,6 @@
 
 <ul class="federant-regular">
 <li><a href="index.html">Accueil</a></li>
-<li><a href="categories.html">Catégories</a></li>
 <li><a href="faq.html">FAQ</a></li><li>
 <a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
 <span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> <span>u</span><span>n</span> <span>d</span><span>o</span><span>n</span></a></li></ul>
@@ -24,19 +23,19 @@
 <input type="text" id="search-input" class="search-box" placeholder="Rechercher..." />
 <button class="search-icon">🔍</button></div>
 
-<!-- LOGIN / PROFILE -->
 <div class="login-container">
-<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="profileAvatar" class="profile-avatar" alt="Avatar de l'utilisateur">
+<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="Avatar" class="avatar" alt="Avatar de l'utilisateur">
 <div class="dropdown-menu" id="dropdownMenu">
 <a href="#" id="menuProfile">Profil</a>
 <a href="#" id="menuSettings">Paramètres</a>
 <a href="#" id="menuLogout">Déconnexion</a></div></div>
-<button class="login-button" id="loginBtn">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
+<button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
 
-<section class="content"><h2 class="titan-one-regular">Films à la une</h2><div id="movieCarousel" class="movie-carousel"><div class="movie-container">
+<section class="content"><h2 class="titan-one-regular">Films à la une</h2><div id="movieCarousel" class="movie-carousel">
+
+<div class="movie-container">
 <div class="movie-item"><a href="movie-details.html?title=Minecraft, le film"><img src="https://i.imgur.com/OT3zPtV.png" loading="lazy"><div class="resolution">1080p</div></a></div>
 <div class="movie-item"><a href="movie-details.html?title=God Save the Tuche"><img src="https://i.imgur.com/bBWXdk3.png" loading="lazy"><div class="resolution">1080p</div></a></div>
 <div class="movie-item"><a href="movie-details.html?title=Lilo et Stitch"><img src="https://i.imgur.com/xHMZw3T.png" loading="lazy"><div class="resolution">4K</div></a></div>
@@ -46,11 +45,19 @@
 
 <section class="random-movie-section"><div id="random-movie-box">🎬 Film Aléatoire</div></section>
 
-<section class="movie-grid-section"><h2 class="titan-one-regular">Découvrir d'autres films</h2>
+<div class="grid-wrapper"><div class="grid-header">
+<h2 class="section-title">Derniers Ajouts</h2>
+<div class="filter-wrapper">
+<button type="button" id="toggleFilters" class="filter-btn" aria-expanded="false" aria-controls="filter-panel">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="filter-icon" role="img" aria-label="Icône filtre">
+<path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
+</svg>Filtre</button>
 
-<div id="filter-panel">
-<div class="filter-container">
-<div class="filter-item">
+<div id="filter-panel" class="filter-panel" hidden><div class="filter-content"><div class="filter-header">
+<h3>Filtrer</h3>
+<button id="closeFilters" class="close-filters" aria-label="Fermer le panneau de filtre">✖</button></div>
+
+<div class="filter-container"><div class="filter-item">
 <label for="category-filter">Catégorie :</label>
 <select id="category-filter">
 <option value="" selected>Toutes</option>
@@ -82,11 +89,11 @@
 <option value="" selected>Tous</option>
 <option value="film">Film</option>
 <option value="serie">Série</option>
-</select></div>
+</select>
+</div>
 
 <div class="filter-item">
-<label for="year-filter">Année :</label>
-<select id="year-filter">
+<label for="year-filter">Année :</label><select id="year-filter">
 <option value="all" selected>Toutes</option>
 <option value="2025">2025</option>
 <option value="2024">2024</option>
@@ -113,14 +120,17 @@
 <option value="" selected>Toutes</option>
 <option value="1080p">1080p</option>
 <option value="4K">4K</option></select></div>
+<div class="filter-item reset-button">
+<button id="reset-filters">Réinitialiser</button>
+</div></div></div></div></div></div>
 
-<div class="filter-item reset-button"><button id="reset-filters">Réinitialiser</button></div></div></div></section>
 
 <!--
 <div class="movie-grid-item" category="" data-year=""><a href="movie-details.html?title="><img src="" loading="lazy"><div class="resolution">1080p</div><div class="serie">Série</div></a></div>
   
 <div class="movie-grid-item" category="" data-year=""><a href="movie-details.html?title="><img src="" loading="lazy"><div class="resolution">1080p</div></a></div>
 -->
+
 
 <div class="movie-grid">
 <div class="movie-grid-item" category="Action / Aventure / Fantasy / Drame / Guerre" data-year="2014"><a href="movie-details.html?title=Le Hobbit : la bataille des cinq armées"><img src="https://i.imgur.com/Ajc8tVB.png" loading="lazy"><div class="resolution">4K</div></a></div>
@@ -258,7 +268,7 @@
 <div class="movie-grid-item" category="Comédie / Drame" data-year="2024"><a href="movie-details.html?title=Dear Santa"><img src="https://i.imgur.com/GM7Qb7d.png" loading="lazy"><div class="resolution">4K</div></a></div>
 <div class="movie-grid-item" category="Action / Comédie / Horreur / Thriller" data-year="2022"><a href="movie-details.html?title=Violent Night"><img src="https://i.imgur.com/PpkJr2u.jpeg" loading="lazy"><div class="resolution">1080p</div></a></div>
 <div class="movie-grid-item" category="Comédie / Horreur / Thriller" data-year="2023"><a href="movie-details.html?title=There's Something in the Barn"><img src="https://i.imgur.com/i3Tr6jB.jpeg" loading="lazy"><div class="resolution">4K</div></a></div>
-</div></section>
+</div></div></div></div></div></section>
 
 
 

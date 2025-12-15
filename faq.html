@@ -15,7 +15,6 @@
 
 <ul class="federant-regular">
 <li><a href="index.html">Accueil</a></li>
-<li><a href="categories.html">Catégories</a></li>
 <li><a href="faq.html">FAQ</a></li><li>
 <a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
 <span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> <span>u</span><span>n</span> <span>d</span><span>o</span><span>n</span></a></li></ul>
@@ -24,39 +23,61 @@
 <input type="text" id="search-input" class="search-box" placeholder="Rechercher..." />
 <button class="search-icon">🔍</button></div>
 
-<!-- LOGIN / PROFILE -->
 <div class="login-container">
-<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="profileAvatar" class="profile-avatar" alt="Avatar de l'utilisateur">
+<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="Avatar" class="avatar" alt="Avatar de l'utilisateur">
 <div class="dropdown-menu" id="dropdownMenu">
 <a href="#" id="menuProfile">Profil</a>
 <a href="#" id="menuSettings">Paramètres</a>
 <a href="#" id="menuLogout">Déconnexion</a></div></div>
-<button class="login-button" id="loginBtn">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
+<button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
 
-<div class="FAQ-title"><h1>FAQ - Foire Aux Questions</h1></div>
+<main>
+  <section class="faq-header">
+    <h1>FAQ - Foire Aux Questions</h1>
+    <p>Vous trouverez ici les réponses aux questions les plus fréquentes concernant FreezyFlix.</p>
+  </section>
 
-<div class="faq-container"><h1 style="margin-bottom: 20px;">Les questions fréquemment posées</h1>
-    
-<div class="faq-item-container"><div class="faq-item" onclick="toggleFAQ(0)"><div class="faq-question-container">
-<div class="faq-question">Comment regarder un film ?</div></div>
-<div class="faq-answer"><p>Il n'est pas possible de visionner un film directement sur notre plateforme. Les films sont uniquement disponibles en téléchargement via le bouton vert « Télécharger » situé sous chaque bande-annonce.</p></div></div>
+  <section class="faq-container">
+    <div class="faq-item" onclick="toggleFAQ(0)">
+      <div class="faq-question">Comment regarder un film ?</div>
+      <div class="faq-answer">
+        Il n'est pas possible de visionner un film directement sur notre plateforme. Les films sont uniquement disponibles en téléchargement via le bouton vert « Télécharger » situé sous chaque bande-annonce.
+      </div>
+    </div>
 
-<div class="faq-item" onclick="toggleFAQ(1)"><div class="faq-question-container"><div class="faq-question">Où puis-je faire des demandes de nouveaux films ou signaler un problème ?</div></div>
-<div class="faq-answer"><p>Toutes les demandes de nouveaux films, ainsi que les signalements de liens non fonctionnels ou de bugs, doivent être faites sur notre <a href="https://discord.gg/5kX3Sb2wd4" target="_blank" class="faq-discord-link">Discord</a>, dans les salons spécifiques dédiés.</p></div></div>
+    <div class="faq-item" onclick="toggleFAQ(1)">
+      <div class="faq-question">Où puis-je faire des demandes de nouveaux films ou signaler un problème ?</div>
+      <div class="faq-answer">
+        Toutes les demandes de nouveaux films, ainsi que les signalements de liens non fonctionnels ou de bugs, doivent être faites sur notre <a href="https://discord.gg/5kX3Sb2wd4" target="_blank">Discord</a>, dans les salons spécifiques dédiés.
+      </div>
+    </div>
 
-<div class="faq-item" onclick="toggleFAQ(2)"><div class="faq-question-container"><div class="faq-question">Les films sont-ils disponibles en plusieurs langues ?</div></div>
-<div class="faq-answer"><p>Tous les films proposés sont exclusivement en version française (VF). Aucune autre langue ne sera disponible.</p></div></div>
+    <div class="faq-item" onclick="toggleFAQ(2)">
+      <div class="faq-question">Les films sont-ils disponibles en plusieurs langues ?</div>
+      <div class="faq-answer">
+        Tous les films proposés sont exclusivement en version française (VF). Aucune autre langue ne sera disponible.
+      </div>
+    </div>
 
-<div class="faq-item" onclick="toggleFAQ(3)"><div class="faq-question-container"><div class="faq-question">Je n'ai pas d'écran 4K, que faire ?</div></div>
-<div class="faq-answer"><p>Les films en 4K seront automatiquement adaptés et lus en 1080p si votre écran ne prend pas en charge cette résolution.</p></div></div>
+    <div class="faq-item" onclick="toggleFAQ(3)">
+      <div class="faq-question">Je n'ai pas d'écran 4K, que faire ?</div>
+      <div class="faq-answer">
+        Les films en 4K seront automatiquement adaptés et lus en 1080p si votre écran ne prend pas en charge cette résolution.
+      </div>
+    </div>
 
-<div class="faq-item" onclick="toggleFAQ(4)"><div class="faq-question-container"><div class="faq-question">Le film demande l'installation d'un nouveau codec ou l'achat d'une extension vidéo HEVC. Que faire ?</div></div>
-<div class="faq-answer"><p>Utilisez un lecteur compatible comme <a href="https://github.com/clsid2/mpc-hc/releases" target="_blank" class="faq-discord-link">MPC-HC</a> pour lire les fichiers encodés en H.265.</p></div></div></div></div>
+    <div class="faq-item" onclick="toggleFAQ(4)">
+      <div class="faq-question">Le film demande l'installation d'un nouveau codec ou l'achat d'une extension vidéo HEVC. Que faire ?</div>
+      <div class="faq-answer">
+        Utilisez un lecteur compatible comme <a href="https://github.com/clsid2/mpc-hc/releases" target="_blank">MPC-HC</a> pour lire les fichiers encodés en H.265.
+      </div>
+    </div>
+  </section>
+</main>
 
 <script src="js/faq.js"></script>
 <script type="module" src="js/navbar.js"></script>
 </body>
-
+</html>

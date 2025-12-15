@@ -1,26 +1,19 @@
 import { auth, db } from './database.js';
-import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 
-// Elements DOM
 const profileAvatar = document.getElementById('profileAvatar');
 const profilePseudo = document.getElementById('profilePseudo');
 const panelAvatar = document.getElementById('panelAvatar');
 const usernameInput = document.getElementById('username');
 const editProfileForm = document.getElementById('editProfileForm');
-
 const links = document.querySelectorAll('.profile-link');
 const favoritesContent = document.getElementById('favoritesContent');
 const evaluationContent = document.getElementById('evaluationContent');
 
 // Gestion des onglets
 function showTab(tabName) {
-    if (tabName === "Favoris") {
-        favoritesContent.style.display = "flex";
-        evaluationContent.style.display = "none";
-    } else if (tabName === "Évaluation") {
-        favoritesContent.style.display = "none";
-        evaluationContent.style.display = "flex";
-    }
+    favoritesContent.style.display = tabName === "Favoris" ? "flex" : "none";
+    evaluationContent.style.display = tabName === "Évaluation" ? "flex" : "none";
 }
 
 links.forEach(link => {
@@ -36,34 +29,7 @@ links.forEach(link => {
 const activeLink = document.querySelector('.profile-link.active');
 if (activeLink) showTab(activeLink.textContent.trim());
 
-// Affichage des infos utilisateur
-auth.onAuthStateChanged(async user => {
-    if (user) {
-        try {
-            const userDocRef = doc(db, "utilisateurs", user.uid);
-            const docSnap = await getDoc(userDocRef);
-
-            if (docSnap.exists()) {
-                const userData = docSnap.data();
-                profilePseudo.textContent = userData.nomUtilisateur;
-                profileAvatar.src = userData.imageProfil;
-                panelAvatar.src = userData.imageProfil;
-                usernameInput.value = userData.nomUtilisateur;
-            } else {
-                profilePseudo.textContent = user.displayName || "Utilisateur";
-                profileAvatar.src = user.photoURL || "images/default-avatar.png";
-                panelAvatar.src = user.photoURL || "images/default-avatar.png";
-                usernameInput.value = user.displayName || "";
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération du profil :", error);
-        }
-    } else {
-        window.location.href = 'index.html';
-    }
-});
-
-// Mettre à jour le nom d'utilisateur dans Firestore
+// Mise à jour du profil
 editProfileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const newUsername = usernameInput.value.trim();
@@ -72,9 +38,7 @@ editProfileForm.addEventListener('submit', async (e) => {
     if (user && newUsername) {
         try {
             const userDocRef = doc(db, "utilisateurs", user.uid);
-            await updateDoc(userDocRef, {
-                nomUtilisateur: newUsername
-            });
+            await updateDoc(userDocRef, { nomUtilisateur: newUsername });
             profilePseudo.textContent = newUsername;
             alert("Nom d'utilisateur mis à jour !");
         } catch (error) {
@@ -82,4 +46,18 @@ editProfileForm.addEventListener('submit', async (e) => {
             alert("Erreur lors de la mise à jour.");
         }
     }
+});
+
+// Affichage de l'avatar utilisateur
+function displayUserAvatar(user) {
+    const photoURL = user.photoURL || 'https://via.placeholder.com/150';
+    [profileAvatar, panelAvatar].forEach(img => {
+        img.src = photoURL;
+        img.alt = `${user.displayName || 'Utilisateur'} Avatar`;
+    });
+    profilePseudo.textContent = user.displayName || 'Utilisateur';
+}
+
+auth.onAuthStateChanged((user) => {
+    if (user) displayUserAvatar(user);
 });

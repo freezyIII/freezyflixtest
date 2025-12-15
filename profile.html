@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profil Utilisateur</title>
 <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/profile.css">
 <link rel="stylesheet" href="css/navbar.css">
+<link rel="stylesheet" href="css/profile.css">
 </head>
 
 <body>
@@ -15,7 +15,6 @@
 
 <ul class="federant-regular">
 <li><a href="index.html">Accueil</a></li>
-<li><a href="categories.html">Catégories</a></li>
 <li><a href="faq.html">FAQ</a></li><li>
 <a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
 <span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> <span>u</span><span>n</span> <span>d</span><span>o</span><span>n</span></a></li></ul>
@@ -24,58 +23,45 @@
 <input type="text" id="search-input" class="search-box" placeholder="Rechercher..." />
 <button class="search-icon">🔍</button></div>
 
-<!-- LOGIN / PROFILE -->
 <div class="login-container">
-<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="profileAvatar" class="profile-avatar" alt="Avatar de l'utilisateur">
+<span id="userPseudo" class="user-pseudo" style="display:none;"></span><div class="profile-menu" id="profileMenuContainer" style="display:none;"><img id="Avatar" class="avatar" alt="Avatar de l'utilisateur">
 <div class="dropdown-menu" id="dropdownMenu">
 <a href="#" id="menuProfile">Profil</a>
 <a href="#" id="menuSettings">Paramètres</a>
 <a href="#" id="menuLogout">Déconnexion</a></div></div>
-<button class="login-button" id="loginBtn">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
+<button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
-    <div class="profile-container">
-        <img id="profileAvatar" alt="Avatar" class="profile-avatar">
-        <div class="profile-info">
-            <h2 id="profilePseudo" class="profile-pseudo"></h2>
-            <a href="#editProfilePanel" class="edit-profile-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83
-                    1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6
-                    3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path>
-                </svg>
-                Modifier le profil
-            </a>
-        </div>
-    </div>
+<main>
+<section class="profile-container">
+<img id="profileAvatar" alt="Avatar" class="profile-avatar">
+<div class="profile-info">
+<h2 id="profilePseudo" class="profile-pseudo"></h2>
+<a href="#editProfilePanel" class="edit-profile-btn">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.831.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.63.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path></svg>Modifier le profil</a></div>
+</section>
 
-    <div class="profile-actions">
-        <a href="#" class="profile-link active">Favoris</a>
-        <a href="#" class="profile-link">Évaluation</a>
-    </div>
+<nav class="profile-actions">
+<a href="#" class="profile-link active">Favoris</a>
+<a href="#" class="profile-link">Évaluation</a>
+</nav>
 
-    <hr class="profile-divider">
+<hr class="profile-divider">
 
-    <div id="tabContent" class="icon-container">
-        <!-- Contenu Favoris -->
-        <div id="favoritesContent" class="tab-item">
-            <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                class="svg-icon text-muted icon-md">
-                <path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"></path>
-            </svg>
-            <p class="tab-text">Aucun favori pour l'instant</p>
-        </div>
+<section id="tabContent" class="icon-container">
+<div id="favoritesContent" class="tab-item">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"></path></svg>
+<p class="tab-text">Aucun favori pour l'instant</p>
+</div>
 
-        <!-- Contenu Évaluation -->
-        <div id="evaluationContent" class="tab-item">
-            <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                class="svg-icon text-muted icon-md">
-                <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path>
-            </svg>
-            <p class="tab-text">Aucune évaluation pour l'instant</p>
-        </div>
-    </div>
+<div id="evaluationContent" class="tab-item">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path></svg>
+<p class="tab-text">Aucune évaluation pour l'instant</p>
+</div>
+</section>
 
     <div id="editProfilePanel" class="overlay">
         <div class="edit-panel">
@@ -107,8 +93,9 @@
             </div>
         </div>
     </div>
+</main>
 
+<script type="module" src="js/navbar.js"></script>
 <script type="module" src="js/profile.js"></script>
 </body>
-
 </html>
