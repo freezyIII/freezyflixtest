@@ -48,7 +48,8 @@
 .panel-right { flex: 2; padding: 20px; display: flex; flex-direction: column; }
 .panel-right h2 { text-align: left; margin-top: 0; margin-bottom: 20px; }
 
-.form-group { display: flex; flex-direction: column; margin-bottom: 30px; }
+
+
 label { margin-bottom: 5px; font-size: 0.95rem; }
 input, textarea { padding: 10px; border-radius: 4px; border: 1px solid #555; background-color: #181818; color: #fff; font-size: 0.95rem; resize: vertical; }
 textarea { min-height: 100px; }
@@ -68,3 +69,14 @@ textarea { min-height: 100px; }
     .panel-left { border-right: none; border-bottom: 1px solid #555; padding-right: 0; padding-bottom: 20px; } 
     .panel-right { padding-left: 0; } 
 }
+
+
+
+
+
+/* Compteur de caractère de profil */
+.form-group {position: relative;display: flex;flex-direction: column;}
+.char-counter {position: absolute;bottom: 5px;right: 10px;font-size: 0.75rem;color: #aaa;pointer-events: none;}
+
+/* Prénom */
+#profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;}

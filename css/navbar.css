@@ -1,27 +1,26 @@
 * {margin: 0; padding: 0; box-sizing: border-box; user-select: none;}
-body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212}
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212;}
 
-.federant-regular {font-family: "Federant", serif;font-weight: 400;font-style: normal;}
 
-header {background: #0d0d0d;padding: 0 20px;display: flex;justify-content: center;align-items: center;height: 80px;position: relative;color: #ff3d00;box-shadow: 0 2px 10px rgba(255, 61, 0, 0.3);}
-header .logo {position: absolute; left: 30px; top: 52%; transform: translateY(-50%);}
-header .logo img {height: 60px; width: auto;}
+header {position: relative;background: #0d0d0d;padding: 0 20px;display: flex;align-items: center;height: 80px;color: #ff3d00;box-shadow: 0 2px 10px rgba(255, 61, 0, 0.3);justify-content: space-between;}
+
 
 /* Avatar */
-.login-container {position: absolute;right: 30px;top: 50%;transform: translateY(-50%);display: flex;align-items: center;gap: 15px;z-index: 10;}
+.avatar {width: 45px;height: 45px;border-radius: 50%;object-fit: cover;transition: transform 0.2s ease;}
+.avatar:hover {transform: scale(1.1);}
+.login-profile-container {position: absolute;right: 20px;top: 50%;transform: translateY(-50%);display: flex;align-items: center;gap: 15px;z-index: 10;}
+
+/* Bouton de Connexion */
 .login-button {background: linear-gradient(135deg, #ff3d00 0%, #ff5e2b 100%);color: #fff;padding: 10px 22px;font-size: 16px;font-weight: 700;border-radius: 12px;text-decoration: none;box-shadow: 0 4px 8px rgba(0,0,0,0.3);transition: all 0.3s ease;border: none;display: inline-block;letter-spacing: 0.5px;text-transform: uppercase;cursor: pointer;}
 .login-button:hover {background: linear-gradient(135deg, #e63600 0%, #ff3d00 100%);box-shadow: 0 6px 15px rgba(0,0,0,0.4);transform: translateY(-2px) scale(1.02);}
 .profile-menu {position: relative;display: inline-block;cursor: pointer;}
-.avatar {width: 45px;height: 45px;border-radius: 50%;object-fit: cover;transition: transform 0.2s ease;}
-.avatar:hover {transform: scale(1.1);}
 .dropdown-menu {position: absolute;top: 55px;right: 0;background: #1c1c1c;width: 160px;border-radius: 12px;box-shadow: 0 6px 15px rgba(0,0,0,0.5);display: none;flex-direction: column;overflow: hidden;z-index: 999;}
 .dropdown-menu a {padding: 12px;color: white;font-size: 14px;text-decoration: none;display: block;transition: background 0.2s;}
 .dropdown-menu a:hover {background: #ff3d00;}
 .user-pseudo {font-size: 16px;color: white;font-weight: bold;display: inline-block;}
 
-
-/* Don */
-.animated-link {font-size: 20px;font-weight: bold;text-decoration: none;color: black;display: inline-block;}
+/* Don animation*/
+.animated-link {font-size: 18px;font-weight: bold;text-decoration: none;color: black;display: inline-block;}
 .animated-link span {display: inline-block;opacity: 0;animation: colorChange 3s infinite;}
 .animated-link span:nth-child(1) {animation-delay: 0s;}
 .animated-link span:nth-child(2) {animation-delay: 0.1s;}
@@ -44,23 +43,24 @@ header .logo img {height: 60px; width: auto;}
 80% {opacity: 1;color: #1E90FF;}
 100% {opacity: 1;color: #FF1493;}}
 
-/* Recherche de Films */
-.search-container {display: flex;align-items: center;position: absolute;right: 200px;top: 50%;transform: translateY(-50%);}
-.search-box {background-color: #0d0d0d;color: white;border: none;padding: 8px 10px;border-radius: 2px;font-size: 18px;margin-right: 5px;width: 250px;box-shadow: 0px 0px 3px rgba(211, 211, 211, 0.531);}
-.search-box:focus {outline: none;box-shadow: 0 0 8px rgba(159, 4, 4, 0.7);}
-.search-icon {background-color: transparent;border: none;color: white;font-size: 18px;cursor: pointer;transition: transform 0.3s ease, color 0.3s ease;}
-.search-icon:hover {color: #ff7300;transform: scale(1.07) translateY(-1%);}
+/* Zone de Recherche de Films */
+.search-container {position: relative;display: flex;align-items: center;width: 400px;}
+.search-icon-wrapper {position: absolute;left: 10px;display: flex;align-items: center;justify-content: center;pointer-events: none;color: #666;}
+.icon-svg {width: 20px;height: 20px;fill: currentColor;}
+.search-box {width: 100%;padding: 10px 10px 10px 40px;border-radius: 4px;border: 1px solid #333;background-color: #0d0d0d;color: #eee;font-size: 16px;transition: box-shadow 0.3s, border-color 0.3s;}
+.search-box:focus {outline: none;border-color: #b25a00;box-shadow: 0 0 0 5px rgba(178, 90, 0, 0.15);}
 
 /* Bouton de barre de navigation */
-ul {position: absolute;top: 41.4px;left: 215px;padding: 0;list-style-type: none;display: flex;justify-content: flex-start;}
+ul {display: flex;list-style: none;}
 ul li {margin: 0 10px;}
-ul li a {text-decoration: none;color: #ffffffeb;font-weight: bold;font-size: 20px;transition: all 0.3s ease;}
-ul li a:hover {text-decoration: underline;transform: scale(1.1);color: rgb(255, 45, 45);}
+ul li a {text-decoration: none;color: #ffffffeb;font-weight: bold;font-size: 18px;transition: all 0.3s ease;}
 ul li a.no-underline:hover {text-decoration: none;}
-ul li a[href="categories.html"]:hover {text-decoration: none;transform: scale(1.1);color: rgb(255, 45, 45);}
 
 #loginBtn,
 #profileMenuContainer,
 #userPseudo {
   display: none;
+}
+body.hidden {
+  visibility: hidden;
 }
