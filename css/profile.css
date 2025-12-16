@@ -85,3 +85,26 @@ textarea { min-height: 100px; }
 
 ::-webkit-scrollbar {width: 0px;}
 
+
+.avatar-wrapper {
+  position: relative;
+  width: 40px;   /* même taille que ton avatar */
+  height: 40px;  /* même taille que ton avatar */
+}
+
+.avatar-wrapper dotlottie-wc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;   /* taille de l'animation autour de l'avatar */
+  height: 80px;  /* taille de l'animation autour de l'avatar */
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* pour que l’avatar reste cliquable */
+  z-index: 0;
+}
+
+.avatar-wrapper .avatar {
+  position: relative;
+  z-index: 1; /* au-dessus de l'animation */
+}
+
