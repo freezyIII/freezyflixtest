@@ -83,4 +83,10 @@ textarea { min-height: 100px; }
 
 
 
+
 ::-webkit-scrollbar {width: 0px;}
+
+#avatarAnimation {
+    transform: scale(1.1);
+    transform-origin: center;
+}
