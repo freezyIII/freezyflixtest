@@ -88,25 +88,26 @@ textarea { min-height: 100px; }
 .avatar-wrapper {
     position: relative;
     display: inline-block;
-    width: 150px; /* largeur de ton avatar, ajuste si besoin */
-    height: 150px; /* hauteur de ton avatar */
+    width: 150px; 
+    height: 150px;
 }
 
 .profile-avatar {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 50%; /* rend l'avatar rond si besoin */
-    z-index: 2;
+    border-radius: 50%;
+    z-index: 1; /* avatar en dessous */
     display: block;
 }
 
 .avatar-gif {
     position: absolute;
-    top: -15px; /* décale le gif pour l'agrandir autour de l'avatar */
+    top: -15px;
     left: -15px;
-    width: 180px; /* largeur un peu plus grande que l'avatar */
-    height: 180px; /* hauteur un peu plus grande que l'avatar */
-    z-index: 1;
-    pointer-events: none; /* pour que le gif n’interfère pas avec le clic sur l’avatar */
+    width: 180px; 
+    height: 180px; 
+    z-index: 2; /* GIF au-dessus */
+    pointer-events: none;
 }
+
