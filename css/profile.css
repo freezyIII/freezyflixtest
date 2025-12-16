@@ -91,7 +91,7 @@ textarea { min-height: 100px; }
 
 .profile-avatar {
     position: relative;
-    z-index: 2; /* au-dessus du Lottie */
+    z-index: 2; /* Au-dessus de l'animation */
     width: 140px;
     height: 140px;
     border-radius: 50%;
@@ -100,10 +100,12 @@ textarea { min-height: 100px; }
 
 .avatar-lottie {
     position: absolute;
-    top: -10px; /* ajuster pour que le contour dépasse */
+    top: -10px;  /* Ajuste pour que le contour dépasse */
     left: -10px;
     width: 160px;
     height: 160px;
-    z-index: 1; /* derrière l'avatar */
-    pointer-events: none; /* pour ne pas bloquer les clics */
+    z-index: 1;  /* Derrière l'avatar */
+    pointer-events: none; /* Pour que l'avatar reste cliquable */
 }
+
+
