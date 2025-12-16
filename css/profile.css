@@ -89,22 +89,22 @@ textarea { min-height: 100px; }
 .avatar-wrapper {
   position: relative;
   width: 40px;   /* même taille que ton avatar */
-  height: 40px;  /* même taille que ton avatar */
+  height: 40px;
 }
 
 .avatar-wrapper dotlottie-wc {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80px;   /* taille de l'animation autour de l'avatar */
-  height: 80px;  /* taille de l'animation autour de l'avatar */
+  width: 60px;   /* un peu plus grand que l'avatar pour entourer */
+  height: 60px;
   transform: translate(-50%, -50%);
-  pointer-events: none; /* pour que l’avatar reste cliquable */
-  z-index: 0;
+  pointer-events: none; /* pour ne pas bloquer les clics sur l'avatar */
+  z-index: 0; /* derrière l'avatar */
 }
 
 .avatar-wrapper .avatar {
   position: relative;
-  z-index: 1; /* au-dessus de l'animation */
+  z-index: 1; /* devant l'animation */
 }
 
