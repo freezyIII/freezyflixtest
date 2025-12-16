@@ -186,3 +186,15 @@ usernameInput.addEventListener('input', () => {
     usernameCounter.textContent = `${length}/${maxChars}`;
     usernameCounter.style.color = length >= maxChars ? '#ff3d00' : '#aaa';
 });
+
+
+
+
+
+const avatarAnimation = lottie.loadAnimation({
+  container: document.getElementById('avatarLottie'), // conteneur
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: 'https://lottie.host/embed/db5757c5-709f-479f-881f-04d449b7ae49/GFomwKtLwt.json' // ton lien Lottie
+});
