@@ -86,24 +86,34 @@ textarea { min-height: 100px; }
 
 ::-webkit-scrollbar {width: 0px;}
 
+
 .avatar-wrapper {
     position: relative;
-    width: 140px; /* même largeur que l'avatar */
-    height: 140px; /* même hauteur que l'avatar */
+    /* La taille du conteneur peut être fixe ou auto */
+    width: 220px;  /* Taille générale du conteneur */
+    height: 220px;
 }
 
+/* Taille de l'avatar */
 .avatar-wrapper .profile-avatar {
-    width: 100%;
-    height: 100%;
+    width: 140px;     /* Taille de l'avatar indépendante */
+    height: 140px;
     border-radius: 50%;
     object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrer l'avatar dans le conteneur */
 }
 
+/* Taille de l'animation JSON */
 .avatar-wrapper .avatar-lottie {
+    width: 180px;    /* Taille de l'animation indépendante */
+    height: 180px;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* pour que les clics passent sur l'avatar si nécessaire */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrer l'animation */
+    pointer-events: none;
 }
+
