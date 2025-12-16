@@ -1,6 +1,16 @@
 .profile-container { display: flex; align-items: center; gap: 30px; padding: 8% 20% 3% 20%; }
-.profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
-.profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.profile-avatar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px; /* Taille de ton avatar */
+    height: 100px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    object-fit: cover;
+    border: 3px solid white; /* Facultatif, pour mieux séparer du GIF */
+}.profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
 .profile-pseudo { font-size: 1.6rem; font-weight: bold; color: #fff; margin: 0; }
 
 .edit-profile-btn {
@@ -80,3 +90,22 @@ textarea { min-height: 100px; }
 
 /* Prénom */
 #profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;}
+
+
+
+::-webkit-scrollbar {width: 0px;}
+
+.avatar-wrapper {
+    position: relative;
+    width: 150px; /* Taille de ton avatar */
+    height: 150px;
+}.avatar-gif {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px; /* Taille du GIF autour de l'avatar */
+    height: 150px;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none; /* Pour que le GIF ne gêne pas le clic sur l'avatar */
+}
