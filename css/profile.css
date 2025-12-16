@@ -1,5 +1,4 @@
 .profile-container { display: flex; align-items: center; gap: 30px; padding: 8% 20% 3% 20%; }
-.profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
 .profile-pseudo { font-size: 1.6rem; font-weight: bold; color: #fff; margin: 0; }
 
@@ -84,30 +83,27 @@ textarea { min-height: 100px; }
 
 
 ::-webkit-scrollbar {width: 0px;}
-
-
-.avatar-frame {
-  position: relative;
-  width: 100px;   /* taille totale du cadre */
-  height: 100px;
-  border-radius: 50%;
-  padding: 5px;  /* espace entre le cadre et l'avatar */
-  background: linear-gradient(135deg, #ff7733, #ff3d00);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: rotateFrame 5s linear infinite;
+.avatar-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
 }
 
-.avatar-frame .avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
+.profile-avatar {
+    position: relative;
+    z-index: 2; /* au-dessus du Lottie */
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-@keyframes rotateFrame {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.avatar-lottie {
+    position: absolute;
+    top: -10px; /* ajuster pour que le contour dépasse */
+    left: -10px;
+    width: 160px;
+    height: 160px;
+    z-index: 1; /* derrière l'avatar */
+    pointer-events: none; /* pour ne pas bloquer les clics */
 }
-
