@@ -105,9 +105,10 @@ textarea { min-height: 100px; }
     position: absolute;
     top: -15px;
     left: -15px;
-    width: 180px; 
-    height: 180px; 
+    width: 230px; 
+    height: 230px; 
     z-index: 2; /* GIF au-dessus */
     pointer-events: none;
 }
+
 
