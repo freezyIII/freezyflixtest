@@ -101,6 +101,22 @@ textarea { min-height: 100px; }
     display: block;
 }
 
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 150px; 
+    height: 150px;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 1; /* avatar en dessous */
+    display: block;
+}
+
 .avatar-gif {
     position: absolute;
     top: -15px;
@@ -110,5 +126,7 @@ textarea { min-height: 100px; }
     z-index: 2; /* GIF au-dessus */
     pointer-events: none;
 }
+
+
 
 
