@@ -1,4 +1,5 @@
 .profile-container { display: flex; align-items: center; gap: 30px; padding: 8% 20% 3% 20%; }
+.profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
 .profile-pseudo { font-size: 1.6rem; font-weight: bold; color: #fff; margin: 0; }
 
@@ -83,29 +84,3 @@ textarea { min-height: 100px; }
 
 
 ::-webkit-scrollbar {width: 0px;}
-.avatar-wrapper {
-    position: relative;
-    width: 140px;
-    height: 140px;
-}
-
-.profile-avatar {
-    position: relative;
-    z-index: 2; /* Au-dessus de l'animation */
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.avatar-lottie {
-    position: absolute;
-    top: -10px;  /* Ajuste pour que le contour dépasse */
-    left: -10px;
-    width: 160px;
-    height: 160px;
-    z-index: 1;  /* Derrière l'avatar */
-    pointer-events: none; /* Pour que l'avatar reste cliquable */
-}
-
-
