@@ -186,3 +186,13 @@ usernameInput.addEventListener('input', () => {
     usernameCounter.textContent = `${length}/${maxChars}`;
     usernameCounter.style.color = length >= maxChars ? '#ff3d00' : '#aaa';
 });
+
+
+
+const animation = lottie.loadAnimation({
+    container: document.getElementById('avatarAnimation'), // div où l'animation va
+    renderer: 'svg', // peut être 'canvas' ou 'svg'
+    loop: true,      // true pour boucle infinie
+    autoplay: true,  // démarre automatiquement
+    path: 'assets/animations/avatar.json' // chemin vers ton fichier JSON
+});
