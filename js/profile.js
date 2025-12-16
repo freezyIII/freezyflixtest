@@ -186,20 +186,3 @@ usernameInput.addEventListener('input', () => {
     usernameCounter.textContent = `${length}/${maxChars}`;
     usernameCounter.style.color = length >= maxChars ? '#ff3d00' : '#aaa';
 });
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const avatarContainer = document.getElementById('avatarLottie');
-  if (avatarContainer) {
-    lottie.loadAnimation({
-      container: avatarContainer,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'https://lottie.host/embed/db5757c5-709f-479f-881f-04d449b7ae49/GFomwKtLwt.json'
-    });
-  }
-});
-
