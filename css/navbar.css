@@ -9,9 +9,9 @@ header {position: relative;background: #0d0d0d;padding: 0 20px;display: flex;ali
 .logo img {height: 45px;width: auto;}
 
 /* Avatar */
-.avatar {width: 45px;height: 45px;border-radius: 50%;object-fit: cover;transition: transform 0.2s ease;}
+.avatar {width: 40px;height: 40px;border-radius: 50%;object-fit: cover;transition: transform 0.2s ease;}
 .avatar:hover {transform: scale(1.1);}
-.login-profile-container {position: absolute;right: 20px;top: 50%;transform: translateY(-50%);display: flex;align-items: center;gap: 15px;z-index: 10;}
+.login-profile-container {position: relative;display: flex;align-items: center;gap: 15px;margin-left: auto;z-index: 10;}
 
 /* Bouton de Connexion */
 .login-button {background: linear-gradient(135deg, #ff3d00 0%, #ff5e2b 100%);color: #fff;padding: 10px 22px;font-size: 16px;font-weight: 700;border-radius: 12px;text-decoration: none;box-shadow: 0 4px 8px rgba(0,0,0,0.3);transition: all 0.3s ease;border: none;display: inline-block;letter-spacing: 0.5px;text-transform: uppercase;cursor: pointer;}
@@ -20,7 +20,7 @@ header {position: relative;background: #0d0d0d;padding: 0 20px;display: flex;ali
 .dropdown-menu {position: absolute;top: 55px;right: 0;background: #1c1c1c;width: 160px;border-radius: 12px;box-shadow: 0 6px 15px rgba(0,0,0,0.5);display: none;flex-direction: column;overflow: hidden;z-index: 999;}
 .dropdown-menu a {padding: 12px;color: white;font-size: 14px;text-decoration: none;display: block;transition: background 0.2s;}
 .dropdown-menu a:hover {background: #ff3d00;}
-.user-pseudo {font-size: 16px;color: white;font-weight: bold;display: inline-block;}
+.user-pseudo {font-size: 16px;color: white;font-weight: bold;display: inline-block;max-width: 120px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 
 /* Don animation*/
 .animated-link {font-size: 18px;font-weight: bold;text-decoration: none;color: black;display: inline-block;}
@@ -47,14 +47,14 @@ header {position: relative;background: #0d0d0d;padding: 0 20px;display: flex;ali
 100% {opacity: 1;color: #FF1493;}}
 
 /* Zone de Recherche de Films */
-.search-container {position: relative;display: flex;align-items: center;width: 400px;}
+.search-container {position: relative;display: flex;align-items: center;width: 400px;min-width: 203px;}
 .search-icon-wrapper {position: absolute;left: 10px;display: flex;align-items: center;justify-content: center;pointer-events: none;color: #666;}
 .icon-svg {width: 20px;height: 20px;fill: currentColor;}
 .search-box {width: 100%;padding: 10px 10px 10px 40px;border-radius: 4px;border: 1px solid #333;background-color: #0d0d0d;color: #eee;font-size: 16px;transition: box-shadow 0.3s, border-color 0.3s;}
 .search-box:focus {outline: none;border-color: #b25a00;box-shadow: 0 0 0 5px rgba(178, 90, 0, 0.15);}
 
 /* Bouton de barre de navigation */
-ul {display: flex;list-style: none;}
+ul {display: flex;list-style: none;white-space: nowrap;}
 ul li {margin: 0 10px;}
 ul li a {text-decoration: none;color: #ffffffeb;font-weight: bold;font-size: 18px;transition: all 0.3s ease;}
 ul li a.no-underline:hover {text-decoration: none;}
@@ -66,5 +66,4 @@ ul li a.no-underline:hover {text-decoration: none;}
 }
 body.hidden {
   visibility: hidden;
-
 }
