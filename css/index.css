@@ -1,3 +1,5 @@
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212;}
+
 .content {padding: 20px;display: flex;justify-content: center;flex-direction: column;align-items: center;}
 img, a {-webkit-user-drag: none;}
 h2 {color: #ef2626;}
@@ -14,7 +16,14 @@ h2 {color: #ef2626;}
 .titan-one-regular {font-family: "Titan One", serif;font-weight: 400;font-style: normal;text-align: center;}
 #random-movie-box {display: inline-block;padding: 20px 40px;transition: all 0.2s ease;border: 3px solid #00aaff;border-radius: 10px;cursor: pointer;font-weight: bold;font-size: 1.2em;color: #00aaff;user-select: none;}
 #random-movie-box:hover {transform: scale(1.05);box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);}
-.random-movie-section {text-align: center;margin: 20px 0;}
+.random-movie-section {
+  text-align: center;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column; /* ça aligne verticalement les enfants */
+  align-items: center;
+  gap: 12px; /* espace entre Film Aléatoire et bouton Filtre */
+}
 .movie-item {animation: featured-movie-animation 0.8s ease-out forwards;}
 
 
@@ -66,7 +75,8 @@ h2 {color: #ef2626;}
 .resolution {left: 10px;background: gold;color: black;}
 .serie {right: 10px;background-color: #800080;color: white;}
 
-/* Texte Derniers Ajouts */
-.grid-header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 20px;flex-wrap: wrap;}
-.section-title {font-size: 2rem;font-weight: 600;color: #fff;margin: 0;position: relative;padding-left: 0.5rem;}
-.section-title::before {content: '';position: absolute;left: 0;top: 50%;transform: translateY(-50%);width: 3px;height: 1.2em;background-color: #f97316;border-radius: 2px;}
+
+
+#toggleFilters svg {
+  fill: #ffffff4d; /* couleur de l’icône */
+}

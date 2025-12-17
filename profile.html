@@ -46,7 +46,7 @@
         <span id="profilePseudo"></span>
         <span id="profileFirstname"></span>
     </h2>
-    <a href="#editProfilePanel" class="edit-profile-btn">
+    <a class="edit-profile-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.831.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.63.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path></svg>Modifier le profil</a>
 </div>
@@ -77,7 +77,14 @@
         <div class="edit-panel">
             <a href="#" class="close-panel">&times;</a>
             <div class="panel-left">
-                <img id="panelAvatar" alt="Avatar" class="panel-avatar">
+                            <div class="panel-avatar-wrapper">
+                <img id="panelAvatar" alt="Avatar" class="panel-avatar" src="https://lh3.googleusercontent.com/a/ACg8ocK0wLbXePE7U7v2xIUeokWxQv5L_X1h6G2HKBuR2SBt_z5wL7RW=s96-c">
+                <div class="panel-avatar-overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                </div>
+            </div>
                 <p class="panel-avatar-text">Votre avatar</p>
             </div>
             <div class="panel-right">
@@ -104,14 +111,31 @@
             </div>
         </div>
     </div>
+    <div id="changeAvatarPanel" class="overlay">
+    <div class="edit-panel">
+        <a href="#" class="close-panel">&times;</a>
+        <div class="panel-right" style="flex:1; padding:30px;">
+            <h2>Changer l'avatar</h2>
+            <form id="changeAvatarForm">
+                <div class="form-group">
+                    <label for="avatarUrl">URL de l'image</label>
+                    <input type="url" id="avatarUrl" name="avatarUrl" placeholder="https://exemple.com/mon-avatar.jpg" pattern="https?://.+\.(jpg|jpeg|png|gif|webp|bmp|svg)">
+                    <small style="color:#ccc; font-size:0.8rem;">Formats acceptés : jpg, jpeg, png, gif, webp, bmp, svg</small>
+                </div>
+                <div class="form-buttons" style="position:relative; bottom:auto; right:auto; margin-top:20px;">
+                    <a href="#" class="cancel-btn">Annuler</a>
+                    <button type="submit">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </main>
+<div id="toast" class="toast">Profil mis à jour !</div>
+
 <script type="module" src="js/navbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
 <script type="module" src="js/profile.js"></script>
 </body>
 </html>
-
-
-
-
-

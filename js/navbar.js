@@ -43,12 +43,25 @@ function hideUser() {
 }
 
 // Vérifie si l'utilisateur est déjà connecté
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async (user) => {
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
 
     if (user) {
-        showUser(user);
+        // Récupère les données Firestore
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.exists() ? userSnap.data() : {};
+
+        // Utilise la photoURL de Firestore si elle existe
+        const photoURL = userData.photoURL || user.photoURL || 'default-avatar.png';
+
+        // Affiche l'utilisateur dans la navbar
+        showUser({
+            displayName: userData.nomUtilisateur || user.displayName || 'Utilisateur',
+            photoURL: photoURL,
+            email: user.email
+        });
     } else {
         hideUser();
         loginBtn.style.display = 'inline-block';
@@ -58,14 +71,26 @@ auth.onAuthStateChanged(user => {
 
 
 
+
 // Connexion Google
 loginBtn.addEventListener('click', async () => {
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        showUser(user);
 
-        // Fonction pour formater la date comme 15/12/2025 02:04
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef); // Vérifie si l'utilisateur existe déjà
+
+        // Si photoURL est vide dans Firestore, on met celle de Google
+        let photoToSave = "";
+        if (!userSnap.exists() || !userSnap.data().photoURL) {
+            photoToSave = user.photoURL || ""; // on prend l'image Google
+        } else {
+            photoToSave = userSnap.data().photoURL; // on garde l'ancienne image
+        }
+
+        // Sauvegarder ou mettre à jour l'utilisateur dans Firestore
+        const now = new Date();
         function formatDateForFirestore(date) {
             const d = date.getDate().toString().padStart(2, '0');
             const m = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -75,22 +100,26 @@ loginBtn.addEventListener('click', async () => {
             return `${d}/${m}/${y} ${h}:${min}`;
         }
 
-        const now = new Date();
-
-        // Sauvegarder l'utilisateur dans Firestore
-        const userRef = doc(db, "users", user.uid); // uid utilisé seulement comme identifiant du doc
         await setDoc(userRef, {
             "nomUtilisateur": user.displayName || "",
             "derniereConnexion": formatDateForFirestore(now),
             "compteCreeLe": formatDateForFirestore(user.metadata.creationTime ? new Date(user.metadata.creationTime) : now),
             "email": user.email || "",
-            "photoURL": user.photoURL || ""
+            "photoURL": photoToSave
         }, { merge: true });
+
+        // Affiche l'utilisateur avec l'image correcte
+        showUser({ 
+            displayName: user.displayName, 
+            photoURL: photoToSave, 
+            email: user.email 
+        });
 
     } catch (error) {
         console.error("Erreur lors de la connexion :", error);
     }
 });
+
 
 
 
@@ -131,12 +160,3 @@ document.querySelectorAll('.movie-grid-item, .movie-item').forEach(item => {
   const title = new URL(link.href, location.origin).searchParams.get('title');
   if (title) item.dataset.title = title;
 });
-
-
-
-
-
-
-
-
-

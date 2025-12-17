@@ -1,11 +1,7 @@
-// profile.js
 import { auth, db } from './database.js';
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
-// ----------------------
-// Sélection des éléments DOM
-// ----------------------
 const profileAvatar = document.getElementById('profileAvatar');
 const profilePseudo = document.getElementById('profilePseudo');
 const profileFirstname = document.getElementById('profileFirstname');
@@ -22,10 +18,15 @@ const editProfilePanel = document.getElementById('editProfilePanel');
 const editProfileBtn = document.querySelector('.edit-profile-btn');
 const closePanelBtn = document.querySelector('.close-panel');
 const cancelBtn = document.querySelector('.cancel-btn');
+const panelAvatarWrapper = document.querySelector('.panel-avatar-wrapper');
+const changeAvatarPanel = document.getElementById('changeAvatarPanel');
+const closeChangeAvatar = changeAvatarPanel.querySelector('.close-panel');
+const cancelChangeAvatar = changeAvatarPanel.querySelector('.cancel-btn');
+const changeAvatarForm = document.getElementById('changeAvatarForm');
+const avatarUrlInput = document.getElementById('avatarUrl');
+let tempAvatarUrl = '';
+let savedAvatarUrl = '';
 
-// ----------------------
-// Gestion des onglets
-// ----------------------
 function showTab(tabName) {
     favoritesContent.style.display = tabName === "Favoris" ? "flex" : "none";
     evaluationContent.style.display = tabName === "Évaluation" ? "flex" : "none";
@@ -40,13 +41,9 @@ links.forEach(link => {
     });
 });
 
-// Affiche l'onglet actif au chargement
 const activeLink = document.querySelector('.profile-link.active');
 if (activeLink) showTab(activeLink.textContent.trim());
 
-// ----------------------
-// Affichage du profil utilisateur
-// ----------------------
 async function displayUserProfile(user) {
     const userDocRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userDocRef);
@@ -56,23 +53,17 @@ async function displayUserProfile(user) {
     const displayName = userData.nomUtilisateur || user.displayName || 'Utilisateur';
     const firstname = userData.firstname || '';
 
-    // Avatar
     [profileAvatar, panelAvatar].forEach(img => {
         img.src = photoURL;
         img.alt = `${displayName} Avatar`;
     });
 
-    // Pseudo et prénom
     profilePseudo.textContent = displayName;
     profileFirstname.textContent = firstname;
 
-    // Remplir les champs formulaire
     resetProfileForm(userData);
 }
 
-// ----------------------
-// Réinitialiser le formulaire
-// ----------------------
 function resetProfileForm(userData) {
     usernameInput.value = userData.nomUtilisateur || '';
     firstnameInput.value = userData.firstname || '';
@@ -81,9 +72,6 @@ function resetProfileForm(userData) {
     usernameCounter.style.color = usernameInput.value.length >= 14 ? '#ff3d00' : '#aaa';
 }
 
-// ----------------------
-// Ouverture / fermeture du panneau
-// ----------------------
 editProfileBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -105,17 +93,21 @@ cancelBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
     if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userDocRef);
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
         const userData = userSnap.exists() ? userSnap.data() : {};
+
+        profileAvatar.src = userData.photoURL || user.photoURL;
+        panelAvatar.src = userData.photoURL || user.photoURL;
+
         resetProfileForm(userData);
+
+        avatarUrlInput.value = userData.photoURL || '';
     }
+    tempAvatarUrl = '';
     editProfilePanel.style.display = 'none';
 });
 
-// ----------------------
-// Mise à jour du profil
-// ----------------------
 editProfileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -132,50 +124,45 @@ editProfileForm.addEventListener('submit', async (e) => {
 
     try {
         const userDocRef = doc(db, "users", user.uid);
+        const finalAvatarUrl = tempAvatarUrl || user.photoURL;
 
-        // Mise à jour Firestore
         await setDoc(userDocRef, {
             nomUtilisateur: newUsername,
             firstname: newFirstname,
-            description: newDescription
+            description: newDescription,
+            photoURL: finalAvatarUrl
         }, { merge: true });
 
-        // Mise à jour Firebase Auth
         await updateProfile(user, { displayName: newUsername });
 
-        // Mise à jour affichage
         profilePseudo.textContent = newUsername;
         profileFirstname.textContent = newFirstname;
+        profileAvatar.src = finalAvatarUrl;
+        panelAvatar.src = finalAvatarUrl;
+        const navbarAvatar = document.getElementById('Avatar');
+        if (navbarAvatar) navbarAvatar.src = finalAvatarUrl;
 
-        const navbarUserPseudo = document.getElementById('userPseudo');
-        if (navbarUserPseudo) navbarUserPseudo.textContent = newUsername;
+        avatarUrlInput.value = (finalAvatarUrl === user.photoURL) ? '' : finalAvatarUrl;
 
-        alert("Profil mis à jour !");
+        showToast("Profil mis à jour !");
         editProfilePanel.style.display = 'none';
+        tempAvatarUrl = '';
+
     } catch (error) {
         console.error("Erreur lors de la mise à jour du profil :", error);
         alert("Erreur lors de la mise à jour.");
     }
 });
 
-// ----------------------
-// État de connexion
-// ----------------------
 auth.onAuthStateChanged(async (user) => {
     if (user) {
         await displayUserProfile(user);
     }
 });
 
-// ----------------------
-// Désactiver l'auto-complétion
-// ----------------------
 editProfileForm.setAttribute('autocomplete', 'off');
 [usernameInput, firstnameInput, descriptionInput].forEach(input => input.setAttribute('autocomplete', 'off'));
 
-// ----------------------
-// Compteur de caractères
-// ----------------------
 const maxChars = 14;
 
 usernameInput.addEventListener('input', () => {
@@ -187,12 +174,60 @@ usernameInput.addEventListener('input', () => {
     usernameCounter.style.color = length >= maxChars ? '#ff3d00' : '#aaa';
 });
 
-
-
 const animation = lottie.loadAnimation({
-    container: document.getElementById('avatarAnimation'), // div où l'animation va
-    renderer: 'svg', // peut être 'canvas' ou 'svg'
-    loop: true,      // true pour boucle infinie
-    autoplay: true,  // démarre automatiquement
-    path: 'assets/animations/avatar.json' // chemin vers ton fichier JSON
+    container: document.getElementById('avatarAnimation'),
+    renderer: 'svg',
+    loop: true,
+    autoplay: true,
+    path: 'assets/animations/avatar.json'
+});
+
+function showToast(message, duration = 3000) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, duration);
+}
+
+panelAvatarWrapper.addEventListener('click', async () => {
+    await fillAvatarInput();
+    changeAvatarPanel.style.display = 'flex';
+});
+
+closeChangeAvatar.addEventListener('click', (e) => {
+    e.preventDefault();
+    changeAvatarPanel.style.display = 'none';
+});
+cancelChangeAvatar.addEventListener('click', (e) => {
+    e.preventDefault();
+    changeAvatarPanel.style.display = 'none';
+});
+
+async function fillAvatarInput() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.exists() ? userSnap.data() : {};
+
+    const savedPhotoURL = userData.photoURL || '';
+    const googlePhotoURL = user.photoURL || '';
+    avatarUrlInput.value = (savedPhotoURL && savedPhotoURL !== googlePhotoURL) ? savedPhotoURL : '';
+}
+
+changeAvatarForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const newAvatarUrl = avatarUrlInput.value.trim();
+    tempAvatarUrl = newAvatarUrl || user.photoURL;
+    panelAvatar.src = tempAvatarUrl;
+    profileAvatar.src = tempAvatarUrl;
+
+    changeAvatarPanel.style.display = 'none';
+    changeAvatarForm.reset();
 });
