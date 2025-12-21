@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterPanel = document.getElementById("filter-panel");
   const closeBtn = document.getElementById("closeFilters");
   const resetBtn = document.getElementById("reset-filters");
+  const rulesBtn = document.getElementById('rulesBtn');
+  const rulesPanel = document.getElementById('rulesPanel');
+  const closeRules = document.getElementById('closeRules');
 
   if (filterBtn && filterPanel) {
     filterBtn.addEventListener("click", (e) => {
@@ -47,5 +50,21 @@ document.addEventListener("DOMContentLoaded", () => {
         filterPanel.querySelectorAll("select").forEach(select => select.value = "");
       });
     }
+  }
+});
+
+
+rulesBtn.addEventListener('click', () => {
+  rulesOverlay.classList.add('open');
+});
+
+closeRules.addEventListener('click', () => {
+  rulesOverlay.classList.remove('open');
+});
+
+// Fermer en cliquant sur le fond
+rulesOverlay.addEventListener('click', (e) => {
+  if (e.target === rulesOverlay) {
+    rulesOverlay.classList.remove('open');
   }
 });

@@ -1,162 +1,169 @@
+// ================== IMPORTS ==================
 import { auth, provider, signInWithPopup, signOut, db } from './database.js';
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
-// Elements DOM
+// ================== ELEMENTS NAVBAR ==================
 const loginBtn = document.getElementById('loginBtn');
 const userPseudo = document.getElementById('userPseudo');
 const profileMenuContainer = document.getElementById('profileMenuContainer');
 const Avatar = document.getElementById('Avatar');
-const menuLogout = document.getElementById('menuLogout');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const menuProfile = document.getElementById('menuProfile');
+const menuLogout = document.getElementById('menuLogout');
+const searchInput = document.getElementById('search-input');
+const contentSection = document.querySelector('.content');
+const randomMovieSection = document.querySelector('.random-movie-section');
 
-// Fonction pour formater la date en DD-MM-AAAA à HHhMM
-function formatDate(date) {
-    const d = date.getDate().toString().padStart(2, '0');
-    const m = (date.getMonth() + 1).toString().padStart(2, '0');
-    const y = date.getFullYear();
-    const h = date.getHours().toString().padStart(2, '0');
-    const min = date.getMinutes().toString().padStart(2, '0');
-    return `${d}-${m}-${y} à ${h}h${min}`;
+// ⛔ Sécurité si navbar absente
+if (!loginBtn || !Avatar) {
+    console.warn("Navbar absente sur cette page");
 }
 
-// Affiche l'utilisateur connecté
-function showUser(user) {
-    const pseudo = user.displayName || user.email || 'Utilisateur';
-    userPseudo.textContent = pseudo;
+// ================== UI ==================
+function showUser({ displayName, photoURL }) {
+    userPseudo.textContent = displayName || "Utilisateur";
+    userPseudo.style.display = "inline-block";
 
-    if (user.photoURL) Avatar.src = user.photoURL;
-    else Avatar.src = 'default-avatar.png'; // si tu veux un avatar par défaut
-
-    userPseudo.style.display = 'inline-block';
-    profileMenuContainer.style.display = 'flex';
-    loginBtn.style.display = 'none';
+    Avatar.src = photoURL || "default-avatar.png";
+    profileMenuContainer.style.display = "flex";
+    loginBtn.style.display = "none";
 }
 
-
-// Cache l'utilisateur déconnecté
 function hideUser() {
-    userPseudo.style.display = 'none';
-    profileMenuContainer.style.display = 'none';
-    Avatar.removeAttribute('src'); // supprime l'image si déconnecté
-    loginBtn.style.display = 'inline-block';
+    if (userPseudo) userPseudo.style.display = "none";
+    if (profileMenuContainer) profileMenuContainer.style.display = "none";
+    if (Avatar) Avatar.removeAttribute("src");
+    if (loginBtn) loginBtn.style.display = "inline-block";
 }
 
-// Vérifie si l'utilisateur est déjà connecté
-auth.onAuthStateChanged(async (user) => {
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'none';
+// ================== AUTH ==================
+onAuthStateChanged(auth, async (user) => {
+    if (!loginBtn) return; // page sans navbar
 
     if (user) {
-        // Récupère les données Firestore
         const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.exists() ? userSnap.data() : {};
+        const snap = await getDoc(userRef);
+        const data = snap.exists() ? snap.data() : {};
 
-        // Utilise la photoURL de Firestore si elle existe
-        const photoURL = userData.photoURL || user.photoURL || 'default-avatar.png';
-
-        // Affiche l'utilisateur dans la navbar
         showUser({
-            displayName: userData.nomUtilisateur || user.displayName || 'Utilisateur',
-            photoURL: photoURL,
-            email: user.email
+            displayName: data.nomUtilisateur || user.displayName,
+            photoURL: data.photoURL || user.photoURL
         });
     } else {
         hideUser();
-        loginBtn.style.display = 'inline-block';
     }
 });
 
+// ================== LOGIN ==================
+if (loginBtn) {
+    loginBtn.addEventListener("click", async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
 
+            const userRef = doc(db, "users", user.uid);
+            const snap = await getDoc(userRef);
 
+            await setDoc(userRef, {
+                nomUtilisateur: user.displayName || "",
+                email: user.email || "",
+                photoURL: snap.exists() ? snap.data().photoURL || user.photoURL : user.photoURL
+            }, { merge: true });
 
-
-// Connexion Google
-loginBtn.addEventListener('click', async () => {
-    try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef); // Vérifie si l'utilisateur existe déjà
-
-        // Si photoURL est vide dans Firestore, on met celle de Google
-        let photoToSave = "";
-        if (!userSnap.exists() || !userSnap.data().photoURL) {
-            photoToSave = user.photoURL || ""; // on prend l'image Google
-        } else {
-            photoToSave = userSnap.data().photoURL; // on garde l'ancienne image
+        } catch (err) {
+            console.error("Erreur connexion :", err);
         }
+    });
+}
 
-        // Sauvegarder ou mettre à jour l'utilisateur dans Firestore
-        const now = new Date();
-        function formatDateForFirestore(date) {
-            const d = date.getDate().toString().padStart(2, '0');
-            const m = (date.getMonth() + 1).toString().padStart(2, '0');
-            const y = date.getFullYear();
-            const h = date.getHours().toString().padStart(2, '0');
-            const min = date.getMinutes().toString().padStart(2, '0');
-            return `${d}/${m}/${y} ${h}:${min}`;
-        }
+// ================== MENU ==================
+if (Avatar) {
+    Avatar.addEventListener("click", () => {
+        dropdownMenu.style.display =
+            dropdownMenu.style.display === "block" ? "none" : "block";
+    });
+}
 
-        await setDoc(userRef, {
-            "nomUtilisateur": user.displayName || "",
-            "derniereConnexion": formatDateForFirestore(now),
-            "compteCreeLe": formatDateForFirestore(user.metadata.creationTime ? new Date(user.metadata.creationTime) : now),
-            "email": user.email || "",
-            "photoURL": photoToSave
-        }, { merge: true });
-
-        // Affiche l'utilisateur avec l'image correcte
-        showUser({ 
-            displayName: user.displayName, 
-            photoURL: photoToSave, 
-            email: user.email 
-        });
-
-    } catch (error) {
-        console.error("Erreur lors de la connexion :", error);
+document.addEventListener("click", (e) => {
+    if (profileMenuContainer && !profileMenuContainer.contains(e.target)) {
+        dropdownMenu.style.display = "none";
     }
 });
 
+// ================== PROFIL ==================
+if (menuProfile) {
+    menuProfile.addEventListener("click", () => {
+        const user = auth.currentUser;
+        if (user) window.location.href = `profile.html?uid=${user.uid}`;
+    });
+}
 
-
-
-// Déconnexion
-menuLogout.addEventListener('click', async () => {
-    try {
+// ================== LOGOUT ==================
+if (menuLogout) {
+    menuLogout.addEventListener("click", async (e) => {
+        e.preventDefault();
         await signOut(auth);
-        hideUser();
-    } catch (error) {
-        console.error("Erreur lors de la déconnexion :", error);
+        // Petite pause pour laisser Firebase mettre à jour currentUser
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 200); // 200ms suffisent
+    });
+}
+
+
+
+const menuSettings = document.getElementById('menuSettings');
+
+if (menuSettings) {
+    menuSettings.addEventListener("click", () => {
+        const user = auth.currentUser;
+        if (user) {
+            window.location.href = `settings.html?uid=${user.uid}`;
+        } else {
+            // Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
+            window.location.href = "index.html";
+        }
+    });
+}
+
+
+/* Recherche de Films */
+function normalizeString(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function performSearch() {
+  const query = normalizeString(searchInput.value);
+
+  let hasResults = false;
+
+  document.querySelectorAll('.movie-grid-item').forEach(item => {
+    const title = normalizeString(item.getAttribute('data-title') || '');
+    if (title.includes(query)) {
+      item.style.display = 'block';
+      hasResults = true;
+    } else {
+      item.style.display = 'none';
     }
-});
+  });
 
-// Toggle menu avatar
-Avatar.addEventListener('click', () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-});
+  if (query.length > 0) {
+    if (contentSection) contentSection.style.display = 'none';
+    if (randomMovieSection) randomMovieSection.style.display = 'none';
+  } else {
+    if (contentSection) contentSection.style.display = 'block';
+    if (randomMovieSection) randomMovieSection.style.display = 'block';
+  }
+}
 
-// Cacher menu si clic en dehors
-document.addEventListener('click', (event) => {
-    if (!profileMenuContainer.contains(event.target) && dropdownMenu.style.display === 'block') {
-        dropdownMenu.style.display = 'none';
-    }
-});
-
-// Profil utilisateur
-menuProfile.addEventListener('click', () => {
-    const user = auth.currentUser;
-    if (user) window.location.href = `profile.html?uid=${user.uid}`;
-    else alert("Vous devez être connecté pour voir le profil !");
-});
-
-
-// nom film sous films
-document.querySelectorAll('.movie-grid-item, .movie-item').forEach(item => {
-  const link = item.querySelector('a');
-  if (!link) return;
-  const title = new URL(link.href, location.origin).searchParams.get('title');
-  if (title) item.dataset.title = title;
+// Déclenche la recherche uniquement quand l’utilisateur appuie sur Entrée
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault(); // empêche le rechargement de la page si dans un form
+    performSearch();
+  }
 });

@@ -1,19 +1,54 @@
-body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212;}
-.container {display: flex;flex-direction: column;gap: 10px;}
-.description-title {font-size: 1.8rem; color: #d40000; margin-bottom: 10px; text-align: center;}
-.download-btn {display: inline-block;background-color: #00796b;color: #fff;font-size: 1.4rem;padding: 0.5rem 1rem;margin-top: 2rem;border: none;border-radius: 6px;cursor: pointer;text-transform: uppercase;font-weight: bold;text-align: center;transition: background-color 0.3s ease;margin-left: auto;margin-right: auto;}
-.download-btn:hover {background-color: #004d40;}
-.movie-description {font-size: 1.5rem; color: #ffffff; line-height: 1.6; padding: 20px; margin-top: 2rem; max-width: 80%; max-height: 250px; overflow-y: auto; box-sizing: border-box; margin-left: auto; margin-right: auto; text-align: center; background-color: rgba(0, 0, 0, 0.8); border-radius: 15px; border: 2px solid #444; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.9); margin-bottom: 1.5rem;}
-.movie-description p {margin: 0; overflow-wrap: break-word;}
-.movie-iframe-container {position: relative; display: inline-block;}
-.movie-category-container {width: 800px; background-color: #ff0000; border-radius: 0 0 15px 15px; display: flex; justify-content: center; align-items: center; padding: 10px 0; box-sizing: border-box; margin: 0 auto; flex-wrap: wrap; height: auto;}
-.movie-category {font-size: 1.2rem; color: white; font-weight: bold; margin: 0 10px; text-align: center;}
-.movie-duration, .movie-release-date, .movie-size {text-align: center; font-size: 16px; margin-top: 7px; color: white;}
-.movie-size {margin-bottom: 20px;}
-#movieIframeContainer {display: flex; justify-content: center; align-items: center; margin-top: 20px;}
-#movieIframeContainer iframe {width: 800px; height: 450px; border: none; border-radius: 20px 20px 0 0;}
-#movieTitle {font-size: 2rem; margin-bottom: 20px; margin-top: 20px; text-align: center; color: #ef2626;}
+body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212;margin: 0;padding: 0;}
 ::-webkit-scrollbar {width: 0px;}
-.titan-one-regular {font-family: "Titan One", serif;font-weight: 400;font-style: normal;}
-.gold-button {display: inline-block;width: auto;background: linear-gradient(45deg, #FFD700, #FFA500);border: none;color: white;padding: 8px 16px;margin: 1.5rem auto 0 auto;font-size: 1.4rem;font-weight: bold;cursor: pointer;border-radius: 6px;transition: background 0.3s ease;text-transform: uppercase;}
-.gold-button:hover {background: linear-gradient(45deg, #FFA500, #FFD700);}
+.container {display: flex;flex-direction: column;gap: 10px;width: max-content;margin: 20px auto;padding: 20px;height: max-content;}
+.movie-header-container {display: flex;flex-direction: column;align-items: center;width: 100%;max-width: 1000px;margin: 0 auto;padding: 0 20px;}
+#movieTitle {font-size: 2rem;color: #ef2626;text-align: center;width: max-content;height: max-content;margin: 20px auto 0;padding: 10px;}
+.titan-one-regular {font-family: "Titan One", serif;font-weight: 400;}
+.download-btn, .gold-button {cursor: pointer;border: none;border-radius: 12px;font-weight: 700;text-transform: uppercase;transition: all 0.3s ease;display: inline-flex;align-items: center;justify-content: center;gap: 8px;}
+.download-btn {background: linear-gradient(135deg, #ff3b3b, #d40000);color: #fff;font-size: 1.4rem;padding: 0.75rem 2rem;box-shadow: 0 6px 15px rgba(212, 0, 0, 0.5);position: relative;overflow: hidden;}
+.download-btn:hover {transform: translateY(-3px) scale(1.05);box-shadow: 0 10px 25px rgba(212, 0, 0, 0.7);}
+.download-btn svg {width: 20px;height: 20px;fill: #fff;transition: transform 0.3s ease;}
+.gold-button {background: linear-gradient(45deg, #FFD700, #FFA500);color: #000;padding: 10px 20px;font-size: 1rem;border-radius: 10px;margin-top: 10px;transition: transform 0.2s;}
+.gold-button:hover {transform: scale(1.05);}
+#movieIframeContainer {width: 100%;position: relative;padding-top: 56.25%;}
+#movieIframeContainer iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none;border-radius: 20px 20px 0 0;}
+.movie-category-container {width: 100%;background-color: #ff2828bd;border-radius: 0 0 15px 15px;padding: 10px 0;text-align: center;box-sizing: border-box;}
+.movie-category {font-size: 1.2rem;color: white;font-weight: bold;}
+.movie-description {font-size: 1.2rem;color: #ffffff;line-height: 1.4;padding: 20px;margin: 2rem 0;overflow-y: auto;text-align: center;background-color: rgba(0, 0, 0, 0.8);border-radius: 15px;border: 2px solid #444;box-shadow: 0 6px 18px rgba(0, 0, 0, 0.9);}
+.movie-release-date {text-align: center;font-size: 16px;margin-top: 1.5rem;color: white;}
+.movie-duration {text-align: center;font-size: 16px;margin-top: 5px;color: white;}
+.comments-section {max-width: 900px;margin: 50px auto;padding: 20px;color: #fff;}
+.comments-header {display: flex;flex-direction: column;align-items: flex-start;margin-bottom: 20px;}
+.comments-title {display: flex;align-items: center;gap: 8px;font-weight: bold;font-size: 1.3rem;margin-bottom: 4px;}
+.comments-title svg {fill: #fff;width: 18px;height: 18px;}
+.comments-header hr {border: none;border-top: 1px solid #555;width: 100%;}
+.comment-box-container {display: flex;gap: 12px;align-items: flex-start;padding: 10px 0;}
+.comment-content {display: flex;flex-direction: column;width: 100%;}
+.comment-label {font-size: 1rem;color: #fff;margin-bottom: 5px;}
+.comment-label strong {font-weight: bold;}
+.comment-text-label {font-size: 0.85rem;}
+.comment-avatar {width: 60px;height: 60px;border-radius: 50%;object-fit: cover;flex-shrink: 0;}
+.comment-content textarea {height: 50px;padding: 12px;font-size: 1rem;border-radius: 5px;border: 1px solid #444;background-color: #121212;color: #fff;resize: none;box-sizing: border-box;display: flex;align-items: center;}
+.comment-content textarea::placeholder {color: #666;}
+.comment-content textarea:focus {outline: none;border-color: #ff1e1e7b;box-shadow: 0 0 0 5px #ff1e1e1c;}
+.comment-buttons {display: flex;gap: 10px;justify-content: flex-end;margin-top: 8px;}
+.cancel-btn, .submit-btn {padding: 8px 16px;border: none;border-radius: 8px;cursor: pointer;font-weight: bold;transition: 0.2s;}
+.cancel-btn {background-color: #555;color: #fff;}
+.cancel-btn:hover {background-color: #444;}
+.submit-btn {background-color: #ef2626;color: #fff;}
+.submit-btn:hover {background-color: #ff3b3b;}
+.comments-list {display: flex;flex-direction: column;margin-top: 20px;}
+.comment-item {display: flex;gap: 12px;align-items: flex-start;padding: 1.125rem 0;}
+.comment-text .username-time {display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;gap: 10px;}
+.comment-text .username {font-weight: bold;}
+.comment-text .comment-time {font-size: 0.75rem;color: #aaa;}
+.comment-text p {margin: 0;color: #fff;}
+.comment-actions {margin-top: 5px;}
+.reply-btn {display: inline-flex;align-items: center;gap: 4px;background: none;border: none;color: #fff;cursor: pointer;font-weight: bold;padding: 10px 0;font-size: 0.8rem;line-height: 1;transition: color 0.2s;vertical-align: middle;}
+.reply-btn svg {width: 14px;height: 14px;fill: currentColor;}
+.movie-info-table-container {width: 100%;max-width: 1000px;margin: auto;padding: 0 20px;box-sizing: border-box;}
+.movie-table-with-button {width: 100%;border-collapse: separate;border-spacing: 0;font-family: 'Federant', sans-serif;border-left: 1px solid rgba(255,255,255,0.2);border-right: 1px solid rgba(255,255,255,0.2);border-top-left-radius: 12px;border-top-right-radius: 12px;overflow: hidden;}
+.movie-table-with-button th, .movie-table-with-button td {border-top: 1px solid rgba(255, 255, 255, 0.2);border-bottom: 1px solid rgba(255, 255, 255, 0.2);border-left: none;border-right: none;padding: 10px 15px;text-align: center;background-color: transparent;color: #fff;font-weight: normal;}
+.movie-table-with-button th {font-weight: normal;font-family: 'Federant', sans-serif;}
+.table-button-container {display: flex;justify-content: center;}
+.table-button-container .download-btn {padding: 6px 12px;font-size: 1rem;min-width: 100px;}

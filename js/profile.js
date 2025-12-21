@@ -1,5 +1,13 @@
 import { auth, db } from './database.js';
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { 
+    doc, 
+    getDoc, 
+    setDoc,
+    collection,
+    query,
+    where,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
 const profileAvatar = document.getElementById('profileAvatar');
@@ -25,7 +33,6 @@ const cancelChangeAvatar = changeAvatarPanel.querySelector('.cancel-btn');
 const changeAvatarForm = document.getElementById('changeAvatarForm');
 const avatarUrlInput = document.getElementById('avatarUrl');
 let tempAvatarUrl = '';
-let savedAvatarUrl = '';
 
 function showTab(tabName) {
     favoritesContent.style.display = tabName === "Favoris" ? "flex" : "none";
@@ -60,6 +67,8 @@ async function displayUserProfile(user) {
 
     profilePseudo.textContent = displayName;
     profileFirstname.textContent = firstname;
+
+    displayUserBadges(user.uid);
 
     resetProfileForm(userData);
 }
@@ -231,3 +240,34 @@ changeAvatarForm.addEventListener('submit', async (e) => {
     changeAvatarPanel.style.display = 'none';
     changeAvatarForm.reset();
 });
+
+
+async function displayUserBadges(userUid) {
+    const badgesContainer = document.createElement('span');
+    badgesContainer.id = 'userBadges';
+    badgesContainer.style.marginLeft = '8px'; // un peu d'espace après le pseudo
+
+    // Requête Firestore pour récupérer tous les badges de l'utilisateur
+    const badgesQuery = query(
+        collection(db, "Badges"),
+        where("uid", "==", userUid)
+    );
+
+    const badgesSnapshot = await getDocs(badgesQuery);
+
+    badgesSnapshot.forEach(doc => {
+        const badgeData = doc.data();
+        const img = document.createElement('img');
+        img.src = badgeData.imageUrl;
+        img.alt = badgeData.nom;
+        img.title = badgeData.nom; // tooltip au survol
+        img.style.width = '24px';
+        img.style.height = '24px';
+        img.style.marginLeft = '4px';
+        badgesContainer.appendChild(img);
+    });
+
+    // Ajouter les badges après le pseudo
+    const profilePseudoSpan = document.getElementById('profilePseudo');
+    profilePseudoSpan.parentNode.insertBefore(badgesContainer, profilePseudoSpan.nextSibling);
+}
