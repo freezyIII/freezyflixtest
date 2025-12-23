@@ -2,10 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FreezyFlix</title>
 <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/movie-details.css" />
 <link rel="stylesheet" href="css/navbar.css">
 </head>
 
@@ -35,37 +34,9 @@
 <button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
-<h1 class="titan-one-regular" id="movieTitle"></h1><div class="movie-header-container"><div id="movieIframeContainer"></div><div id="movieCategory" class="movie-category-container"><p id="movieCategoryText" class="movie-category"></p></div>
 
-<p id="movieDescription" class="movie-description"></p><div class="movie-info-table-container">
 
-<table class="movie-table-with-button"><thead><tr>
-<th>Taille</th>
-<th>Qualité</th>
-<th>Résolution</th>
-<th></th></tr></thead><tbody id="downloadsTableBody"></tbody></table></div></div>
-
-<p id="movieReleaseDate" class="movie-release-date"><strong>Date de sortie :</strong> <span id="releaseDateValue"></span></p>
-<p id="movieDuration" class="movie-duration"><strong>Durée :</strong> <span id="durationValue"></span></p>
-
-<section class="comments-section"><div class="comments-header"><div class="comments-title">
-<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em" width="1em">
-<path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM20 4v13.17L18.83 16H4V4h16zM6 12h12v2H6zm0-3h12v2H6zm0-3h12v2H6z"></path></svg>Commentaires</div><hr></div>
-
-<p id="loginToCommentMessage" class="login-to-comment" style="display:none;">Veuillez vous connecter pour afficher l’espace commentaire.</p>
-
-<div class="comment-box-container" id="commentBoxContainer" style="visibility:hidden;"><img id="commentAvatar" class="comment-avatar"><div class="comment-content"><label class="comment-label">
-<span class="comment-text-label">Commenter en tant que</span>
-<strong id="comment-username"></strong></label>
-
-<textarea placeholder="Laisser un commentaire"></textarea><div class="comment-buttons" id="commentButtons" style="display: none;">
-<button class="cancel-btn" id="cancelBtn">Annuler</button>
-<button class="submit-btn" id="submitBtn">Commentaire</button></div></div></div>
-<div id="commentsList" class="comments-list"></div>
-</section>
-
-<script type="module" src="js/movie-details.js"></script>
-<script src="js/movies.js"></script>
 <script type="module" src="js/navbar.js"></script>
+<script type="module" src="js/search.js"></script>
 </body>
 </html>

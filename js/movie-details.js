@@ -82,25 +82,6 @@ if (downloadBtn) {
         }
     }
 }
-
-
-    // Boutons dorés pour qualité maximale
-    const goldButtons = {
-        "Ad Astra": { url: "https://www.clictune.com/kxjS", size: "48,12 GB" },
-        "Interstellar": { url: "https://www.clictune.com/kxkj", size: "73,40 GB" },
-        "Le Hobbit: La désolation de Smaug": { url: "https://www.clictune.com/kxvU", size: "94,71 GB" },
-        "Batman v Superman : L'Aube de la justice": { url: "https://www.clictune.com/lg9Y" },
-        "Man of Steel": { url: "https://www.clictune.com/lg9X" }
-    };
-
-    const gold = goldButtons[selectedMovie.title];
-    if (gold && container) {
-        const goldenBtn = document.createElement('button');
-        goldenBtn.textContent = gold.size ? `Télécharger qualité maximale ${gold.size}` : "Télécharger qualité maximale";
-        goldenBtn.className = 'gold-btn';
-        goldenBtn.onclick = () => window.open(gold.url, '_blank');
-        container.appendChild(goldenBtn);
-    }
 }
 
 // ---------------------- ESPACE COMMENTAIRE ----------------------

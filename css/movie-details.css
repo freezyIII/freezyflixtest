@@ -4,12 +4,9 @@ body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background
 .movie-header-container {display: flex;flex-direction: column;align-items: center;width: 100%;max-width: 1000px;margin: 0 auto;padding: 0 20px;}
 #movieTitle {font-size: 2rem;color: #ef2626;text-align: center;width: max-content;height: max-content;margin: 20px auto 0;padding: 10px;}
 .titan-one-regular {font-family: "Titan One", serif;font-weight: 400;}
-.download-btn, .gold-button {cursor: pointer;border: none;border-radius: 12px;font-weight: 700;text-transform: uppercase;transition: all 0.3s ease;display: inline-flex;align-items: center;justify-content: center;gap: 8px;}
-.download-btn {background: linear-gradient(135deg, #ff3b3b, #d40000);color: #fff;font-size: 1.4rem;padding: 0.75rem 2rem;box-shadow: 0 6px 15px rgba(212, 0, 0, 0.5);position: relative;overflow: hidden;}
+.download-btn {cursor: pointer;border: none;border-radius: 12px;font-weight: 700;text-transform: uppercase;transition: all 0.3s ease;display: inline-flex;align-items: center;justify-content: center;gap: 8px;background: linear-gradient(135deg, #ff3b3b, #d40000);color: #fff;font-size: 1.4rem;padding: 0.75rem 2rem;box-shadow: 0 6px 15px rgba(212, 0, 0, 0.5);position: relative;overflow: hidden;}
 .download-btn:hover {transform: translateY(-3px) scale(1.05);box-shadow: 0 10px 25px rgba(212, 0, 0, 0.7);}
 .download-btn svg {width: 20px;height: 20px;fill: #fff;transition: transform 0.3s ease;}
-.gold-button {background: linear-gradient(45deg, #FFD700, #FFA500);color: #000;padding: 10px 20px;font-size: 1rem;border-radius: 10px;margin-top: 10px;transition: transform 0.2s;}
-.gold-button:hover {transform: scale(1.05);}
 #movieIframeContainer {width: 100%;position: relative;padding-top: 56.25%;}
 #movieIframeContainer iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none;border-radius: 20px 20px 0 0;}
 .movie-category-container {width: 100%;background-color: #ff2828bd;border-radius: 0 0 15px 15px;padding: 10px 0;text-align: center;box-sizing: border-box;}

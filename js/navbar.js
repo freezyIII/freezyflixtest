@@ -14,6 +14,7 @@ const menuLogout = document.getElementById('menuLogout');
 const searchInput = document.getElementById('search-input');
 const contentSection = document.querySelector('.content');
 const randomMovieSection = document.querySelector('.random-movie-section');
+const randomBox = document.getElementById("random-movie-box");
 
 // ⛔ Sécurité si navbar absente
 if (!loginBtn || !Avatar) {
@@ -129,6 +130,7 @@ if (menuSettings) {
 
 
 /* Recherche de Films */
+/* Recherche de Films */
 function normalizeString(str) {
   return str
     .toLowerCase()
@@ -139,31 +141,32 @@ function normalizeString(str) {
 function performSearch() {
   const query = normalizeString(searchInput.value);
 
-  let hasResults = false;
-
   document.querySelectorAll('.movie-grid-item').forEach(item => {
     const title = normalizeString(item.getAttribute('data-title') || '');
-    if (title.includes(query)) {
-      item.style.display = 'block';
-      hasResults = true;
-    } else {
-      item.style.display = 'none';
-    }
+    item.hidden = !title.includes(query);
   });
 
-  if (query.length > 0) {
-    if (contentSection) contentSection.style.display = 'none';
-    if (randomMovieSection) randomMovieSection.style.display = 'none';
-  } else {
-    if (contentSection) contentSection.style.display = 'block';
-    if (randomMovieSection) randomMovieSection.style.display = 'block';
+  // Cache / affiche sections
+  if (contentSection) contentSection.style.display = query ? 'none' : 'block';
+  if (randomMovieSection) randomMovieSection.style.display = query ? 'none' : 'block';
+
+  // Cache / affiche bouton film aléatoire
+  if (randomBox) {
+    randomBox.style.display = query ? "none" : "block";
+  }
+
+  // Met à jour le compteur
+  if (typeof updateTotalMovies === "function") {
+    updateTotalMovies();
   }
 }
 
-// Déclenche la recherche uniquement quand l’utilisateur appuie sur Entrée
-searchInput.addEventListener('keypress', (e) => {
+if (searchInput) {
+searchInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
-    e.preventDefault(); // empêche le rechargement de la page si dans un form
-    performSearch();
+    e.preventDefault();
+    const newQuery = encodeURIComponent(searchInput.value.trim());
+    window.location.href = `/search/${newQuery}`;
   }
 });
+}
