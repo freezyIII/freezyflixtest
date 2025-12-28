@@ -1,12 +1,3 @@
-/* Corps de la page */
-body {
-    font-family: 'Arial', sans-serif;
-    overflow-x: hidden;
-    color: #ddd;
-    background: #121212;
-}
-
-
 .aide-container a {
     color: #4CAF50;
     text-decoration: none;

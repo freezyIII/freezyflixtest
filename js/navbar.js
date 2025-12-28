@@ -120,7 +120,7 @@ if (menuSettings) {
     menuSettings.addEventListener("click", () => {
         const user = auth.currentUser;
         if (user) {
-            window.location.href = `settings.html?uid=${user.uid}`;
+            window.location.href = `request-movie.html?uid=${user.uid}`;
         } else {
             // Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
             window.location.href = "index.html";
@@ -129,44 +129,17 @@ if (menuSettings) {
 }
 
 
-/* Recherche de Films */
-/* Recherche de Films */
-function normalizeString(str) {
-  return str
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
-
-function performSearch() {
-  const query = normalizeString(searchInput.value);
-
-  document.querySelectorAll('.movie-grid-item').forEach(item => {
-    const title = normalizeString(item.getAttribute('data-title') || '');
-    item.hidden = !title.includes(query);
-  });
-
-  // Cache / affiche sections
-  if (contentSection) contentSection.style.display = query ? 'none' : 'block';
-  if (randomMovieSection) randomMovieSection.style.display = query ? 'none' : 'block';
-
-  // Cache / affiche bouton film aléatoire
-  if (randomBox) {
-    randomBox.style.display = query ? "none" : "block";
-  }
-
-  // Met à jour le compteur
-  if (typeof updateTotalMovies === "function") {
-    updateTotalMovies();
-  }
-}
-
+// ================== SEARCH ==================
 if (searchInput) {
-searchInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const newQuery = encodeURIComponent(searchInput.value.trim());
-    window.location.href = `/search/${newQuery}`;
-  }
-});
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") { // Quand l'utilisateur appuie sur Entrée
+            const query = searchInput.value.trim();
+            if (query) {
+                // Redirection vers search.html avec le paramètre q
+                window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+    });
 }
+
+

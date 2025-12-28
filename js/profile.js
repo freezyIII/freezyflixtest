@@ -27,9 +27,14 @@ const avatarUrlInput = document.getElementById('avatarUrl');
 let tempAvatarUrl = '';
 
 function showTab(tabName) {
-    favoritesContent.style.display = tabName === "Favoris" ? "flex" : "none";
-    evaluationContent.style.display = tabName === "Évaluation" ? "flex" : "none";
+  favoritesContent.style.display = tabName === "Favoris" ? "block" : "none";
+  evaluationContent.style.display = tabName === "Évaluation" ? "block" : "none";
+
+  if (tabName === "Favoris") loadFavorites();
+  if (tabName === "Évaluation") loadEvaluations();
 }
+
+
 
 links.forEach(link => {
     link.addEventListener('click', e => {
@@ -121,10 +126,11 @@ editProfileForm.addEventListener('submit', async (e) => {
         return;
     }
 
+    // Si tempAvatarUrl est vide, utilise l'avatar affiché sur le panel
+    const finalAvatarUrl = tempAvatarUrl || panelAvatar.src || user.photoURL;
+
     try {
         const userDocRef = doc(db, "users", user.uid);
-        const finalAvatarUrl = tempAvatarUrl || user.photoURL;
-
         await setDoc(userDocRef, {
             nomUtilisateur: newUsername,
             firstname: newFirstname,
@@ -146,7 +152,6 @@ editProfileForm.addEventListener('submit', async (e) => {
         showToast("Profil mis à jour !");
         editProfilePanel.style.display = 'none';
         tempAvatarUrl = '';
-
     } catch (error) {
         console.error("Erreur lors de la mise à jour du profil :", error);
         alert("Erreur lors de la mise à jour.");
@@ -224,11 +229,74 @@ changeAvatarForm.addEventListener('submit', async (e) => {
 
     const newAvatarUrl = avatarUrlInput.value.trim();
     tempAvatarUrl = newAvatarUrl || user.photoURL;
+
+    // On ne change QUE la prévisualisation du panel
     panelAvatar.src = tempAvatarUrl;
-    profileAvatar.src = tempAvatarUrl;
 
     changeAvatarPanel.style.display = 'none';
     changeAvatarForm.reset();
 });
 
+// Et dans editProfileForm.submit, tu mets à jour profileAvatar
+profileAvatar.src = finalAvatarUrl;
+panelAvatar.src = finalAvatarUrl;
 
+
+function loadEvaluations() {
+  const container = document.getElementById("evaluationContent");
+  const evaluations = JSON.parse(localStorage.getItem("evaluations")) || [];
+
+  container.innerHTML = "";
+
+  if (evaluations.length === 0) {
+    container.innerHTML = `
+      <div class="evaluation-empty">
+        <svg class="tab-item-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path>
+        </svg>
+        <p class="tab-text">Aucune évaluation pour l'instant</p>
+      </div>
+    `;
+    return;
+  }
+}
+
+
+function loadFavorites() {
+  const container = document.getElementById("favoritesContent");
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  container.innerHTML = "";
+
+  if (favorites.length === 0) {
+    container.innerHTML = `
+      <div class="favorites-empty">
+        <svg class="tab-item-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"></path>
+        </svg>
+        <p class="tab-text">Aucun favori pour l'instant</p>
+      </div>
+    `;
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "movie-grid";
+
+  favorites.forEach(movie => {
+    const item = document.createElement("div");
+    item.className = "movie-grid-item";
+
+    item.innerHTML = `
+      <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
+        <img src="${movie.img}" loading="lazy" />
+        ${movie.type === "serie" ? `<div class="serie">SÉRIE</div>` : ""}
+        ${movie.resolution ? `<div class="resolution">${movie.resolution}</div>` : ""}
+      </a>
+    `;
+
+    grid.appendChild(item);
+  });
+
+  container.appendChild(grid);
+}

@@ -48,101 +48,89 @@
 <section class="random-movie-section">
   <div id="random-movie-box">🎬 Film Aléatoire</div>
 
-  <!-- Bouton Filtre déplacé juste en dessous -->
-  <div class="filter-wrapper">
-    <button type="button" id="toggleFilters" class="filter-btn" aria-expanded="false" aria-controls="filter-panel">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-        <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
-      </svg>
-      Filtre
-    </button>
+<div class="filter-wrapper">
+<button type="button" id="toggleFilters" class="filter-btn" aria-expanded="false" aria-controls="filter-panel">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+<path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
+</svg>Filtre</button>
 
-    <div id="filter-panel" class="filter-panel" hidden>
-      <div class="filter-header">
-        <h3>Filtrer</h3>
-        <button id="closeFilters" class="close-filters" aria-label="Fermer le panneau de filtre">✖</button>
-      </div>
-
-      <div class="filter-container">
-    <div class="filter-item">
-      <label for="category-filter">Catégorie :</label>
-      <select id="category-filter">
-        <option value="" selected>Toutes</option>
-        <option value="action">Action</option>
-        <option value="animation">Animation</option>
-        <option value="anime">Animé</option>
-        <option value="aventure">Aventure</option>
-        <option value="comédie">Comédie</option>
-        <option value="comédie musicale">Comédie musicale</option>
-        <option value="criminel">Criminel</option>
-        <option value="detective">Détective</option>
-        <option value="drame">Drame</option>
-        <option value="fantastique">Fantastique</option>
-        <option value="guerre">Guerre</option>
-        <option value="historique">Historique</option>
-        <option value="horreur">Horreur</option>
-        <option value="policier">Policier</option>
-        <option value="romance">Romance</option>
-        <option value="science-fiction">Science-fiction</option>
-        <option value="sport">Sport</option>
-        <option value="surnaturel">Surnaturel</option>
-        <option value="thriller">Thriller</option>
-        <option value="western">Western</option>
-      </select>
-    </div>
-
-    <div class="filter-item">
-      <label for="type-filter">Type :</label>
-      <select id="type-filter">
-        <option value="" selected>Tous</option>
-        <option value="film">Film</option>
-        <option value="serie">Série</option>
-      </select>
-    </div>
-
-    <div class="filter-item">
-      <label for="year-filter">Année :</label>
-      <select id="year-filter">
-        <option value="all" selected>Toutes</option>
-        <option value="2025">2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-        <option value="2020">2020</option>
-        <option value="2019">2019</option>
-        <option value="2018">2018</option>
-        <option value="2017">2017</option>
-        <option value="2016">2016</option>
-        <option value="2015">2015</option>
-        <option value="2014">2014</option>
-        <option value="2013">2013</option>
-        <option value="2012">2012</option>
-        <option value="2011">2011</option>
-        <option value="2010">2010</option>
-        <option value="2009">2009</option>
-      </select>
-    </div>
-
-    <div class="filter-item">
-      <label for="quality-filter">Qualité :</label>
-      <select id="quality-filter">
-        <option value="" selected>Toutes</option>
-        <option value="1080p">1080p</option>
-        <option value="4K">4K</option>
-      </select>
-    </div>
-
-    <div class="filter-item reset-button">
-      <button id="reset-filters">Réinitialiser</button>
-    </div>
-  </div>
+<div id="filter-panel" class="filter-panel" hidden><div class="filter-header">
+<h3>Filtrer</h3>
+<button id="closeFilters" class="close-filters" aria-label="Fermer le panneau de filtre">✖</button>
 </div>
+
+<div class="filter-container">
+<div class="filter-item">
+<label for="category-filter">Catégorie :</label>
+<select id="category-filter">
+<option value="" selected>Toutes</option>
+<option value="action">Action</option>
+<option value="animation">Animation</option>
+<option value="anime">Animé</option>
+<option value="aventure">Aventure</option>
+<option value="comédie">Comédie</option>
+<option value="comédie musicale">Comédie musicale</option>
+<option value="criminel">Criminel</option>
+<option value="detective">Détective</option>
+<option value="drame">Drame</option>
+<option value="fantastique">Fantastique</option>
+<option value="guerre">Guerre</option>
+<option value="historique">Historique</option>
+<option value="horreur">Horreur</option>
+<option value="policier">Policier</option>
+<option value="romance">Romance</option>
+<option value="science-fiction">Science-fiction</option>
+<option value="sport">Sport</option>
+<option value="surnaturel">Surnaturel</option>
+<option value="thriller">Thriller</option>
+<option value="western">Western</option>
+</select></div>
+
+<div class="filter-item">
+<label for="type-filter">Type :</label>
+<select id="type-filter">
+<option value="" selected>Tous</option>
+<option value="film">Film</option>
+<option value="serie">Série</option>
+</select></div>
+  
+<div class="filter-item">
+<label for="year-filter">Année :</label>
+<select id="year-filter">
+<option value="all" selected>Toutes</option>
+<option value="2025">2025</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+<option value="2019">2019</option>
+<option value="2018">2018</option>
+<option value="2017">2017</option>
+<option value="2016">2016</option>
+<option value="2015">2015</option>
+<option value="2014">2014</option>
+<option value="2013">2013</option>
+<option value="2012">2012</option>
+<option value="2011">2011</option>
+<option value="2010">2010</option>
+<option value="2009">2009</option>
+</select></div>
+
+<div class="filter-item">
+<label for="quality-filter">Qualité :</label>
+<select id="quality-filter">
+<option value="" selected>Toutes</option>
+<option value="1080p">1080p</option>
+<option value="4K">4K</option>
+</select></div>
+
+<div class="filter-item reset-button"><button id="reset-filters">Réinitialiser</button></div></div></div>
 </section>
 
 <section>
 <div class="grid-wrapper">
-  <div id="totalMovies" class="total-movies"></div>
+<div id="totalMovies" class="total-movies"></div>
 <div class="movie-grid" id="movieGrid">
 </section>
 

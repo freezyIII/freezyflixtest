@@ -14,6 +14,7 @@ const container = document.querySelector('.container');
 const downloadBtn = document.getElementById('downloadButton');
 const submitBtn = document.getElementById('submitBtn');
 const commentsList = document.getElementById('commentsList');
+const favoriteBtn = document.getElementById("favoriteBtn");
 
 // ---------------------- RECHERCHE DU FILM ----------------------
 const selectedMovie = movies.find(movie => movie.title.toLowerCase() === movieTitle?.toLowerCase());
@@ -253,4 +254,43 @@ if (downloadsBody && Array.isArray(selectedMovie.downloads)) {
 
     downloadsBody.appendChild(tr);
   });
+}
+
+if (favoriteBtn && selectedMovie) {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  function isFavorite() {
+    return favorites.some(m => m.title === selectedMovie.title);
+  }
+
+  function updateButton() {
+    if (isFavorite()) {
+      favoriteBtn.textContent = "⭐ Retirer des favoris";
+      favoriteBtn.classList.add("active");
+    } else {
+      favoriteBtn.textContent = "⭐ Ajouter aux favoris";
+      favoriteBtn.classList.remove("active");
+    }
+  }
+
+  favoriteBtn.addEventListener("click", () => {
+    if (isFavorite()) {
+      // RETIRER
+      favorites = favorites.filter(m => m.title !== selectedMovie.title);
+    } else {
+      // AJOUTER
+favorites.unshift({
+  title: selectedMovie.title,
+  img: selectedMovie.img,
+  resolution: selectedMovie.downloads?.[0]?.resolution || "",
+  type: selectedMovie.type || "movie"
+});
+
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    updateButton();
+  });
+
+  updateButton();
 }

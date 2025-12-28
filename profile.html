@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/profile.css">
+<link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
@@ -59,18 +60,10 @@
 
 <hr class="profile-divider">
 
-<div id="favoritesContent" class="tab-item">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-<path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"></path></svg>
-<p class="tab-text">Aucun favori pour l'instant</p>
-</div>
 
-<div id="evaluationContent" class="tab-item">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-<path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path></svg>
-<p class="tab-text">Aucune évaluation pour l'instant</p>
-</div>
-</section>
+<div id="favoritesContent" class="grid-wrapper"></div>
+<div id="evaluationContent" class="grid-wrapper"></div>
+
 
     <div id="editProfilePanel" class="overlay">
         <div class="edit-panel">
@@ -133,6 +126,8 @@
 </main>
 <div id="toast" class="toast">Profil mis à jour !</div>
 
+<script src="js/movies.js"></script>
+<script src="js/index.js"></script>
 <script type="module" src="js/navbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
 <script type="module" src="js/profile.js"></script>

@@ -1,4 +1,3 @@
-body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background: #121212;margin: 0;padding: 0;}
 ::-webkit-scrollbar {width: 0px;}
 .container {display: flex;flex-direction: column;gap: 10px;width: max-content;margin: 20px auto;padding: 20px;height: max-content;}
 .movie-header-container {display: flex;flex-direction: column;align-items: center;width: 100%;max-width: 1000px;margin: 0 auto;padding: 0 20px;}
@@ -49,3 +48,27 @@ body {font-family: 'Arial', sans-serif;overflow-x: hidden;color: #ddd;background
 .movie-table-with-button th {font-weight: normal;font-family: 'Federant', sans-serif;}
 .table-button-container {display: flex;justify-content: center;}
 .table-button-container .download-btn {padding: 6px 12px;font-size: 1rem;min-width: 100px;}
+.movie-title-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.favorite-btn {
+  background: #ffcc00;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.favorite-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+.favorite-btn.active {
+  background: #ff4d4d;
+  color: white;
+}

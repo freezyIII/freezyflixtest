@@ -121,7 +121,7 @@ if (typeof movies !== "undefined" && movieGrid) {
   movies.forEach(movie => {
     const movieDiv = document.createElement("div");
     movieDiv.className = "movie-grid-item";
-    movieDiv.setAttribute("data-title", movie.title.toLowerCase());
+    movieDiv.setAttribute("data-title", movie.title);
 
     const resolution = movie.downloads?.[0]?.resolution || "";
 
@@ -140,12 +140,51 @@ if (typeof movies !== "undefined" && movieGrid) {
 
 
   // -------------------- Synchronisation data-title pour carousel --------------------
-  document.querySelectorAll('.movie-item').forEach(item => {
-    const link = item.querySelector('a');
-    if (link) {
-      const urlParams = new URLSearchParams(link.getAttribute('href').split('?')[1]);
-      const title = urlParams.get('title');
-      if (title) item.setAttribute('data-title', title.toLowerCase());
+document.querySelectorAll('.movie-item, .movie-grid-item').forEach(item => {
+  const link = item.querySelector('a');
+  if (!link) return;
+
+  const href = link.getAttribute('href');
+  if (!href || !href.includes('?')) return;
+
+  const urlParams = new URLSearchParams(href.split('?')[1]);
+  const title = urlParams.get('title');
+
+  if (title) {
+    item.setAttribute('data-title', decodeURIComponent(title));
+  }
+});
+
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get("q")?.toLowerCase() || "";
+
+    if (query) {
+        filterMovies(query);
     }
-  });
+
+    function filterMovies(searchText) {
+        const movieGrid = document.getElementById("movieGrid");
+        if (!movieGrid) return;
+
+        const movies = movieGrid.querySelectorAll(".movie-grid-item");
+        movies.forEach(movie => {
+            const title = movie.getAttribute("data-title")?.toLowerCase() || "";
+            if (title.includes(searchText)) {
+                movie.hidden = false;
+            } else {
+                movie.hidden = true;
+            }
+        });
+
+        // Mettre à jour le compteur
+        const totalMoviesDiv = document.getElementById("totalMovies");
+        if (totalMoviesDiv) {
+            const visibleMovies = movieGrid.querySelectorAll(".movie-grid-item:not([hidden])").length;
+            totalMoviesDiv.textContent = `Total de films : ${visibleMovies}`;
+        }
+    }
 });
