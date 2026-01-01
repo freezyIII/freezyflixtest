@@ -40,21 +40,25 @@ function hideUser() {
 
 // ================== AUTH ==================
 onAuthStateChanged(auth, async (user) => {
+    if (!loginBtn) return; // page sans navbar
+
     if (user) {
         const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+        const data = snap.exists() ? snap.data() : {};
 
-        // Set online to true
-        await updateDoc(userRef, { online: true });
+        showUser({
+            displayName: data.nomUtilisateur || user.displayName,
+            photoURL: data.photoURL || user.photoURL
+        });
 
-        // Optionnel : Mettre online à false à la déconnexion
-window.addEventListener('beforeunload', async () => {
-    const user = auth.currentUser;
-    if (user) {
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, { online: false });
-    }
-});
+        // 🔹 Mettre l'utilisateur en ligne
+        await updateDoc(userRef, { status: "online" });
+    } else {
+        hideUser();
 
+        // Si tu veux mettre l'utilisateur offline après logout
+        // il faudra le faire dans le code de logout (voir ci-dessous)
     }
 });
 
@@ -123,17 +127,20 @@ if (menuLogout) {
     menuLogout.addEventListener("click", async (e) => {
         e.preventDefault();
         const user = auth.currentUser;
+
         if (user) {
             const userRef = doc(db, "users", user.uid);
-            await updateDoc(userRef, { online: false });
+            await updateDoc(userRef, { status: "offline" });
         }
+
         await signOut(auth);
+
+        // Petite pause pour laisser Firebase mettre à jour currentUser
         setTimeout(() => {
             window.location.href = "index.html";
         }, 200);
     });
 }
-
 
 
 
