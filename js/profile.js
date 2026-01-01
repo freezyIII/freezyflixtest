@@ -49,6 +49,10 @@ function showTab(tabName) {
 }
 
 onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
 
   // 🔑 UID à afficher : soit celui dans l’URL, soit le sien
   const uidToDisplay = profileUid || user.uid;
@@ -65,6 +69,9 @@ links.forEach(link => {
         showTab(link.textContent.trim());
     });
 });
+
+const activeLink = document.querySelector('.profile-link.active');
+if (activeLink) showTab(activeLink.textContent.trim());
 
 async function displayUserProfile(user) {
     const userDocRef = doc(db, "users", user.uid);
@@ -305,29 +312,34 @@ function loadEvaluations() {
 }
 
 
-async function loadFavorites(currentUserUid) {
+async function loadFavorites() {
   const container = document.getElementById("favoritesContent");
   container.innerHTML = "";
 
   const params = new URLSearchParams(window.location.search);
   const profileUid = params.get("uid");
+  const user = auth.currentUser;
 
-  const uidToLoad = profileUid || currentUserUid;
-  if (!uidToLoad) {
-    container.innerHTML = `<p>Utilisateur non connecté</p>`;
-    return;
-  }
+  const uidToLoad = profileUid || user.uid;
 
   const favoritesRef = collection(db, "users", uidToLoad, "favorites");
 
   try {
-    const q = query(favoritesRef, orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
+const q = query(favoritesRef, orderBy("createdAt", "desc"));
+const snapshot = await getDocs(q);
 
-    if (snapshot.empty) {
-      container.innerHTML = `<p>Aucun favori pour l'instant</p>`;
-      return;
-    }
+if (snapshot.empty) {
+  container.innerHTML = `
+    <div class="favorites-empty">
+      <svg class="tab-item-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path>
+      </svg>
+      <p class="tab-text">Aucun favori pour l'instant</p>
+    </div>
+  `;
+  return;
+}
+
 
     const grid = document.createElement("div");
     grid.className = "movie-grid";
@@ -335,27 +347,28 @@ async function loadFavorites(currentUserUid) {
     snapshot.forEach(docSnap => {
       const movie = docSnap.data();
 
-      const item = document.createElement("div");
-      item.className = "movie-grid-item";
-      item.setAttribute("data-title", movie.title);
+const item = document.createElement("div");
+item.className = "movie-grid-item";
+item.setAttribute("data-title", movie.title); // <-- AJOUT
 
-      item.innerHTML = `
-        <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
-          <img src="${movie.img}" loading="lazy" />
-          ${movie.type === "serie" ? `<div class="serie">SÉRIE</div>` : ""}
-          ${movie.resolution ? `<div class="resolution">${movie.resolution}</div>` : ""}
-        </a>
-      `;
+item.innerHTML = `
+  <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
+    <img src="${movie.img}" loading="lazy" />
+
+    ${movie.type === "serie" ? `<div class="serie">SÉRIE</div>` : ""}
+    ${movie.resolution ? `<div class="resolution">${movie.resolution}</div>` : ""}
+  </a>
+`;
 
       grid.appendChild(item);
     });
 
     container.appendChild(grid);
+
   } catch (err) {
     console.error("Erreur chargement favoris :", err);
   }
 }
-
 
 
 async function displayUserProfileByUid(uidToDisplay, currentUserUid) {
