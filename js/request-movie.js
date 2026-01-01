@@ -59,6 +59,7 @@ function setError(input, message) {
 }
 
 // --- Enregistrer la demande avec ID userId + compteur ---
+// --- Enregistrer la demande avec ID userId + compteur ---
 async function saveRequest(userId, formData) {
   try {
     // Récupérer tous les documents de la collection
@@ -75,8 +76,11 @@ async function saveRequest(userId, formData) {
     const nextNum = maxNum + 1;
     const docId = `${userId}_${nextNum}`;
 
-    // Enregistrement dans Firestore (sans userId dans les champs)
-    await setDoc(doc(db, "request-movie", docId), formData);
+    // Ajouter l'ID de l'utilisateur dans les données
+    const dataToSave = { ...formData, userId };
+
+    // Enregistrement dans Firestore
+    await setDoc(doc(db, "request-movie", docId), dataToSave);
     showToast("Demande envoyée !");
   } catch (error) {
     console.error("Erreur lors de l'enregistrement :", error);

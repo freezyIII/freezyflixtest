@@ -59,19 +59,7 @@ ul li a.no-underline:hover {text-decoration: none;}
 
 #loginBtn,
 #profileMenuContainer,
-#userPseudo {
-  display: none;
-}
-body.hidden {
-  visibility: hidden;
-}
-
-.login-to-comment {
-  text-align: center;
-  margin-top: 15px;
-  font-style: italic;
-  color: #aaa;
-}
-.menu-icon path {
-    fill: white; /* couleur blanche */
-}
+#userPseudo {display: none;}
+body.hidden {visibility: hidden;}
+.login-to-comment {text-align: center;margin-top: 15px;font-style: italic;color: #aaa;}
+.menu-icon path {fill: white;}

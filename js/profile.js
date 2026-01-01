@@ -1,7 +1,8 @@
 import { auth, db } from './database.js';
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-import { updateProfile } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+import { doc,getDoc,setDoc,collection,getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
+const founderUid = "nvZu4gkT8JR8eDAraUyl0qobUox1";
 const profileAvatar = document.getElementById('profileAvatar');
 const profilePseudo = document.getElementById('profilePseudo');
 const profileFirstname = document.getElementById('profileFirstname');
@@ -26,6 +27,10 @@ const changeAvatarForm = document.getElementById('changeAvatarForm');
 const avatarUrlInput = document.getElementById('avatarUrl');
 let tempAvatarUrl = '';
 
+const params = new URLSearchParams(window.location.search);
+const profileUid = params.get("uid");
+
+
 function showTab(tabName) {
   favoritesContent.style.display = tabName === "Favoris" ? "block" : "none";
   evaluationContent.style.display = tabName === "Évaluation" ? "block" : "none";
@@ -34,6 +39,17 @@ function showTab(tabName) {
   if (tabName === "Évaluation") loadEvaluations();
 }
 
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  // 🔑 UID à afficher : soit celui dans l’URL, soit le sien
+  const uidToDisplay = profileUid || user.uid;
+
+  await displayUserProfileByUid(uidToDisplay, user.uid);
+});
 
 
 links.forEach(link => {
@@ -79,14 +95,24 @@ function resetProfileForm(userData) {
 editProfileBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
-    if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userDocRef);
-        const userData = userSnap.exists() ? userSnap.data() : {};
-        resetProfileForm(userData);
-        editProfilePanel.style.display = 'flex';
-    }
+    if (!user) return;
+
+    const uidToDisplay = profileUid || user.uid; // UID du profil affiché
+    if (uidToDisplay !== user.uid) return; // sécurité : on ne peut modifier que son propre profil
+
+    const userDocRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userDocRef);
+    const userData = userSnap.exists() ? userSnap.data() : {};
+
+    resetProfileForm(userData);
+
+    // Préremplissage de l'avatar du panel
+    panelAvatar.src = userData.photoURL || user.photoURL || 'https://via.placeholder.com/150';
+    avatarUrlInput.value = userData.photoURL || '';
+
+    editProfilePanel.style.display = 'flex';
 });
+
 
 closePanelBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -158,12 +184,6 @@ editProfileForm.addEventListener('submit', async (e) => {
     }
 });
 
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        await displayUserProfile(user);
-    }
-});
-
 editProfileForm.setAttribute('autocomplete', 'off');
 [usernameInput, firstnameInput, descriptionInput].forEach(input => input.setAttribute('autocomplete', 'off'));
 
@@ -176,14 +196,6 @@ usernameInput.addEventListener('input', () => {
     const length = usernameInput.value.length;
     usernameCounter.textContent = `${length}/${maxChars}`;
     usernameCounter.style.color = length >= maxChars ? '#ff3d00' : '#aaa';
-});
-
-const animation = lottie.loadAnimation({
-    container: document.getElementById('avatarAnimation'),
-    renderer: 'svg',
-    loop: true,
-    autoplay: true,
-    path: 'assets/animations/avatar.json'
 });
 
 function showToast(message, duration = 3000) {
@@ -228,18 +240,13 @@ changeAvatarForm.addEventListener('submit', async (e) => {
     if (!user) return;
 
     const newAvatarUrl = avatarUrlInput.value.trim();
-    tempAvatarUrl = newAvatarUrl || user.photoURL;
+    tempAvatarUrl = newAvatarUrl || panelAvatar.src || 'https://via.placeholder.com/150';
 
-    // On ne change QUE la prévisualisation du panel
+    // Mise à jour de la prévisualisation uniquement
     panelAvatar.src = tempAvatarUrl;
 
     changeAvatarPanel.style.display = 'none';
-    changeAvatarForm.reset();
 });
-
-// Et dans editProfileForm.submit, tu mets à jour profileAvatar
-profileAvatar.src = finalAvatarUrl;
-panelAvatar.src = finalAvatarUrl;
 
 
 function loadEvaluations() {
@@ -262,41 +269,105 @@ function loadEvaluations() {
 }
 
 
-function loadFavorites() {
+async function loadFavorites() {
   const container = document.getElementById("favoritesContent");
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
   container.innerHTML = "";
 
-  if (favorites.length === 0) {
-    container.innerHTML = `
-      <div class="favorites-empty">
-        <svg class="tab-item-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"></path>
-        </svg>
-        <p class="tab-text">Aucun favori pour l'instant</p>
-      </div>
-    `;
+  const user = auth.currentUser;
+  if (!user) {
+    console.warn("Utilisateur non connecté");
     return;
   }
 
-  const grid = document.createElement("div");
-  grid.className = "movie-grid";
+  const favoritesRef = collection(db, "users", user.uid, "favorites");
 
-  favorites.forEach(movie => {
-    const item = document.createElement("div");
-    item.className = "movie-grid-item";
+  try {
+const q = query(favoritesRef, orderBy("createdAt", "desc"));
+const snapshot = await getDocs(q);
 
-    item.innerHTML = `
-      <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
-        <img src="${movie.img}" loading="lazy" />
-        ${movie.type === "serie" ? `<div class="serie">SÉRIE</div>` : ""}
-        ${movie.resolution ? `<div class="resolution">${movie.resolution}</div>` : ""}
-      </a>
-    `;
+if (snapshot.empty) {
+  container.innerHTML = `
+    <div class="favorites-empty">
+      <svg class="tab-item-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path>
+      </svg>
+      <p class="tab-text">Aucun favori pour l'instant</p>
+    </div>
+  `;
+  return;
+}
 
-    grid.appendChild(item);
-  });
 
-  container.appendChild(grid);
+    const grid = document.createElement("div");
+    grid.className = "movie-grid";
+
+    snapshot.forEach(docSnap => {
+      const movie = docSnap.data();
+
+const item = document.createElement("div");
+item.className = "movie-grid-item";
+item.setAttribute("data-title", movie.title); // <-- AJOUT
+
+item.innerHTML = `
+  <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
+    <img src="${movie.img}" loading="lazy" />
+
+    ${movie.type === "serie" ? `<div class="serie">SÉRIE</div>` : ""}
+    ${movie.resolution ? `<div class="resolution">${movie.resolution}</div>` : ""}
+  </a>
+`;
+
+      grid.appendChild(item);
+    });
+
+    container.appendChild(grid);
+
+  } catch (err) {
+    console.error("Erreur chargement favoris :", err);
+  }
+}
+
+
+async function displayUserProfileByUid(uidToDisplay, currentUserUid) {
+  const userDocRef = doc(db, "users", uidToDisplay);
+  const userSnap = await getDoc(userDocRef);
+
+  if (!userSnap.exists()) {
+    alert("Profil introuvable");
+    return;
+  }
+
+  const userData = userSnap.data();
+  const photoURL = userData.photoURL || 'https://via.placeholder.com/150';
+  const displayName = userData.nomUtilisateur || 'Utilisateur';
+  const firstname = userData.firstname || '';
+
+  profileAvatar.src = photoURL;
+  profileAvatar.alt = `${displayName} Avatar`;
+  profilePseudo.textContent = displayName;
+  profileFirstname.textContent = firstname;
+
+  // 🔒 Si ce n'est PAS ton profil → on bloque l’édition
+  if (uidToDisplay !== currentUserUid) {
+    editProfileBtn.style.display = "none";
+    favoritesContent.style.display = "none";
+    evaluationContent.style.display = "none";
+  } else {
+    loadFavorites();
+  }
+
+  // ✅ Animation Lottie pour le fondateur seulement
+  const avatarAnimationDiv = document.getElementById('avatarAnimation');
+  if (uidToDisplay === founderUid) {
+    avatarAnimationDiv.style.display = 'block'; // affiche la div
+    lottie.loadAnimation({
+      container: avatarAnimationDiv,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'assets/animations/avatar.json'
+    });
+  } else {
+    avatarAnimationDiv.style.display = 'none'; // cache la div
+  }
 }

@@ -1,4 +1,4 @@
-.profile-container { display: flex; align-items: center; gap: 50px; padding: 8% 20% 3% 20%; }
+.profile-container { display: flex; align-items: center; gap: 50px; padding: 6% 20% 3% 20%; }
 .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
 
 /* Photo de Profil */
@@ -16,7 +16,7 @@
 .icon-container { display: flex; flex-direction: column; align-items: center; margin: 25px 0; }
 .tab-item { display: none; flex-direction: column; align-items: center; }
 .tab-item svg { width: 36px; height: 36px; fill: #ccc; }
-.tab-text { color: #ccc; margin-top: 10px; font-size: 1rem; text-align: center; }
+.tab-text { color: #ccc; font-size: 0.9rem; text-align: center; }
 
 /* Panel de Modifier le Profil */
 .overlay {position: fixed; top: 0; left: 0; width: 100%; height: 100%;backdrop-filter: blur(5px); background-color: rgba(0,0,0,0.4);display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;}
@@ -78,21 +78,7 @@ textarea { min-height: 100px; }
 .panel-avatar-wrapper:hover img {filter: brightness(60%);}
 .panel-avatar-wrapper:hover .panel-avatar-overlay {opacity: 1;}
 
-
-.favorites-empty, .evaluation-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.favorites-empty svg, .evaluation-empty svg {
-  width: 36px;
-  height: 36px;
-  fill: #ccc;
-  margin-bottom: 10px;
-}
-#favoritesContent {
-  max-width: 1100px;
-}
+/* Faforis & évaluation */
+.favorites-empty, .evaluation-empty {display: flex;flex-direction: column;align-items: center;justify-content: center;text-align: center;}
+.favorites-empty svg, .evaluation-empty svg {width: 30px;height: 30px;fill: #ccc;margin-bottom: 10px;}
+#favoritesContent {max-width: 1100px;}

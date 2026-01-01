@@ -40,19 +40,21 @@ function hideUser() {
 
 // ================== AUTH ==================
 onAuthStateChanged(auth, async (user) => {
-    if (!loginBtn) return; // page sans navbar
-
     if (user) {
         const userRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userRef);
-        const data = snap.exists() ? snap.data() : {};
 
-        showUser({
-            displayName: data.nomUtilisateur || user.displayName,
-            photoURL: data.photoURL || user.photoURL
-        });
-    } else {
-        hideUser();
+        // Set online to true
+        await updateDoc(userRef, { online: true });
+
+        // Optionnel : Mettre online à false à la déconnexion
+window.addEventListener('beforeunload', async () => {
+    const user = auth.currentUser;
+    if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { online: false });
+    }
+});
+
     }
 });
 
@@ -66,17 +68,33 @@ if (loginBtn) {
             const userRef = doc(db, "users", user.uid);
             const snap = await getDoc(userRef);
 
-            await setDoc(userRef, {
-                nomUtilisateur: user.displayName || "",
-                email: user.email || "",
-                photoURL: snap.exists() ? snap.data().photoURL || user.photoURL : user.photoURL
-            }, { merge: true });
+            // Formatage de la date en français
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const formattedDate = now.toLocaleString('fr-FR', options).replace('à', 'à');
+
+            if (!snap.exists()) {
+                await setDoc(userRef, {
+                    nomUtilisateur: user.displayName || "",
+                    email: user.email || "",
+                    photoURL: user.photoURL || "",
+                    dateInscription: formattedDate
+                });
+            } else {
+
+                await setDoc(userRef, {
+                    nomUtilisateur: user.displayName || "",
+                    email: user.email || "",
+                    photoURL: snap.data().photoURL || user.photoURL
+                }, { merge: true });
+            }
 
         } catch (err) {
             console.error("Erreur connexion :", err);
         }
     });
 }
+
 
 // ================== MENU ==================
 if (Avatar) {
@@ -104,28 +122,35 @@ if (menuProfile) {
 if (menuLogout) {
     menuLogout.addEventListener("click", async (e) => {
         e.preventDefault();
+        const user = auth.currentUser;
+        if (user) {
+            const userRef = doc(db, "users", user.uid);
+            await updateDoc(userRef, { online: false });
+        }
         await signOut(auth);
-        // Petite pause pour laisser Firebase mettre à jour currentUser
         setTimeout(() => {
             window.location.href = "index.html";
-        }, 200); // 200ms suffisent
+        }, 200);
     });
 }
+
 
 
 
 const menuSettings = document.getElementById('menuSettings');
 
 if (menuSettings) {
-    menuSettings.addEventListener("click", () => {
-        const user = auth.currentUser;
-        if (user) {
-            window.location.href = `request-movie.html?uid=${user.uid}`;
-        } else {
-            // Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
-            window.location.href = "index.html";
-        }
-    });
+menuSettings.addEventListener("click", () => {
+    const user = auth.currentUser;
+    if (user) {
+        // L'utilisateur connecté peut aller à la page sans UID dans l'URL
+        window.location.href = "request-movie.html";
+    } else {
+        alert("Veuillez vous connecter pour faire une demande de film.");
+        window.location.href = "index.html";
+    }
+});
+
 }
 
 

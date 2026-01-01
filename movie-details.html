@@ -37,14 +37,11 @@
 
 <h1 class="titan-one-regular" id="movieTitle"></h1>
 
-  <button id="favoriteBtn" class="favorite-btn">
-    ⭐ Ajouter aux favoris
-  </button>
-
 <div class="movie-header-container"><div id="movieIframeContainer"></div><div id="movieCategory" class="movie-category-container"><p id="movieCategoryText" class="movie-category"></p></div>
 
-<p id="movieDescription" class="movie-description"></p><div class="movie-info-table-container">
+<button id="favoriteBtn" class="favorite-btn">⭐ Ajouter aux favoris</button>
 
+<p id="movieDescription" class="movie-description"></p><div class="movie-info-table-container">
 <table class="movie-table-with-button"><thead><tr>
 <th>Taille</th>
 <th>Qualité</th>
@@ -69,6 +66,20 @@
 <button class="submit-btn" id="submitBtn">Commentaire</button></div></div></div>
 <div id="commentsList" class="comments-list"></div>
 </section>
+
+<!-- Modal de confirmation -->
+<div id="confirmModal" class="confirm-modal" style="display:none;">
+  <div class="confirm-modal-content">
+    <p id="confirmMessage">Êtes-vous sûr ?</p>
+    <div class="confirm-buttons">
+      <button id="confirmYes">Oui</button>
+      <button id="confirmNo">Non</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
 
 <script type="module" src="js/movie-details.js"></script>
 <script src="js/movies.js"></script>

@@ -38,48 +38,50 @@
 
 
 <main>
-  <section class="aide-header">
-    <h1>Centre d'aide</h1>
-    <p>Trouvez toutes les réponses à vos questions sur FreezyFlix.</p>
-  </section>
+<section class="aide-header">
+<h1>Centre d'aide</h1>
+<p>Trouvez toutes les réponses à vos questions sur FreezyFlix.</p>
+</section>
 
-  <section class="aide-container">
-    <div class="aide-item" onclick="toggleAide(0)">
-      <div class="aide-question">Comment regarder un film ?</div>
-      <div class="aide-answer">
-        Il n'est pas possible de visionner un film directement sur notre plateforme. Les films sont uniquement disponibles en téléchargement via le bouton vert « Télécharger » situé sous chaque bande-annonce.
-      </div>
-    </div>
+<section class="aide-container">
+<div class="aide-item" onclick="toggleAide(0)">
+<div class="aide-question">Comment regarder un film ?</div>
+<div class="aide-answer">
+Il n'est pas possible de visionner un film directement sur notre plateforme. Les films sont uniquement disponibles en téléchargement via le bouton situé sous chaque bande-annonce.
+</div></div>
 
-    <div class="aide-item" onclick="toggleAide(1)">
-      <div class="aide-question">Où puis-je faire des demandes de nouveaux films ou signaler un problème ?</div>
-      <div class="aide-answer">
-        Toutes les demandes de nouveaux films, ainsi que les signalements de liens non fonctionnels ou de bugs, doivent être faites sur notre <a href="https://discord.gg/5kX3Sb2wd4" target="_blank">Discord</a>, dans les salons spécifiques dédiés.
-      </div>
-    </div>
+<div class="aide-item" onclick="toggleAide(1)">
+<div class="aide-question">Où puis-je faire des demandes de nouveaux films ?</div>
+<div class="aide-answer">
+Pour demander des films, il vous faudra créer un compte, puis vous rendre sur votre profil et aller dans 
+<a href="request-movie.html" class="aide-lien-vert">Demande de films</a>.
+</div></div>
 
-    <div class="aide-item" onclick="toggleAide(2)">
-      <div class="aide-question">Les films sont-ils disponibles en plusieurs langues ?</div>
-      <div class="aide-answer">
-        Tous nos films sont disponibles en français (VF) et en anglais (VO), et certains titres proposent également une piste en japonais. Pour changer la langue, il vous suffit de sélectionner la piste audio dans le lecteur vidéo.
-      </div>
-    </div>
+<div class="aide-item" onclick="toggleAide(2)">
+<div class="aide-question">Les films sont-ils disponibles en plusieurs langues ?</div>
+<div class="aide-answer">
+Tous nos films sont disponibles en français (VF), en anglais (VO), et parfois dans d’autres langues.
+</div></div>
 
-    <div class="aide-item" onclick="toggleAide(3)">
-      <div class="aide-question">Je n'ai pas d'écran 4K, que faire ?</div>
-      <div class="aide-answer">
-        Les films en 4K seront automatiquement adaptés et lus en 1080p si votre écran ne prend pas en charge cette résolution.
-      </div>
-    </div>
+<div class="aide-item" onclick="toggleAide(3)">
+<div class="aide-question">Je n'ai pas d'écran 4K, que faire ?</div>
+<div class="aide-answer">
+Les films en 4K seront automatiquement adaptés et lus en 1080p si votre écran ne prend pas en charge cette résolution.
+</div></div>
 
-    <div class="aide-item" onclick="toggleAide(4)">
-      <div class="aide-question">Le film demande l'installation d'un nouveau codec ou l'achat d'une extension vidéo HEVC. Que faire ?</div>
-      <div class="aide-answer">
-        Utilisez un lecteur compatible comme <a href="https://github.com/clsid2/mpc-hc/releases" target="_blank">MPC-HC</a> pour lire les fichiers encodés en H.265.
-      </div>
-    </div>
-  </section>
-</main>
+<div class="aide-item" onclick="toggleAide(4)">
+<div class="aide-question">Le film demande l'installation d'un nouveau codec ou l'achat d'une extension vidéo HEVC. Que faire ?</div>
+<div class="aide-answer">
+Utilisez un lecteur compatible comme <a href="https://github.com/clsid2/mpc-hc/releases" target="_blank" class="aide-lien-vert">MPC-HC</a> pour lire les fichiers encodés en H.265.
+</div></div>
+
+<div class="aide-item" onclick="toggleAide(5)">
+<div class="aide-question">Comment changer la langue d'un film ?</div>
+<div class="aide-answer">
+Pour changer la langue d’un film, sélectionnez « Piste audio » dans l’onglet « Lecture ». <a href="detail-codec.html" class="voir-plus" onclick="event.stopPropagation()">Voir le guide complet</a>
+</div></div>
+
+</section></main>
 
 <script src="js/aide.js"></script>
 <script type="module" src="js/navbar.js"></script>
