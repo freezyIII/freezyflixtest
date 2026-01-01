@@ -126,21 +126,30 @@ if (menuProfile) {
 if (menuLogout) {
     menuLogout.addEventListener("click", async (e) => {
         e.preventDefault();
+
         const user = auth.currentUser;
 
-        if (user) {
-            const userRef = doc(db, "users", user.uid);
-            await updateDoc(userRef, { status: "offline" });
-        }
+        try {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                await setDoc(userRef, { status: "offline" }, { merge: true });
+            }
 
-        await signOut(auth);
+            await signOut(auth);
 
-        // Petite pause pour laisser Firebase mettre à jour currentUser
-        setTimeout(() => {
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 200);
+
+        } catch (error) {
+            console.error("Erreur logout :", error);
+            // Force la déconnexion même en cas d'erreur Firestore
+            await signOut(auth);
             window.location.href = "index.html";
-        }, 200);
+        }
     });
 }
+
 
 
 
