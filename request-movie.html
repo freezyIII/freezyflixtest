@@ -35,54 +35,59 @@
 <button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
-<div class="request-form-container">
-<h2>Nouvelle demande</h2><form id="requestForm" autocomplete="off" novalidate>
+<main class="request-form-container">
+  <h2>Nouvelle demande</h2>
+  <form id="requestForm" autocomplete="off" novalidate>
 
-<div class="form-group">
-<label for="categorie">Catégorie</label>
-<select id="categorie" name="categorie" required>
-<option value="">Sélectionner</option>
-<option value="films">Films</option>
-<option value="series">Séries</option>
-</select><span class="error-message"></span></div>
+    <div class="form-group">
+      <label for="categorie">Catégorie</label>
+      <select id="categorie" name="categorie" required>
+        <option value="">Sélectionner</option>
+        <option value="films">Films</option>
+        <option value="series">Séries</option>
+      </select>
+      <span class="error-message"></span>
+    </div>
 
-<div class="form-group">
-<label for="titre">Titre</label>
-<input type="text" id="titre" name="titre" required>
-<span class="error-message"></span>
-</div>
+    <div class="form-group">
+      <label for="titre">Titre</label>
+      <input type="text" id="titre" name="titre" required>
+      <span class="error-message"></span>
+    </div>
 
-<div class="form-group">
-<label for="url">URL descriptif</label>
-<input type="url" id="url" name="url" placeholder="https://..." required>
-<span class="error-message"></span>
-</div>
+    <div class="form-group">
+      <label for="url">URL descriptif</label>
+      <input type="url" id="url" name="url" placeholder="https://..." required>
+      <span class="error-message"></span>
+    </div>
 
-<div class="form-group">
-  <label for="resolution">Résolution</label>
-  <select id="resolution" name="resolution" required>
-    <option value="">Sélectionner</option>
-    <option value="1080p">1080p</option>
-    <option value="4k">4K</option>
-  </select>
-  <span class="error-message"></span>
-</div>
+    <div class="form-group">
+      <label for="resolution">Résolution</label>
+      <select id="resolution" name="resolution" required>
+        <option value="">Sélectionner</option>
+        <option value="1080p">1080p</option>
+        <option value="4k">4K</option>
+      </select>
+      <span class="error-message"></span>
+    </div>
 
+    <div class="form-group series-field" id="seriesOptions">
+      <label for="saison">Saison</label>
+      <input type="number" id="saison" name="saison" min="1">
+      <span class="error-message"></span>
+    </div>
 
-<div class="form-group series-field" id="seriesOptions">
-<label for="saison">Saison</label>
-<input type="text" id="saison" name="saison" min="1">
-<span class="error-message"></span>
-</div>
+    <div class="form-group series-field" id="episodeWrapper">
+      <label for="episode">Épisode</label>
+      <input type="number" id="episode" name="episode" min="1">
+      <span class="error-message"></span>
+    </div>
 
-<div class="form-group series-field" id="episodeWrapper">
-<label for="episode">Épisode</label>
-<input type="text" id="episode" name="episode" min="1">
-<span class="error-message"></span>
-</div>
+    <button type="submit">Envoyer</button>
+  </form>
 
-<button type="submit">Envoyer</button>
-<div id="toast" class="toast">Demande envoyée !</div></form></div>
+  <div id="toast" class="toast"></div>
+</main>
 
 <script type="module" src="js/navbar.js"></script>
 <script type="module" src="js/request-movie.js"></script>

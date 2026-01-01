@@ -1,11 +1,28 @@
-.profile-container { display: flex; align-items: center; gap: 50px; padding: 6% 20% 3% 20%; }
-.profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.profile-container { display: flex; align-items: center; gap: 50px; padding: 6% 20% 3% 20%; position: relative; }
+.profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px;max-width: 80%; }
 
 /* Photo de Profil */
 .profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 
 /* Nom d'Utilisateur */
 .profile-pseudo { font-size: 1.6rem; font-weight: bold; color: #fff; margin: 0; }
+
+/* Prénom */
+#profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;}
+
+.profile-date {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+    right: 20%;
+}
+
+/* Description */
+.profile-description {font-size: 1rem;color: #e8e8e8;margin: 0;max-width: 100%;display: -webkit-box;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;white-space: normal;word-break: break-word;}
+textarea#description {resize: none;}
 
 /* Sous le Profil */
 .profile-actions { display: flex; justify-content: flex-start; margin: 0 20% 10px; gap: 40px; }
@@ -55,9 +72,6 @@ textarea { min-height: 100px; }
 .form-group {position: relative;display: flex;flex-direction: column;}
 .char-counter {position: absolute;bottom: 20px;right: 10px;font-size: 0.75rem;color: #aaa;pointer-events: none;}
 
-/* Prénom */
-#profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;}
-
 /* Avatar du Fondateur */
 .avatar-wrapper {position: relative;display: inline-block;}
 .avatar-fondateur {position: absolute;top: -2px;left: 0;width: 100%;height: 100%;pointer-events: none;transform: scale(1.5);transform-origin: center;pointer-events: none;}
@@ -82,3 +96,23 @@ textarea { min-height: 100px; }
 .favorites-empty, .evaluation-empty {display: flex;flex-direction: column;align-items: center;justify-content: center;text-align: center;}
 .favorites-empty svg, .evaluation-empty svg {width: 30px;height: 30px;fill: #ccc;margin-bottom: 10px;}
 #favoritesContent {max-width: 1100px;}
+
+/* Supprimer le Compte */
+.delete-account-btn {position: absolute;bottom: 15px;left: 15px;padding: 10px 22px;border: 1px solid rgba(255, 0, 0, 0.5);border-radius: 12px;font-weight: 600;font-size: 0.9rem;cursor: pointer;text-decoration: none;color: #ff5555;background: rgba(255, 0, 0, 0.05);backdrop-filter: blur(8px);box-shadow: 0 4px 20px rgba(0,0,0,0.4);transition: all 0.3s ease;}
+.delete-account-btn:hover {background: rgba(255, 0, 0, 0.15);box-shadow: 0 6px 25px rgba(0,0,0,0.5);transform: translateY(-2px);}
+.delete-account-btn:active {transform: translateY(0);box-shadow: 0 3px 15px rgba(0,0,0,0.4);}
+.popup-overlay {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(6px); animation: overlayFade 0.3s ease forwards;}
+@keyframes overlayFade {from {opacity: 0;} to {opacity: 1;}}
+.popup-content.popup-delete {background-color: #121212; color: #fff; width: 400px; max-width: 90%; border-radius: 18px; padding: 30px 25px 25px 25px; text-align: center; box-shadow: 0 10px 35px rgba(0,0,0,0.6); transform: scale(0.8); opacity: 0; animation: popupScale 0.3s forwards;}
+@keyframes popupScale {to {transform: scale(1); opacity: 1;}}
+.popup-header {display: flex; flex-direction: column; align-items: center; gap: 10px;}
+.popup-icon svg {animation: bounce 1s infinite;}
+@keyframes bounce {0%, 100% {transform: translateY(0);} 50% {transform: translateY(-5px);}}
+.popup-header h3 {margin: 0; font-size: 1.5rem; font-weight: bold; color: #ff3d00;}
+.popup-text {margin: 15px 0; font-size: 1rem; color: #ccc; line-height: 1.5;}
+.popup-buttons {display: flex; justify-content: space-between; gap: 15px; margin-top: 20px;}
+.popup-buttons .btn {flex: 1; padding: 12px 0; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; transition: all 0.25s ease;}
+.popup-buttons .cancel-btn {background-color: #2a2a2a; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3);}
+.popup-buttons .cancel-btn:hover {background-color: #3c3c3c; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.4);}
+.popup-buttons .delete-btn {background-color: #ff3d00; color: #fff; box-shadow: 0 4px 12px rgba(255,61,0,0.4);}
+.popup-buttons .delete-btn:hover {background-color: #ff5722; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,87,34,0.5);}

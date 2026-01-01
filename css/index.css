@@ -44,7 +44,7 @@ h2 {color: #ef2626;}
 #toggleFilters svg {fill: #ffffff4d;}
 
 /* Grid */
-.grid-wrapper {width: 100%;max-width: 1920px;padding: 20px;margin: 0 auto;box-sizing: border-box;min-height: 500px;}
+.grid-wrapper {width: 100%;max-width: 1920px;padding: 40px 20px;margin: 0 auto;box-sizing: border-box;min-height: 500px;}
 .movie-grid {display: grid;grid-template-columns: repeat(auto-fill, 200px);;justify-content: center;gap: 12px;box-sizing: border-box;}
 .movie-grid-item {width: 100%;aspect-ratio: 2 / 3;position: relative;background: #424242;border-radius: 10px;transition: transform 0.3s ease;cursor: pointer;overflow: hidden;box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);}
 .movie-grid-item img {width: 100%;height: 100%;object-fit: cover;display: block;border-radius: 6px;}

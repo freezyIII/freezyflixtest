@@ -1,6 +1,6 @@
 // ================== IMPORTS ==================
 import { auth, provider, signInWithPopup, signOut, db } from './database.js';
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
 // ================== ELEMENTS NAVBAR ==================
@@ -23,12 +23,13 @@ if (!loginBtn || !Avatar) {
 
 // ================== UI ==================
 function showUser({ displayName, photoURL }) {
-    userPseudo.textContent = displayName || "Utilisateur";
-    userPseudo.style.display = "inline-block";
+  if (!userPseudo || !Avatar || !profileMenuContainer || !loginBtn) return;
 
-    Avatar.src = photoURL || "default-avatar.png";
-    profileMenuContainer.style.display = "flex";
-    loginBtn.style.display = "none";
+  userPseudo.textContent = displayName || "Utilisateur";
+  userPseudo.style.display = "inline-block";
+  Avatar.src = photoURL || "default-avatar.png";
+  profileMenuContainer.style.display = "flex";
+  loginBtn.style.display = "none";
 }
 
 function hideUser() {
@@ -39,28 +40,32 @@ function hideUser() {
 }
 
 // ================== AUTH ==================
-onAuthStateChanged(auth, async (user) => {
-    if (!loginBtn) return; // page sans navbar
+let unsubscribeUser = null;
 
-    if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userRef);
-        const data = snap.exists() ? snap.data() : {};
+onAuthStateChanged(auth, (user) => {
+  if (unsubscribeUser) {
+    unsubscribeUser();
+    unsubscribeUser = null;
+  }
 
-        showUser({
-            displayName: data.nomUtilisateur || user.displayName,
-            photoURL: data.photoURL || user.photoURL
-        });
+  if (!user) {
+    hideUser();
+    return;
+  }
 
-        // 🔹 Mettre l'utilisateur en ligne
-        await updateDoc(userRef, { status: "online" });
-    } else {
-        hideUser();
+  const userRef = doc(db, "users", user.uid);
+  unsubscribeUser = onSnapshot(userRef, (snap) => {
+    if (!snap.exists()) return;
 
-        // Si tu veux mettre l'utilisateur offline après logout
-        // il faudra le faire dans le code de logout (voir ci-dessous)
-    }
+    const data = snap.data();
+    showUser({
+      displayName: data.nomUtilisateur,
+      photoURL: data.photoURL
+    });
+  });
 });
+
+
 
 // ================== LOGIN ==================
 if (loginBtn) {
@@ -77,21 +82,23 @@ if (loginBtn) {
             const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
             const formattedDate = now.toLocaleString('fr-FR', options).replace('à', 'à');
 
-            if (!snap.exists()) {
-                await setDoc(userRef, {
-                    nomUtilisateur: user.displayName || "",
-                    email: user.email || "",
-                    photoURL: user.photoURL || "",
-                    dateInscription: formattedDate
-                });
-            } else {
+if (!snap.exists()) {
+  await setDoc(userRef, {
+    nomUtilisateur: user.displayName || "",
+    nomUtilisateur_lower: (user.displayName || "").toLowerCase(), // ✅ Ajout
+    email: user.email || "",
+    photoURL: user.photoURL || "",
+    dateInscription: formattedDate
+  });
+} else {
+  await setDoc(userRef, {
+    nomUtilisateur: user.displayName || "",
+    nomUtilisateur_lower: (user.displayName || "").toLowerCase(), // ✅ Ajout
+    email: user.email || "",
+    photoURL: snap.data().photoURL || user.photoURL
+  }, { merge: true });
+}
 
-                await setDoc(userRef, {
-                    nomUtilisateur: user.displayName || "",
-                    email: user.email || "",
-                    photoURL: snap.data().photoURL || user.photoURL
-                }, { merge: true });
-            }
 
         } catch (err) {
             console.error("Erreur connexion :", err);
@@ -124,30 +131,12 @@ if (menuProfile) {
 
 // ================== LOGOUT ==================
 if (menuLogout) {
-    menuLogout.addEventListener("click", async (e) => {
-        e.preventDefault();
-
-        const user = auth.currentUser;
-
-        try {
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, { status: "offline" }, { merge: true });
-            }
-
-            await signOut(auth);
-
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 200);
-
-        } catch (error) {
-            console.error("Erreur logout :", error);
-            // Force la déconnexion même en cas d'erreur Firestore
-            await signOut(auth);
-            window.location.href = "index.html";
-        }
-    });
+  menuLogout.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await signOut(auth);
+    // Pas besoin de timeout, le onAuthStateChanged s'occupe de tout
+    window.location.href = "index.html";
+  });
 }
 
 

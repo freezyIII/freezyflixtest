@@ -95,3 +95,8 @@ a.voir-plus:hover {
 ::-webkit-scrollbar {
     width: 0px;
 }
+.aide-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

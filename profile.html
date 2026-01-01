@@ -46,7 +46,10 @@
     <h2 class="profile-pseudo">
         <span id="profilePseudo"></span>
         <span id="profileFirstname"></span>
+        <p id="profileDate" class="profile-date"></p>
+
     </h2>
+    <p id="profileDescription" class="profile-description"></p>
     <a class="edit-profile-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.831.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.63.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path></svg>Modifier le profil</a>
@@ -78,23 +81,28 @@
                 </div>
             </div>
                 <p class="panel-avatar-text">Votre avatar</p>
+                <a href="#" id="deleteAccountBtn" class="delete-account-btn">Supprimer le compte</a>
             </div>
             <div class="panel-right">
                 <h2>Modifier le profil</h2>
                 <form id="editProfileForm">
                     <div class="form-group">
                         <label for="username">Nom d'utilisateur</label>
-                        <input type="text" id="username" name="username" maxlength="14">
-                        <span id="usernameCounter" class="char-counter">0/14</span>
+                        <input type="text" id="username" name="username" maxlength="16">
+                        <span id="usernameCounter" class="char-counter">0/16</span>
                     </div>
-                    <div class="form-group">
-                        <label for="firstname">Prénom</label>
-                        <input type="text" id="firstname" name="firstname">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea id="description" name="description"></textarea>
-                    </div>
+<div class="form-group">
+    <label for="firstname">Prénom</label>
+    <input type="text" id="firstname" name="firstname" maxlength="16">
+    <span id="firstnameCounter" class="char-counter">0/16</span>
+</div>
+
+<div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" maxlength="200"></textarea>
+    <span id="descriptionCounter" class="char-counter">0/200</span>
+</div>
+
                     <div class="form-buttons">
                         <a href="#" class="cancel-btn">Annuler</a>
                         <button type="submit">Enregistrer</button>
@@ -122,6 +130,28 @@
         </div>
     </div>
 </div>
+
+<!-- Popup de confirmation suppression -->
+<div id="deleteConfirmPopup" class="popup-overlay">
+  <div class="popup-content popup-delete">
+    <div class="popup-header">
+      <div class="popup-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="60" height="60" fill="#ff3d00">
+          <path d="M3 6h18v2H3V6zm2 4h14l-1.5 12H6.5L5 10zm5-4V4h4v2h5v2H5V6h5z"/>
+        </svg>
+      </div>
+      <h3>Supprimer le compte ?</h3>
+    </div>
+    <p class="popup-text">
+      Cette action est <strong>irréversible</strong> ! Toutes vos données seront supprimées définitivement.
+    </p>
+    <div class="popup-buttons">
+      <button id="cancelDelete" class="btn cancel-btn">Annuler</button>
+      <button id="confirmDelete" class="btn delete-btn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
 
 </main>
 <div id="toast" class="toast">Profil mis à jour !</div>

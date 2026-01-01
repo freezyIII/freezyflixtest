@@ -126,8 +126,8 @@ requestForm.addEventListener("submit", async (e) => {
 
   // --- Construction de l'objet à envoyer (sans userId) ---
   const formData = { categorie, titre, url, resolution };
-  if (saison) formData.saison = saison;
-  if (episode) formData.episode = episode;
+if (saison) formData.saison = parseInt(saison);
+if (episode) formData.episode = parseInt(episode);
 
   // --- Enregistrement dans Firestore ---
   await saveRequest(userId, formData);
