@@ -444,18 +444,30 @@ confirmDeleteBtn.addEventListener('click', async () => {
 // ==============================
 // AUTHENTIFICATION & ADMIN
 // ==============================
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return window.location.href = "index.html";
+import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import { auth } from './database.js';
 
-  const snap = await getDoc(doc(db, "users", user.uid));
-  const data = snap.data();
+onAuthStateChanged(auth, (user) => {
+  if (!user) return;
 
-  if (data.banned) {
-    alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
-    await signOut(auth);
-    window.location.href = "index.html";
-    return;
-  }
+  const userRef = doc(db, "users", user.uid);
+
+  // Écoute en temps réel de son propre profil
+  onSnapshot(userRef, (snap) => {
+    if (!snap.exists()) return;
+
+    const data = snap.data();
+
+    // Si l'utilisateur est banni, on le déconnecte immédiatement
+    if (data.banned) {
+      alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+  });
+});
+
 
   const uidToDisplay = profileUid || user.uid;
   await displayUserProfileByUid(uidToDisplay, user.uid);
@@ -519,5 +531,3 @@ if (data.founder && uidToDisplay !== user.uid) {
       banUserPopup.style.display = 'none';
     };
 
-
-});
