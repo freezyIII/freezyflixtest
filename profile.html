@@ -39,123 +39,138 @@
 <main>
 <section class="profile-container">
 <div class="avatar-wrapper">
-    <img id="profileAvatar" class="profile-avatar" alt="Avatar">
-    <div class="avatar-fondateur" id="avatarAnimation"></div>
+<img id="profileAvatar" class="profile-avatar" alt="Avatar">
+<div class="avatar-fondateur" id="avatarAnimation"></div>
 </div>
 <div class="profile-info">
-    <h2 class="profile-pseudo">
-        <span id="profilePseudo"></span>
-        <span id="profileFirstname"></span>
-        <p id="profileDate" class="profile-date"></p>
-
-    </h2>
-    <p id="profileDescription" class="profile-description"></p>
-    <a class="edit-profile-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.831.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.63.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path></svg>Modifier le profil</a>
+<div class="profile-header">
+<div class="pseudo-wrapper">
+<h2 class="profile-pseudo" id="profilePseudo">Pseudo</h2>
+<span id="profileFirstname"></span>
+</div>
+<div id="adminActions" class="admin-actions" style="display:none;">
+<button id="banUserBtn" class="admin-btn">Bannir</button>
+<button id="deleteUserBtn" class="admin-btn">Supprimer</button>
+</div>
+</div>
+<p id="profileDate" class="profile-date"></p>
+<p id="profileDescription" class="profile-description"></p>
+<a class="edit-profile-btn">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path d="m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.831.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.63.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"></path>
+</svg>Modifier le profil</a>
 </div>
 </section>
-
 <nav class="profile-actions">
 <a href="#" class="profile-link active">Favoris</a>
 <a href="#" class="profile-link">Évaluation</a>
 </nav>
-
 <hr class="profile-divider">
-
-
 <div id="favoritesContent" class="grid-wrapper"></div>
 <div id="evaluationContent" class="grid-wrapper"></div>
-
-
-    <div id="editProfilePanel" class="overlay">
-        <div class="edit-panel">
-            <a href="#" class="close-panel">&times;</a>
-            <div class="panel-left">
-                            <div class="panel-avatar-wrapper">
-                <img id="panelAvatar" alt="Avatar" class="panel-avatar" src="https://lh3.googleusercontent.com/a/ACg8ocK0wLbXePE7U7v2xIUeokWxQv5L_X1h6G2HKBuR2SBt_z5wL7RW=s96-c">
-                <div class="panel-avatar-overlay">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
-                </div>
-            </div>
-                <p class="panel-avatar-text">Votre avatar</p>
-                <a href="#" id="deleteAccountBtn" class="delete-account-btn">Supprimer le compte</a>
-            </div>
-            <div class="panel-right">
-                <h2>Modifier le profil</h2>
-                <form id="editProfileForm">
-                    <div class="form-group">
-                        <label for="username">Nom d'utilisateur</label>
-                        <input type="text" id="username" name="username" maxlength="16">
-                        <span id="usernameCounter" class="char-counter">0/16</span>
-                    </div>
+<div id="editProfilePanel" class="overlay">
+<div class="edit-panel">
+<a href="#" class="close-panel">&times;</a>
+<div class="panel-left">
+<div class="panel-avatar-wrapper">
+<img id="panelAvatar" alt="Avatar" class="panel-avatar" src="https://lh3.googleusercontent.com/a/ACg8ocK0wLbXePE7U7v2xIUeokWxQv5L_X1h6G2HKBuR2SBt_z5wL7RW=s96-c">
+<div class="panel-avatar-overlay">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+</svg>
+</div>
+</div>
+<p class="panel-avatar-text">Votre avatar</p>
+<a href="#" id="deleteAccountBtn" class="delete-account-btn">Supprimer le compte</a>
+</div>
+<div class="panel-right">
+<h2>Modifier le profil</h2>
+<form id="editProfileForm">
 <div class="form-group">
-    <label for="firstname">Prénom</label>
-    <input type="text" id="firstname" name="firstname" maxlength="16">
-    <span id="firstnameCounter" class="char-counter">0/16</span>
+<label for="username">Nom d'utilisateur</label>
+<input type="text" id="username" name="username" maxlength="16" autocomplete="off" autocorrect="off" spellcheck="false">
+<span id="usernameCounter" class="char-counter">0/16</span>
 </div>
-
 <div class="form-group">
-    <label for="description">Description</label>
-    <textarea id="description" name="description" maxlength="200"></textarea>
-    <span id="descriptionCounter" class="char-counter">0/200</span>
+<label for="firstname">Prénom</label>
+<input type="text" id="firstname" name="firstname" maxlength="16" autocomplete="off" autocorrect="off" spellcheck="false">
+<span id="firstnameCounter" class="char-counter">0/16</span>
 </div>
-
-                    <div class="form-buttons">
-                        <a href="#" class="cancel-btn">Annuler</a>
-                        <button type="submit">Enregistrer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="changeAvatarPanel" class="overlay">
-    <div class="edit-panel">
-        <a href="#" class="close-panel">&times;</a>
-        <div class="panel-right" style="flex:1; padding:30px;">
-            <h2>Changer l'avatar</h2>
-            <form id="changeAvatarForm">
-                <div class="form-group">
-                    <label for="avatarUrl">URL de l'image</label>
-                    <input type="url" id="avatarUrl" name="avatarUrl" placeholder="https://exemple.com/mon-avatar.jpg" pattern="https?://.+\.(jpg|jpeg|png|gif)" autocomplete="off" autocorrect="off" spellcheck="false">
-                    <small style="color:#ccc; font-size:0.8rem;">Formats acceptés : jpg, jpeg, png, gif</small>
-                </div>
-                <div class="form-buttons" style="position:relative; bottom:auto; right:auto; margin-top:20px;">
-                    <a href="#" class="cancel-btn">Annuler</a>
-                    <button type="submit">Valider</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="form-group">
+<label for="description">Description</label>
+<textarea id="description" name="description" maxlength="200" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+<span id="descriptionCounter" class="char-counter">0/200</span>
 </div>
-
-<!-- Popup de confirmation suppression -->
+<div class="form-buttons">
+<a href="#" class="cancel-btn">Annuler</a>
+<button type="submit">Enregistrer</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div id="changeAvatarPanel" class="overlay">
+<div class="edit-panel">
+<a href="#" class="close-panel">&times;</a>
+<div class="panel-right" style="flex:1; padding:30px;">
+<h2>Changer l'avatar</h2>
+<form id="changeAvatarForm">
+<div class="form-group">
+<label for="avatarUrl">URL de l'image</label>
+<input type="url" id="avatarUrl" name="avatarUrl" placeholder="https://exemple.com/mon-avatar.jpg" pattern="https?://.+\.(jpg|jpeg|png|gif)" autocomplete="off" autocorrect="off" spellcheck="false">
+<small style="color:#ccc; font-size:0.8rem;">Formats acceptés : jpg, jpeg, png, gif</small>
+</div>
+<div class="form-buttons" style="position:relative; bottom:auto; right:auto; margin-top:20px;">
+<a href="#" class="cancel-btn">Annuler</a>
+<button type="submit">Valider</button>
+</div>
+</form>
+</div>
+</div>
+</div>
 <div id="deleteConfirmPopup" class="popup-overlay">
-  <div class="popup-content popup-delete">
-    <div class="popup-header">
-      <div class="popup-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="60" height="60" fill="#ff3d00">
-          <path d="M3 6h18v2H3V6zm2 4h14l-1.5 12H6.5L5 10zm5-4V4h4v2h5v2H5V6h5z"/>
-        </svg>
-      </div>
-      <h3>Supprimer le compte ?</h3>
-    </div>
-    <p class="popup-text">
-      Cette action est <strong>irréversible</strong> ! Toutes vos données seront supprimées définitivement.
-    </p>
-    <div class="popup-buttons">
-      <button id="cancelDelete" class="btn cancel-btn">Annuler</button>
-      <button id="confirmDelete" class="btn delete-btn">Supprimer</button>
-    </div>
-  </div>
+<div class="popup-content popup-delete">
+<div class="popup-header">
+<div class="popup-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="60" height="60" fill="#ff3d00">
+<path d="M3 6h18v2H3V6zm2 4h14l-1.5 12H6.5L5 10zm5-4V4h4v2h5v2H5V6h5z"/>
+</svg>
 </div>
-
-
+<h3>Supprimer le compte ?</h3>
+</div>
+<p class="popup-text">Cette action est <strong>irréversible</strong> ! Toutes vos données seront supprimées définitivement.</p>
+<div class="popup-buttons">
+<button id="cancelDelete" class="btn cancel-btn">Annuler</button>
+<button id="confirmDelete" class="btn delete-btn">Supprimer</button>
+</div>
+</div>
+</div>
+<div id="banUserPopup" class="popup-overlay">
+<div class="popup-content">
+<div class="popup-header">
+<h3>Bannir l'utilisateur</h3>
+</div>
+<div class="popup-body">
+<label for="banReason">Raison du ban :</label>
+<input type="text" id="banReason" placeholder="Ex: Comportement inapproprié">
+<label for="banDuration">Durée du ban :</label>
+<select id="banDuration">
+<option value="1">1 jour</option>
+<option value="3">3 jours</option>
+<option value="7">7 jours</option>
+<option value="30">30 jours</option>
+<option value="permanent">Permanent</option>
+</select>
+</div>
+<div class="popup-buttons">
+<button id="cancelBan" class="btn cancel-btn">Annuler</button>
+<button id="confirmBan" class="btn delete-btn">Bannir</button>
+</div>
+</div>
+</div>
 </main>
 <div id="toast" class="toast">Profil mis à jour !</div>
-
 <script src="js/movies.js"></script>
 <script src="js/index.js"></script>
 <script type="module" src="js/navbar.js"></script>

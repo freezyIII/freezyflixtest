@@ -82,6 +82,17 @@ if (loginBtn) {
             const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
             const formattedDate = now.toLocaleString('fr-FR', options).replace('à', 'à');
 
+            if (snap.exists()) {
+    const userData = snap.data();
+
+    if (userData.banned) {
+        // Affiche un panel central avec la raison
+        showBanPanel(userData.banReason || "Raison non spécifiée");
+        // Déconnexion pour empêcher l’accès
+        await signOut(auth);
+        return;
+    }
+}
 if (!snap.exists()) {
   await setDoc(userRef, {
     nomUtilisateur: user.displayName || "",
@@ -106,6 +117,34 @@ if (!snap.exists()) {
     });
 }
 
+function showBanPanel(reason) {
+    let banOverlay = document.createElement("div");
+    banOverlay.id = "banOverlay";
+    banOverlay.style.position = "fixed";
+    banOverlay.style.top = "0";
+    banOverlay.style.left = "0";
+    banOverlay.style.width = "100%";
+    banOverlay.style.height = "100%";
+    banOverlay.style.backgroundColor = "rgba(0,0,0,0.8)";
+    banOverlay.style.display = "flex";
+    banOverlay.style.alignItems = "center";
+    banOverlay.style.justifyContent = "center";
+    banOverlay.style.zIndex = "9999";
+
+    banOverlay.innerHTML = `
+        <div style="background:#222; color:#fff; padding:30px; border-radius:10px; text-align:center; max-width:400px;">
+            <h2>Compte banni</h2>
+            <p>Raison : ${reason}</p>
+            <button id="banOverlayClose" style="margin-top:20px;padding:10px 20px;">Fermer</button>
+        </div>
+    `;
+
+    document.body.appendChild(banOverlay);
+
+    document.getElementById("banOverlayClose").addEventListener("click", () => {
+        banOverlay.remove();
+    });
+}
 
 // ================== MENU ==================
 if (Avatar) {

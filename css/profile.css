@@ -4,11 +4,25 @@
 /* Photo de Profil */
 .profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
 
-/* Nom d'Utilisateur */
-.profile-pseudo { font-size: 1.6rem; font-weight: bold; color: #fff; margin: 0; }
+.pseudo-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
 
-/* Prénom */
-#profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;}
+.profile-pseudo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+}
+
+#profileFirstname {
+  font-weight: normal;
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1;
+}
 
 .profile-date {
     position: absolute;
@@ -116,3 +130,224 @@ textarea { min-height: 100px; }
 .popup-buttons .cancel-btn:hover {background-color: #3c3c3c; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.4);}
 .popup-buttons .delete-btn {background-color: #ff3d00; color: #fff; box-shadow: 0 4px 12px rgba(255,61,0,0.4);}
 .popup-buttons .delete-btn:hover {background-color: #ff5722; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,87,34,0.5);}
+
+
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  min-width: 250px;
+}
+
+.admin-btn {
+  flex: 1;
+  min-width: 120px;
+  max-width: 200px;
+  text-align: center;
+  padding: 7px 0;
+  background: linear-gradient(145deg, #ff1a1a, #cc0000);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 8px rgba(255,0,0,0.5);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(145deg, #ff3333, #ff0000);
+  box-shadow: 0 4px 10px rgba(255,0,0,0.7);
+  transform: translateY(-1px);
+}
+
+.admin-btn:active {
+  background: #cc0000;
+  box-shadow: 0 2px 6px rgba(200,0,0,0.5);
+  transform: translateY(0);
+}
+
+.admin-btn svg {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-right: 4px;
+  fill: #fff;
+}
+#banNoticePanel {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
+
+/* ==========================
+   Panel Bannissement Utilisateur
+   ========================== */
+#banUserPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#banUserPopup .popup-content {
+  background-color: #1f1f1f;
+  border-radius: 16px;
+  padding: 30px 25px 25px 25px;
+  width: 400px;
+  max-width: 95%;
+  color: #fff;
+  box-shadow: 0 8px 35px rgba(0,0,0,0.6);
+  transform: scale(0.8);
+  opacity: 0;
+  animation: popupScaleIn 0.3s forwards;
+}
+
+@keyframes popupScaleIn {
+  to { transform: scale(1); opacity: 1; }
+}
+
+#banUserPopup .popup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#banUserPopup .popup-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff3d00;
+  margin: 0;
+}
+
+#banUserPopup .popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+#banUserPopup label {
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+#banUserPopup input[type="text"],
+#banUserPopup select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background-color: #181818;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#banUserPopup input[type="text"]:focus,
+#banUserPopup select:focus {
+  border-color: #ff3d00;
+  box-shadow: 0 0 8px rgba(255, 61, 0, 0.5);
+}
+
+#banUserPopup .popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+#banUserPopup .popup-buttons .btn {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+#banUserPopup .popup-buttons .cancel-btn {
+  background-color: #2a2a2a;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#banUserPopup .popup-buttons .cancel-btn:hover {
+  background-color: #3c3c3c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+#banUserPopup .popup-buttons .delete-btn {
+  background: linear-gradient(145deg, #ff1a1a, #cc0000);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255,0,0,0.5);
+}
+
+#banUserPopup .popup-buttons .delete-btn:hover {
+  background: linear-gradient(145deg, #ff3333, #ff0000);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255,0,0,0.7);
+}
+
+#banUserPopup .popup-buttons .delete-btn:active {
+  background-color: #cc0000;
+  box-shadow: 0 2px 8px rgba(200,0,0,0.5);
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  #banUserPopup .popup-content {
+    padding: 20px 15px;
+  }
+
+  #banUserPopup .popup-body {
+    gap: 10px;
+  }
+
+  #banUserPopup .popup-buttons {
+    flex-direction: column;
+  }
+
+  #banUserPopup .popup-buttons .btn {
+    width: 100%;
+  }
+}
