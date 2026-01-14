@@ -450,6 +450,31 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
+  // ----------------------------
+  // Vérification du ban temporaire
+  // ----------------------------
+  if (data.banned) {
+    const now = new Date();
+    const banStart = new Date(data.banStart);
+    const duration = data.banDuration;
+
+    if (duration !== "permanent") {
+        const banDays = parseInt(duration);
+        const banEnd = new Date(banStart.getTime() + banDays * 24 * 60 * 60 * 1000);
+
+        if (now > banEnd) {
+            // Ban terminé → lever le ban
+            await setDoc(doc(db, "users", user.uid), {
+                banned: false,
+                banReason: null,
+                banDuration: null,
+                banStart: null
+            }, { merge: true });
+            data.banned = false; // mise à jour locale
+        }
+    }
+  }
+
   if (data.banned) {
     alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
     await signOut(auth);
@@ -457,31 +482,31 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
+  // ----------------------------
+  // Affichage du profil et actions admin
+  // ----------------------------
   const uidToDisplay = profileUid || user.uid;
   await displayUserProfileByUid(uidToDisplay, user.uid);
 
-  // Gestion actions admin (ban & delete autres utilisateurs)
-const adminActions = document.getElementById('adminActions');
+  const adminActions = document.getElementById('adminActions');
+  if (data.founder && uidToDisplay !== user.uid) {
+      adminActions.style.display = 'flex';
+      document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
+      cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
 
-if (data.founder && uidToDisplay !== user.uid) {
-    adminActions.style.display = 'flex';
+      confirmBanBtn.onclick = async () => {
+          const reason = banReasonInput.value.trim();
+          const duration = banDurationSelect.value;
+          if (!reason) return;
 
-    document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
-    cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
+          await setDoc(doc(db, "users", uidToDisplay), {
+              banned: true,
+              banReason: reason,
+              banDuration: duration,
+              banStart: new Date().toISOString()
+          }, { merge: true });
 
-    confirmBanBtn.onclick = async () => {
-      const reason = banReasonInput.value.trim();
-      const duration = banDurationSelect.value;
-      if (!reason) return;
-
-      await setDoc(doc(db, "users", uidToDisplay), {
-        banned: true,
-        banReason: reason,
-        banDuration: duration,
-        banStart: new Date().toISOString()
-      }, { merge: true });
-
-      banUserPopup.style.display = 'none';
-    };
-};
+          banUserPopup.style.display = 'none';
+      };
+  }
 });
