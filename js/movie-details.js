@@ -329,11 +329,17 @@ function setupCommentsRealtime() {
 function createCommentElement(commentId, data, username, photoURL, timestamp, isOwner) {
   const div = document.createElement("div");
   div.className = "comment-item";
+
+  // On crée un lien vers le profil de l'utilisateur
+  const profileLink = `profile.html?uid=${data.userId}`;
+
   div.innerHTML = `
-    <img class="comment-avatar" src="${photoURL}">
+    <a href="${profileLink}" class="comment-avatar-link">
+      <img class="comment-avatar" src="${photoURL}" alt="Avatar de ${username}">
+    </a>
     <div class="comment-text">
       <div class="username-time">
-        <span class="username">${username}</span>
+        <a href="${profileLink}" class="username">${username}</a>
         <span class="comment-time">${timeAgo(timestamp)}</span>
       </div>
       <p>${data.text}</p>
