@@ -482,21 +482,21 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
       cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
 
-      confirmBanBtn.onclick = async () => {
-          const reason = banReasonInput.value.trim();
-          const duration = banDurationSelect.value;
-          if (!reason) return;
+confirmBanBtn.onclick = async () => {
+  const reason = banReasonInput.value.trim();
+  const duration = banDurationSelect.value;
+  if (!reason) return;
 
-await setDoc(doc(db, "users", uidToDisplay), {
-    banned: true,
-    banReason: reason,
-    banDuration: duration,
-    banStart: new Date().toISOString(),
-    tokenValidSince: new Date().toISOString() // <-- nouveau champ
-}, { merge: true });
+  await setDoc(doc(db, "users", uidToDisplay), {
+      banned: true,
+      banReason: reason,
+      banDuration: duration,
+      banStart: new Date().toISOString(),
+      tokenValidSince: new Date().toISOString()
+  }, { merge: true });
 
+  banUserPopup.style.display = 'none';
+};
 
-          banUserPopup.style.display = 'none';
-      };
   }
 });
