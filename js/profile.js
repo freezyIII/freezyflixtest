@@ -8,7 +8,8 @@ import {
   onAuthStateChanged,
   reauthenticateWithPopup,
   GoogleAuthProvider,
-  deleteUser
+  deleteUser,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
 // ==============================
@@ -444,15 +445,14 @@ confirmDeleteBtn.addEventListener('click', async () => {
 // ==============================
 // AUTHENTIFICATION & ADMIN
 // ==============================
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) return window.location.href = "index.html";
 
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
-  // ----------------------------
   // Vérification du ban
-  // ----------------------------
   if (data.banned) {
       alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
       await signOut(auth);
@@ -460,8 +460,8 @@ onAuthStateChanged(auth, async (user) => {
       return;
   }
 
-  // Vérifier token validité (déconnexion forcée si ban récent)
-  const token = await user.getIdTokenResult(true); // force refresh du token
+  // Vérifier token forcé
+  const token = await user.getIdTokenResult(true); // rafraîchit le token
   const tokenValidSince = data.tokenValidSince ? new Date(data.tokenValidSince) : null;
   if (tokenValidSince && token.issuedAtTime * 1000 < tokenValidSince.getTime()) {
       alert("Vous avez été banni !");
