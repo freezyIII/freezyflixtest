@@ -330,42 +330,49 @@ function createCommentElement(commentId, data, username, photoURL, timestamp, is
   const div = document.createElement("div");
   div.className = "comment-item";
 
-  // On crée un lien vers le profil de l'utilisateur
-  const profileLink = `profile.html?uid=${data.userId}`;
+  // Créer l'image avatar cliquable
+  const avatarLink = document.createElement("a");
+  avatarLink.href = `profile.html?uid=${data.userId}`; // Redirige vers le profil avec l'UID
+  avatarLink.target = "_blank"; // Ouvre dans un nouvel onglet si tu veux
+  const avatarImg = document.createElement("img");
+  avatarImg.className = "comment-avatar";
+  avatarImg.src = photoURL;
+  avatarImg.alt = username;
+  avatarLink.appendChild(avatarImg);
 
-  div.innerHTML = `
-    <a href="${profileLink}" class="comment-avatar-link">
-      <img class="comment-avatar" src="${photoURL}" alt="Avatar de ${username}">
-    </a>
-    <div class="comment-text">
-      <div class="username-time">
-        <a href="${profileLink}" class="username">${username}</a>
-        <span class="comment-time">${timeAgo(timestamp)}</span>
-      </div>
-      <p>${data.text}</p>
-      <div class="comment-actions">
-        <button class="reply-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16" width="16">
-            <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"></path>
+  const commentTextDiv = document.createElement("div");
+  commentTextDiv.className = "comment-text";
+  commentTextDiv.innerHTML = `
+    <div class="username-time">
+      <span class="username">${username}</span>
+      <span class="comment-time">${timeAgo(timestamp)}</span>
+    </div>
+    <p>${data.text}</p>
+    <div class="comment-actions">
+      <button class="reply-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16" width="16">
+          <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"></path>
+        </svg>
+        Répondre
+      </button>
+      <div class="more-wrapper">
+        <button class="more-btn" aria-label="Plus d’options">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em" width="1em" fill="white">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
           </svg>
-          Répondre
+          <span class="more-text">Plus</span>
         </button>
-        <div class="more-wrapper">
-          <button class="more-btn" aria-label="Plus d’options">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="1em" width="1em" fill="white">
-              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-            </svg>
-            <span class="more-text">Plus</span>
-          </button>
-          <div class="more-menu" style="display:none;">
-            ${isOwner || isFounder
-              ? `<button class="delete-comment">Supprimer</button>`
-              : `<button class="report-comment">Signaler</button>`}
-          </div>
+        <div class="more-menu" style="display:none;">
+          ${isOwner || isFounder
+            ? `<button class="delete-comment">Supprimer</button>`
+            : `<button class="report-comment">Signaler</button>`}
         </div>
       </div>
     </div>
   `;
+
+  div.appendChild(avatarLink); // Ajouter le lien de l’avatar
+  div.appendChild(commentTextDiv); // Ajouter le texte du commentaire
 
   setupCommentActions(div, commentId, data, isOwner);
   return div;
