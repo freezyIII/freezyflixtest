@@ -142,11 +142,6 @@ textarea { min-height: 100px; }
 
 }
 
-.admin-actions {
-  display: flex;
-  gap: 12px;
-  min-width: 250px;
-}
 
 .admin-btn {
   flex: 1;

@@ -444,30 +444,18 @@ confirmDeleteBtn.addEventListener('click', async () => {
 // ==============================
 // AUTHENTIFICATION & ADMIN
 // ==============================
-import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-import { auth } from './database.js';
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return window.location.href = "index.html";
 
-onAuthStateChanged(auth, (user) => {
-  if (!user) return;
+  const snap = await getDoc(doc(db, "users", user.uid));
+  const data = snap.data();
 
-  const userRef = doc(db, "users", user.uid);
-
-  // Écoute en temps réel de son propre profil
-  onSnapshot(userRef, (snap) => {
-    if (!snap.exists()) return;
-
-    const data = snap.data();
-
-    // Si l'utilisateur est banni, on le déconnecte immédiatement
-    if (data.banned) {
-      alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
-    }
-  });
-});
-
+  if (data.banned) {
+    alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
+    await signOut(auth);
+    window.location.href = "index.html";
+    return;
+  }
 
   const uidToDisplay = profileUid || user.uid;
   await displayUserProfileByUid(uidToDisplay, user.uid);
@@ -495,39 +483,5 @@ if (data.founder && uidToDisplay !== user.uid) {
 
       banUserPopup.style.display = 'none';
     };
-
-      document.getElementById('deleteUserBtn').onclick = async () => {
-      if (!confirm("Voulez-vous vraiment supprimer ce compte ?")) return;
-      try {
-        await deleteUserData(uidToDisplay);
-        alert("Compte utilisateur supprimé !");
-        location.reload();
-      } catch (err) {
-        console.error("Erreur suppression :", err);
-        alert("Erreur lors de la suppression");
-      }
-    };
-
-} else {
-    adminActions.style.display = 'none';
-}
-
-
-    document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
-    cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
-
-    confirmBanBtn.onclick = async () => {
-      const reason = banReasonInput.value.trim();
-      const duration = banDurationSelect.value;
-      if (!reason) return;
-
-      await setDoc(doc(db, "users", uidToDisplay), {
-        banned: true,
-        banReason: reason,
-        banDuration: duration,
-        banStart: new Date().toISOString()
-      }, { merge: true });
-
-      banUserPopup.style.display = 'none';
-    };
-
+};
+});

@@ -18,7 +18,7 @@ header {background: #0d0d0d;padding: 0 20px;display: flex;align-items: center;he
 .dropdown-menu {position: absolute;top: 55px;right: 0;background: #1c1c1c;width: 170px;border-radius: 4px;box-shadow: 0 6px 15px rgba(0,0,0,0.5);display: none;flex-direction: column;overflow: hidden;z-index: 999;}
 .dropdown-menu a {padding: 12px;color: white;font-size: 14px;text-decoration: none;display: block;transition: background 0.2s;}
 .dropdown-menu a:hover {background: #ff0000bd;}
-.user-pseudo {font-size: 16px;color: white;font-weight: bold;display: inline-block;max-width: 120px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.user-pseudo {font-size: 16px;color: white;font-weight: bold;display: inline-block;max-width: 160px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 
 /* Don animation*/
 .animated-link {font-size: 18px;font-weight: bold;text-decoration: none;color: black;display: inline-block;}
