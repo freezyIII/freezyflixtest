@@ -332,8 +332,8 @@ function createCommentElement(commentId, data, username, photoURL, timestamp, is
 
   // Créer l'image avatar cliquable
   const avatarLink = document.createElement("a");
-  avatarLink.href = `profile.html?uid=${data.userId}`; // Redirige vers le profil avec l'UID
-  avatarLink.target = "_blank"; // Ouvre dans un nouvel onglet si tu veux
+  avatarLink.href = `profile.html?uid=${data.userId}`; // redirige vers le profil
+  // On n'ajoute pas target="_blank", donc ça reste sur la même page
   const avatarImg = document.createElement("img");
   avatarImg.className = "comment-avatar";
   avatarImg.src = photoURL;
