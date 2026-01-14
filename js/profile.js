@@ -451,35 +451,23 @@ onAuthStateChanged(auth, async (user) => {
   const data = snap.data();
 
   // ----------------------------
-  // Vérification du ban temporaire
+  // Vérification du ban
   // ----------------------------
   if (data.banned) {
-    const now = new Date();
-    const banStart = new Date(data.banStart);
-    const duration = data.banDuration;
-
-    if (duration !== "permanent") {
-        const banDays = parseInt(duration);
-        const banEnd = new Date(banStart.getTime() + banDays * 24 * 60 * 60 * 1000);
-
-        if (now > banEnd) {
-            // Ban terminé → lever le ban
-            await setDoc(doc(db, "users", user.uid), {
-                banned: false,
-                banReason: null,
-                banDuration: null,
-                banStart: null
-            }, { merge: true });
-            data.banned = false; // mise à jour locale
-        }
-    }
+      alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
+      await signOut(auth);
+      window.location.href = "index.html";
+      return;
   }
 
-  if (data.banned) {
-    alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
-    await signOut(auth);
-    window.location.href = "index.html";
-    return;
+  // Vérifier token validité (déconnexion forcée si ban récent)
+  const token = await user.getIdTokenResult(true); // force refresh du token
+  const tokenValidSince = data.tokenValidSince ? new Date(data.tokenValidSince) : null;
+  if (tokenValidSince && token.issuedAtTime * 1000 < tokenValidSince.getTime()) {
+      alert("Vous avez été banni !");
+      await signOut(auth);
+      window.location.href = "index.html";
+      return;
   }
 
   // ----------------------------
@@ -499,12 +487,14 @@ onAuthStateChanged(auth, async (user) => {
           const duration = banDurationSelect.value;
           if (!reason) return;
 
-          await setDoc(doc(db, "users", uidToDisplay), {
-              banned: true,
-              banReason: reason,
-              banDuration: duration,
-              banStart: new Date().toISOString()
-          }, { merge: true });
+await setDoc(doc(db, "users", uidToDisplay), {
+    banned: true,
+    banReason: reason,
+    banDuration: duration,
+    banStart: new Date().toISOString(),
+    tokenValidSince: new Date().toISOString() // <-- nouveau champ
+}, { merge: true });
+
 
           banUserPopup.style.display = 'none';
       };
