@@ -161,17 +161,17 @@ const displayUserProfileByUid = async (uidToDisplay, currentUserUid) => {
     loadFavorites();
     loadEvaluations();
 
-    // Animation fondateur
-// Animation fondateur
+// ==============================
+// Animation fondateur (visible par tous)
+// ==============================
 const avatarAnimationDiv = document.getElementById('avatarAnimation');
 
-// Vérifie si l'utilisateur est fondateur
-if (auth.currentUser) {
-  const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
-  const userData = userSnap.data();
+// userData = données DU PROFIL affiché
+if (userData?.founder === true) {
+  avatarAnimationDiv.style.display = 'block';
 
-  if (userData?.founder) {
-    avatarAnimationDiv.style.display = 'block';
+  // éviter double chargement lottie
+  if (!avatarAnimationDiv.dataset.loaded) {
     lottie.loadAnimation({
       container: avatarAnimationDiv,
       renderer: 'svg',
@@ -179,11 +179,11 @@ if (auth.currentUser) {
       autoplay: true,
       path: 'assets/animations/avatar.json'
     });
-  } else {
-    avatarAnimationDiv.style.display = 'none';
+    avatarAnimationDiv.dataset.loaded = "true";
   }
+} else {
+  avatarAnimationDiv.style.display = 'none';
 }
-
 
   } catch (err) {
     console.error("Erreur affichage profil :", err);
