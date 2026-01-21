@@ -44,26 +44,107 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------- Filtres --------------------
-  if (filterBtn && filterPanel) {
-    filterBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      filterPanel.classList.toggle("active");
-    });
+if (filterBtn && filterPanel) {
+  const categoryFilter = document.getElementById("category-filter");
+  const typeFilter = document.getElementById("type-filter");
+  const yearFilter = document.getElementById("year-filter");
+  const qualityFilter = document.getElementById("quality-filter");
+  const applyBtn = document.getElementById("apply-filters");
 
-    closeBtn?.addEventListener("click", () => filterPanel.classList.remove("active"));
+  let previousFilterValues = {};
 
-    document.addEventListener("click", e => {
-      if (!filterBtn.contains(e.target) && !filterPanel.contains(e.target)) {
-        filterPanel.classList.remove("active");
-      }
-    });
-
-    resetBtn?.addEventListener("click", () => {
-      filterPanel.querySelectorAll("select").forEach(select => select.value = "");
-      document.querySelectorAll(".movie-grid-item").forEach(movie => movie.hidden = false);
-      updateTotalMovies();
-    });
+  // Sauvegarder l'état actuel des filtres
+  function saveFilterValues() {
+    previousFilterValues = {
+      category: categoryFilter.value,
+      type: typeFilter.value,
+      year: yearFilter.value,
+      quality: qualityFilter.value,
+    };
   }
+
+  // Restaurer l'état précédent
+  function restoreFilterValues() {
+    categoryFilter.value = previousFilterValues.category || "";
+    typeFilter.value = previousFilterValues.type || "";
+    yearFilter.value = previousFilterValues.year || "all";
+    qualityFilter.value = previousFilterValues.quality || "";
+  }
+
+  // Ouvrir le panneau → sauvegarder les valeurs actuelles
+  filterBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    const isOpen = filterPanel.classList.contains("active");
+    if (!isOpen) saveFilterValues();
+    filterPanel.classList.toggle("active");
+    filterPanel.toggleAttribute("hidden", isOpen);
+    filterBtn.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  // Fermer le panneau sans appliquer → restaurer
+  closeBtn?.addEventListener("click", () => {
+    restoreFilterValues();
+    filterPanel.classList.remove("active");
+    filterPanel.setAttribute("hidden", "");
+    filterBtn.setAttribute("aria-expanded", "false");
+  });
+
+  // Cliquer en dehors → fermer et restaurer
+  document.addEventListener("click", e => {
+    if (!filterBtn.contains(e.target) && !filterPanel.contains(e.target)) {
+      if (filterPanel.classList.contains("active")) restoreFilterValues();
+      filterPanel.classList.remove("active");
+      filterPanel.setAttribute("hidden", "");
+      filterBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Bouton réinitialiser → remettre les filtres par défaut
+  resetBtn?.addEventListener("click", () => {
+    categoryFilter.selectedIndex = 0;
+    typeFilter.selectedIndex = 0;
+    yearFilter.selectedIndex = 0;
+    qualityFilter.selectedIndex = 0;
+  });
+
+  // Appliquer → filtrer les films et mettre à jour l'état sauvegardé
+  applyBtn?.addEventListener("click", () => {
+    const category = categoryFilter.value;
+    const type = typeFilter.value;
+    const year = yearFilter.value;
+    const quality = qualityFilter.value;
+
+    document.querySelectorAll(".movie-grid-item").forEach(movie => {
+      let visible = true;
+
+      if (category) {
+        const movieCategories = movie.dataset.category.toLowerCase().split(" / ");
+        if (!movieCategories.includes(category.toLowerCase())) visible = false;
+      }
+
+      if (type) {
+        if (type === "film" && movie.dataset.type === "serie") visible = false;
+        if (type === "serie" && movie.dataset.type !== "serie") visible = false;
+      }
+
+      if (year !== "all" && movie.dataset.year !== year) visible = false;
+      if (quality && movie.dataset.quality !== quality) visible = false;
+
+      movie.hidden = !visible;
+    });
+
+    updateTotalMovies();
+
+    // fermer le panneau
+    filterPanel.classList.remove("active");
+    filterPanel.setAttribute("hidden", "");
+    filterBtn.setAttribute("aria-expanded", "false");
+
+    // Mettre à jour l'état sauvegardé après application
+    saveFilterValues();
+  });
+}
+
 
   // -------------------- Modal règles / charte --------------------
   function closeModal() {
@@ -121,23 +202,64 @@ if (typeof movies !== "undefined" && movieGrid) {
   movies.forEach(movie => {
     const movieDiv = document.createElement("div");
     movieDiv.className = "movie-grid-item";
-    movieDiv.setAttribute("data-title", movie.title);
 
-    const resolution = movie.downloads?.[0]?.resolution || "";
+    movieDiv.dataset.title = movie.title.toLowerCase();
+    movieDiv.dataset.category = movie.category.toLowerCase();
+    movieDiv.dataset.type = movie.type || "film";
+    const releaseYear = movie.releaseDate?.match(/\d{4}$/)?.[0] || "";
+    movieDiv.dataset.year = releaseYear;
+    movieDiv.dataset.quality = movie.downloads?.[0]?.resolution || "";
 
     movieDiv.innerHTML = `
       <a href="movie-details.html?title=${encodeURIComponent(movie.title)}">
         <img src="${movie.img}" loading="lazy">
-        ${resolution ? `<div class="resolution">${resolution}</div>` : ''}
+        ${movie.downloads?.[0]?.resolution ? `<div class="resolution">${movie.downloads[0].resolution}</div>` : ""}
         ${movie.type === "serie" ? '<div class="serie">Série</div>' : ''}
       </a>
     `;
+
     movieGrid.appendChild(movieDiv);
   });
 
   updateTotalMovies();
 }
 
+
+const applyBtn = document.getElementById("apply-filters");
+
+applyBtn?.addEventListener("click", () => {
+  const category = document.getElementById("category-filter").value;
+  const type = document.getElementById("type-filter").value;
+  const year = document.getElementById("year-filter").value;
+  const quality = document.getElementById("quality-filter").value;
+
+document.querySelectorAll(".movie-grid-item").forEach(movie => {
+  let visible = true;
+
+if (category) {
+  const movieCategories = movie.dataset.category.toLowerCase().split(" / "); // découpe toutes les catégories
+  if (!movieCategories.includes(category.toLowerCase())) visible = false;
+}
+
+
+  if (type) {
+    if (type === "film" && movie.dataset.type === "serie") visible = false;
+    if (type === "serie" && movie.dataset.type !== "serie") visible = false;
+  }
+
+  if (year !== "all" && movie.dataset.year !== year) visible = false;
+  if (quality && movie.dataset.quality !== quality) visible = false;
+
+  movie.hidden = !visible;
+});
+
+  updateTotalMovies();
+
+  // fermer le panneau filtre
+  filterPanel.classList.remove("active");
+  filterPanel.setAttribute("hidden", "");
+  filterBtn.setAttribute("aria-expanded", "false");
+});
 
   // -------------------- Synchronisation data-title pour carousel --------------------
 document.querySelectorAll('.movie-item, .movie-grid-item').forEach(item => {

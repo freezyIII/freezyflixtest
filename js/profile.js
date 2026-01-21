@@ -56,11 +56,24 @@ const favoritesContent = document.getElementById('favoritesContent');
 const evaluationContent = document.getElementById('evaluationContent');
 const links = document.querySelectorAll('.profile-link');
 
+const friendsPanel = document.getElementById('friendsPanel');
+const friendsList = document.getElementById('friendsList');
+const searchInput = document.getElementById('friendSearch');
+
+const followPanel = document.getElementById('followPanel');
+const followList = document.getElementById('followList');
+const followPanelTitle = document.getElementById('followPanelTitle');
+const closeFollowPanel = document.getElementById('closeFollowPanel');
+
+const followBtn = document.getElementById('followBtn');
+
 const toast = document.getElementById('toast');
 
 const MAX_USERNAME_CHARS = 16;
 const MAX_FIRSTNAME_CHARS = 16;
 const MAX_DESCRIPTION_CHARS = 200;
+
+let allFriends = [];
 
 let tempAvatarUrl = '';
 const urlParams = new URLSearchParams(window.location.search);
@@ -449,6 +462,9 @@ confirmDeleteBtn.addEventListener('click', async () => {
 onAuthStateChanged(auth, async (user) => {
   if (!user) return window.location.href = "index.html";
 
+    document.getElementById('followersCount').addEventListener('click', () => showFollowPanel('followers'));
+  document.getElementById('followingCount').addEventListener('click', () => showFollowPanel('following'));
+
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
@@ -474,7 +490,20 @@ onAuthStateChanged(auth, async (user) => {
   // Affichage du profil et actions admin
   // ----------------------------
   const uidToDisplay = profileUid || user.uid;
+  
   await displayUserProfileByUid(uidToDisplay, user.uid);
+  await updateFollowCounts();
+
+if (uidToDisplay === user.uid) {
+    // Mon profil
+    followBtn.style.display = 'none';
+    friendsBtn.style.display = 'flex';
+} else {
+    // Profil d'un autre utilisateur
+    followBtn.style.display = 'flex';
+    friendsBtn.style.display = 'none'; // <-- bien cacher
+}
+
 
   const adminActions = document.getElementById('adminActions');
   if (data.founder && uidToDisplay !== user.uid) {
@@ -497,6 +526,152 @@ confirmBanBtn.onclick = async () => {
 
   banUserPopup.style.display = 'none';
 };
+}
 
+document.getElementById('friendsBtn').addEventListener('click', () => {
+  friendsPanel.style.display = friendsPanel.style.display === 'flex' ? 'none' : 'flex';
+});
+
+// Charger tous les utilisateurs depuis Firebase
+async function loadFriends() {
+  const snapshot = await getDocs(collection(db, "users"));
+  allFriends = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  displayFriends(allFriends);
+}
+
+// Afficher les profils
+function displayFriends(friends) {
+  friendsList.innerHTML = '';
+  if (friends.length === 0) {
+    friendsList.innerHTML = `<p style="color:#ccc; text-align:center; margin-top:20px;">Aucun résultat</p>`;
+    return;
+  }
+
+  friends.forEach(friend => {
+    const div = document.createElement('div');
+    div.classList.add('friend-item');
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.padding = '5px 10px';
+    div.style.cursor = 'pointer';
+    div.style.borderBottom = '1px solid #444';
+    div.innerHTML = `
+      <img src="${friend.photoURL || friend.customAvatarURL || 'default-avatar.png'}" 
+           alt="${friend.nomUtilisateur}" 
+           style="width:40px; height:40px; border-radius:50%; margin-right:10px;">
+      <span style="color:#fff;">${friend.nomUtilisateur || 'Utilisateur'}</span>
+    `;
+    friendsList.appendChild(div);
+  });
+}
+
+// Filtrage en direct
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
+  const filtered = allFriends.filter(friend => 
+    friend.nomUtilisateur?.toLowerCase().includes(query)
+  );
+  displayFriends(filtered);
+});
+
+// Initialisation
+loadFriends();
+
+
+});
+
+
+
+
+followBtn.addEventListener('click', async () => {
+  const user = auth.currentUser;
+  if (!user || !profileUid) return;
+
+  const currentUserUid = user.uid;
+  const profileUserUid = profileUid;
+
+  const followersRef = doc(db, "users", profileUserUid, "followers", currentUserUid);
+  const followingRef = doc(db, "users", currentUserUid, "following", profileUserUid);
+
+  try {
+    const followersSnap = await getDoc(followersRef);
+
+    if (followersSnap.exists()) {
+      // Déjà suivi → unfollow
+      await deleteDoc(followersRef);
+      await deleteDoc(followingRef);
+      followBtn.querySelector('.btn-text').textContent = "Suivre";
+    } else {
+      // Suivre
+      await setDoc(followersRef, {
+        uid: currentUserUid,
+        followedAt: new Date().toISOString()
+      });
+      await setDoc(followingRef, {
+        uid: profileUserUid,
+        followedAt: new Date().toISOString()
+      });
+      followBtn.querySelector('.btn-text').textContent = "Abonné";
+    }
+
+    await updateFollowCounts();
+  } catch (err) {
+    console.error("Erreur follow/unfollow :", err);
+    showToast("Impossible de modifier le suivi", 3000);
   }
 });
+
+
+const updateFollowCounts = async () => {
+  if (!profileUid) return;
+
+  // Les personnes qui suivent le profil affiché
+  const followersSnap = await getDocs(collection(db, "users", profileUid, "followers"));
+  // Les personnes que le profil affiché suit
+  const followingSnap = await getDocs(collection(db, "users", profileUid, "following"));
+
+  document.getElementById('followersCount').textContent = followersSnap.size;
+  document.getElementById('followingCount').textContent = followingSnap.size;
+
+  // Ajuster l'état du bouton : est-ce que moi je suis dans ses followers ?
+  const isFollowing = followersSnap.docs.some(doc => doc.id === auth.currentUser.uid);
+  followBtn.querySelector('.btn-text').textContent = isFollowing ? "Abonné" : "Suivre";
+  followBtn.disabled = false;
+};
+
+
+closeFollowPanel.addEventListener('click', () => {
+  followPanel.style.display = 'none';
+});
+
+const showFollowPanel = async (type) => {
+  if (!profileUid) return;
+  followList.innerHTML = ''; // vider le panel
+  followPanelTitle.textContent = type === 'followers' ? 'Abonnés' : 'Abonnement';
+
+  const collectionRef = collection(db, "users", profileUid, type);
+  const snapshot = await getDocs(collectionRef);
+
+  if (snapshot.empty) {
+    followList.innerHTML = `<p style="color:#ccc; text-align:center; margin-top:20px;">Aucune personne</p>`;
+    followPanel.style.display = 'flex';
+    return;
+  }
+
+  // Pour chaque document, on récupère les infos utilisateur
+  for (const docSnap of snapshot.docs) {
+    const userUid = docSnap.id;
+    const userSnap = await getDoc(doc(db, "users", userUid));
+    const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
+
+    const div = document.createElement('div');
+    div.className = 'follow-item';
+    div.innerHTML = `
+      <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
+      <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
+    `;
+    followList.appendChild(div);
+  }
+
+  followPanel.style.display = 'flex';
+};

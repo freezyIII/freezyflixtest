@@ -1,38 +1,12 @@
-.profile-container { display: flex; align-items: center; gap: 50px; padding: 6% 20% 3% 20%; position: relative; }
+.profile-container {display: flex;align-items: center;gap: 50px;padding: 6% 20% 3% 20%;position: relative;justify-content: space-between;width: 100%;}
 .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 10px;max-width: 80%; }
 
 /* Photo de Profil */
 .profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
-
-.pseudo-wrapper {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.profile-pseudo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
-  margin: 0;
-}
-
-#profileFirstname {
-  font-weight: normal;
-  color: #ccc;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.profile-date {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-size: 0.85rem;
-    color: #aaa;
-    margin: 0;
-    right: 20%;
-}
+.pseudo-wrapper {display: flex;align-items: baseline;gap: 8px;}
+.profile-pseudo {font-size: 1.5rem;font-weight: bold;color: #fff;margin: 0;}
+#profileFirstname {font-weight: normal;color: #ccc;font-size: 1rem;line-height: 1;}
+.profile-date {position: absolute;bottom: 0;right: 0;font-size: 0.85rem;color: #aaa;margin: 0;right: 20%;}
 
 /* Description */
 .profile-description {font-size: 1rem;color: #e8e8e8;margin: 0;max-width: 100%;display: -webkit-box;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;white-space: normal;word-break: break-word;}
@@ -91,12 +65,11 @@ textarea { min-height: 100px; }
 .avatar-fondateur {position: absolute;top: -2px;left: 0;width: 100%;height: 100%;pointer-events: none;transform: scale(1.5);transform-origin: center;pointer-events: none;}
 
 /* Notification Mise à jour du Profil */
-.toast {position: fixed;bottom: 20px;right: 20px;background-color: #008000;color: #00ff00;padding: 12px 20px;border-radius: 8px;box-shadow: 0 4px 15px rgba(0,0,0,0.4);font-size: 0.95rem;font-weight: bold;opacity: 0;transform: translateY(20px);transition: opacity 0.3s ease, transform 0.3s ease;z-index: 2000;}
+.toast {position: fixed;bottom: 20px;right: 20px;background-color: #008000;color: #00ff00;padding: 12px 20px;border-radius: 8px;box-shadow: 0 4px 15px rgba(0,0,0,0.4);font-size: 0.95rem;font-weight: bold;opacity: 0;transform: translateY(20px);transition: opacity 0.3s ease, transform 0.3s ease;z-index: 2000;pointer-events: none;}
 .toast.show {opacity: 1;transform: translateY(0);}
 
 /* Supprimer scrollbar */
 ::-webkit-scrollbar {width: 0px;}
-
 
 /* Modifier la Poto de Profil */
 .panel-avatar-wrapper {position: relative;display: inline-block;width: 160px;height: 160px;border-radius: 50%;overflow: hidden;cursor: pointer;}
@@ -132,217 +105,99 @@ textarea { min-height: 100px; }
 .popup-buttons .delete-btn:hover {background-color: #ff5722; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,87,34,0.5);}
 
 
+.profile-header {display: flex;align-items: center;justify-content: space-between;width: 100%;gap: 10px;}
+.admin-btn {flex: 1;min-width: 120px;max-width: 200px;text-align: center;padding: 7px 0;background: linear-gradient(145deg, #ff1a1a, #cc0000);color: #fff;border: none;border-radius: 6px;font-weight: 700;font-size: 13px;cursor: pointer;text-transform: uppercase;letter-spacing: 0.5px;box-shadow: 0 3px 8px rgba(255,0,0,0.5);transition: all 0.2s ease;overflow: hidden;}
+.admin-btn:hover {background: linear-gradient(145deg, #ff3333, #ff0000);box-shadow: 0 4px 10px rgba(255,0,0,0.7);transform: translateY(-1px);}
+.admin-btn:active {background: #cc0000;box-shadow: 0 2px 6px rgba(200,0,0,0.5);transform: translateY(0);}
+.admin-btn svg {width: 14px;height: 14px;vertical-align: middle;margin-right: 4px;fill: #fff;}
+#banNoticePanel {display: none;justify-content: center;align-items: center;backdrop-filter: blur(5px);background-color: rgba(0,0,0,0.6);position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 2000;}
 
-.profile-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 10px;
-
-}
-
-
-.admin-btn {
-  flex: 1;
-  min-width: 120px;
-  max-width: 200px;
-  text-align: center;
-  padding: 7px 0;
-  background: linear-gradient(145deg, #ff1a1a, #cc0000);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 3px 8px rgba(255,0,0,0.5);
-  transition: all 0.2s ease;
-  overflow: hidden;
-}
-
-.admin-btn:hover {
-  background: linear-gradient(145deg, #ff3333, #ff0000);
-  box-shadow: 0 4px 10px rgba(255,0,0,0.7);
-  transform: translateY(-1px);
-}
-
-.admin-btn:active {
-  background: #cc0000;
-  box-shadow: 0 2px 6px rgba(200,0,0,0.5);
-  transform: translateY(0);
-}
-
-.admin-btn svg {
-  width: 14px;
-  height: 14px;
-  vertical-align: middle;
-  margin-right: 4px;
-  fill: #fff;
-}
-#banNoticePanel {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
-  background-color: rgba(0,0,0,0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2000;
-}
-
-/* ==========================
-   Panel Bannissement Utilisateur
-   ========================== */
-#banUserPopup {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  animation: fadeInOverlay 0.3s ease forwards;
-}
-
-@keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-#banUserPopup .popup-content {
-  background-color: #1f1f1f;
-  border-radius: 16px;
-  padding: 30px 25px 25px 25px;
-  width: 400px;
-  max-width: 95%;
-  color: #fff;
-  box-shadow: 0 8px 35px rgba(0,0,0,0.6);
-  transform: scale(0.8);
-  opacity: 0;
-  animation: popupScaleIn 0.3s forwards;
-}
-
-@keyframes popupScaleIn {
-  to { transform: scale(1); opacity: 1; }
-}
-
-#banUserPopup .popup-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-#banUserPopup .popup-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ff3d00;
-  margin: 0;
-}
-
-#banUserPopup .popup-body {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-#banUserPopup label {
-  font-size: 0.95rem;
-  color: #ccc;
-}
-
+/* Bannissement */
+#banUserPopup {display: none;position: fixed;inset: 0;background: rgba(0, 0, 0, 0.75);backdrop-filter: blur(6px);z-index: 9999;justify-content: center;align-items: center;padding: 20px;animation: fadeInOverlay 0.3s ease forwards;}
+@keyframes fadeInOverlay {from { opacity: 0; }to { opacity: 1; }}
+#banUserPopup .popup-content {background-color: #1f1f1f;border-radius: 16px;padding: 30px 25px 25px 25px;width: 400px;max-width: 95%;color: #fff;box-shadow: 0 8px 35px rgba(0,0,0,0.6);transform: scale(0.8);opacity: 0;animation: popupScaleIn 0.3s forwards;}
+@keyframes popupScaleIn {to { transform: scale(1); opacity: 1; }}
+#banUserPopup .popup-header {display: flex;flex-direction: column;align-items: center;gap: 10px;}
+#banUserPopup .popup-header h3 {font-size: 1.5rem;font-weight: 700;color: #ff3d00;margin: 0;}
+#banUserPopup .popup-body {display: flex;flex-direction: column;gap: 15px;margin-top: 10px;}
+#banUserPopup label {font-size: 0.95rem;color: #ccc;}
 #banUserPopup input[type="text"],
-#banUserPopup select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #555;
-  background-color: #181818;
-  color: #fff;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
+#banUserPopup select {width: 100%;padding: 10px 12px;border-radius: 8px;border: 1px solid #555;background-color: #181818;color: #fff;font-size: 0.95rem;outline: none;transition: border-color 0.2s ease, box-shadow 0.2s ease;}
 #banUserPopup input[type="text"]:focus,
-#banUserPopup select:focus {
-  border-color: #ff3d00;
-  box-shadow: 0 0 8px rgba(255, 61, 0, 0.5);
-}
+#banUserPopup select:focus {border-color: #ff3d00;box-shadow: 0 0 8px rgba(255, 61, 0, 0.5);}
+#banUserPopup .popup-buttons {display: flex;justify-content: space-between;gap: 15px;margin-top: 20px;}
+#banUserPopup .popup-buttons .btn {flex: 1;padding: 12px 0;font-size: 1rem;font-weight: 600;border-radius: 12px;cursor: pointer;border: none;transition: all 0.25s ease;text-transform: uppercase;}
+#banUserPopup .popup-buttons .cancel-btn {background-color: #2a2a2a;color: #fff;box-shadow: 0 4px 12px rgba(0,0,0,0.3);}
+#banUserPopup .popup-buttons .cancel-btn:hover {background-color: #3c3c3c;transform: translateY(-2px);box-shadow: 0 6px 18px rgba(0,0,0,0.4);}
+#banUserPopup .popup-buttons .delete-btn {background: linear-gradient(145deg, #ff1a1a, #cc0000);color: #fff;box-shadow: 0 4px 12px rgba(255,0,0,0.5);}
+#banUserPopup .popup-buttons .delete-btn:hover {background: linear-gradient(145deg, #ff3333, #ff0000);transform: translateY(-2px);box-shadow: 0 6px 18px rgba(255,0,0,0.7);}
+#banUserPopup .popup-buttons .delete-btn:active {background-color: #cc0000;box-shadow: 0 2px 8px rgba(200,0,0,0.5);transform: translateY(0);}
 
-#banUserPopup .popup-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-#banUserPopup .popup-buttons .btn {
-  flex: 1;
-  padding: 12px 0;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 12px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.25s ease;
-  text-transform: uppercase;
-}
-
-#banUserPopup .popup-buttons .cancel-btn {
-  background-color: #2a2a2a;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-#banUserPopup .popup-buttons .cancel-btn:hover {
-  background-color: #3c3c3c;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-}
-
-#banUserPopup .popup-buttons .delete-btn {
-  background: linear-gradient(145deg, #ff1a1a, #cc0000);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(255,0,0,0.5);
-}
-
-#banUserPopup .popup-buttons .delete-btn:hover {
-  background: linear-gradient(145deg, #ff3333, #ff0000);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255,0,0,0.7);
-}
-
-#banUserPopup .popup-buttons .delete-btn:active {
-  background-color: #cc0000;
-  box-shadow: 0 2px 8px rgba(200,0,0,0.5);
-  transform: translateY(0);
-}
-
-/* Responsive */
 @media (max-width: 480px) {
-  #banUserPopup .popup-content {
-    padding: 20px 15px;
-  }
+#banUserPopup .popup-content {padding: 20px 15px;}
+#banUserPopup .popup-body {gap: 10px;}
+#banUserPopup .popup-buttons {flex-direction: column;}
+#banUserPopup .popup-buttons .btn {width: 100%;}}
 
-  #banUserPopup .popup-body {
-    gap: 10px;
-  }
+/* Pannel amis */
+.friends-btn {position: fixed;bottom: 30px;right: 30px;width: 60px;height: 60px;border-radius: 50%;background-color: #ff7733;color: #fff;display: flex;align-items: center;justify-content: center;font-size: 32px;cursor: pointer;z-index: 1500;border: none;box-shadow: 0 4px 15px rgba(0,0,0,0.4);transition: transform 0.2s ease;}
+.friends-btn:hover { transform: scale(1.05); }
+.friends-panel {position: fixed;top: 15%;           bottom: 15%;        right: 30px;        width: 300px;       max-width: 90%;background-color: #1c1c1c;border: 1px solid #555;border-radius: 12px;box-shadow: 0 6px 25px rgba(0,0,0,0.5);display: none;flex-direction: column;z-index: 2000;}
+.friends-panel .panel-header {padding: 10px;border-bottom: 1px solid #555;}
+.friends-panel .panel-header input {width: 100%;padding: 8px 12px;border-radius: 8px;border: 1px solid #555;background-color: #181818;color: #fff;font-size: 0.95rem;}
+.friends-panel .panel-body {flex: 1;overflow-y: auto;padding: 10px;}
 
-  #banUserPopup .popup-buttons {
-    flex-direction: column;
-  }
+/* Bouton suivre */
+.follow-btn {display: flex;align-items: center;gap: 5px;background-color: #181818;border: 1.3px solid rgba(200, 200, 200, 0.28);color: #ddd;padding: 7px 10px;border-radius: 6px;font-size: 0.85rem;font-weight: bold;cursor: pointer;width: fit-content;text-decoration: none;transition: 0.08s linear;}
+.follow-btn:hover {background-color: #252525;border-color: rgba(230,230,230,0.45);}
 
-  #banUserPopup .popup-buttons .btn {
-    width: 100%;
-  }
+/* Compteur d'abonnés */
+.followers-wrapper {display: flex;gap: 20px;align-items: center;color: #fff;font-size: 0.95rem;}
+.follower-item {display: flex;flex-direction: column;align-items: center;text-align: center;}
+.follower-count {font-weight: bold;font-size: 1.1rem;color: #ff7733;}
+.follower-text {font-size: 0.85rem;color: #ccc;}
+.profile-main {flex: 1;display: flex;flex-direction: column;gap: 10px;}
+
+#friendsBtn {display: none;}
+
+.panel-center {
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+  width:90%;
+  max-width:400px;
+  max-height:80%;
+  overflow-y:auto;
+  color:#fff;
+  position:relative;
+}
+
+.panel-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.close-panel {
+  background:none;
+  border:none;
+  font-size:24px;
+  color:#fff;
+  cursor:pointer;
+}
+
+.follow-list .follow-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid #444;
+}
+
+.follow-list .follow-item img {
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
 }

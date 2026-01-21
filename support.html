@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FreezyFlix</title>
 <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Federant&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/aide.css" />
+<link rel="stylesheet" href="css/support.css" />
 <link rel="stylesheet" href="css/navbar.css">
 </head>
 
@@ -36,61 +36,43 @@
 <button class="login-button" id="loginBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-logo">Connexion</button></div>
 </header>
 
+<main class="request-form-container">
+  <h2>Contact Support</h2>
+  <p class="intro-text">
+    Vous pouvez signaler un bug, demander de l'aide, proposer une suggestion ou nous envoyer un lien/capture pour que l'on puisse vous aider plus rapidement.
+  </p>
 
-
-<main>
-<section class="aide-header">
-<h1>Centre d'aide</h1>
-<p>Trouvez toutes les réponses à vos questions sur FreezyFlix.</p>
-</section>
-
-<section class="aide-container">
-<div class="aide-item" onclick="toggleAide(0)">
-<div class="aide-question">Comment regarder un film ?</div>
-<div class="aide-answer">
-Il n'est pas possible de visionner un film directement sur notre plateforme. Les films sont uniquement disponibles en téléchargement via le bouton situé sous chaque bande-annonce.
-</div></div>
-
-<div class="aide-item" onclick="toggleAide(1)">
-<div class="aide-question">Où puis-je faire des demandes de nouveaux films ?</div>
-<div class="aide-answer">
-Pour demander des films, il vous faudra créer un compte, puis vous rendre sur votre profil et aller dans 
-<a href="request-movie.html" class="aide-lien-vert">Demande de films</a>.
-</div></div>
-
-<div class="aide-item" onclick="toggleAide(2)">
-<div class="aide-question">Les films sont-ils disponibles en plusieurs langues ?</div>
-<div class="aide-answer">
-Tous nos films sont disponibles en français (VF), en anglais (VO), et parfois dans d’autres langues.
-</div></div>
-
-<div class="aide-item" onclick="toggleAide(3)">
-<div class="aide-question">Je n'ai pas d'écran 4K, que faire ?</div>
-<div class="aide-answer">
-Les films en 4K seront automatiquement adaptés et lus en 1080p si votre écran ne prend pas en charge cette résolution.
-</div></div>
-
-<div class="aide-item" onclick="toggleAide(4)">
-<div class="aide-question">Le film demande l'installation d'un nouveau codec ou l'achat d'une extension vidéo HEVC. Que faire ?</div>
-<div class="aide-answer">
-Utilisez un lecteur compatible comme <a href="https://github.com/clsid2/mpc-hc/releases" target="_blank" class="aide-lien-vert">MPC-HC</a> pour lire les fichiers encodés en H.265.
-</div></div>
-
-<div class="aide-item" onclick="toggleAide(5)">
-  <div class="aide-question">Comment changer la langue d'un film ?</div>
-  <div class="aide-answer">
-    Pour changer la langue d’un film, sélectionnez « Piste audio » dans l’onglet « Lecture ». 
-    <a href="javascript:void(0)" class="voir-plus" onclick="showImage(event, 5)">Voir Plus</a>
-    <div class="aide-image" id="aide-image-5" style="display:none; margin-top:10px;">
-      <img src="https://i.imgur.com/xMwNGOd.png" alt="Explication langue" style="width:100%; border-radius:8px;">
+  <form id="supportForm" autocomplete="off" novalidate>
+    <div class="form-group">
+      <label for="type">Type de demande</label>
+      <select id="type" name="type" required>
+        <option value="">Sélectionner</option>
+        <option value="bug">Signaler un bug</option>
+        <option value="aide">Demande d'aide</option>
+        <option value="suggestion">Suggestion</option>
+      </select>
+      <span class="error-message"></span>
     </div>
-  </div>
-</div>
 
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" required></textarea>
+      <span class="error-message"></span>
+    </div>
 
-</section></main>
+    <div class="form-group">
+      <label for="url">Lien ou capture (optionnel)</label>
+      <input type="url" id="url" name="url" placeholder="https://...">
+      <span class="error-message"></span>
+    </div>
 
-<script src="js/aide.js"></script>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <div id="toast" class="toast"></div>
+</main>
+
+<script type="module" src="js/support.js"></script>
 <script type="module" src="js/navbar.js"></script>
 </body>
 </html>

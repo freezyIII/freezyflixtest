@@ -1,0 +1,93 @@
+/* Scrollbar invisible */
+::-webkit-scrollbar { width: 0; }
+
+/* Form container */
+.request-form-container {
+  width: 90%;
+  max-width: 650px; /* un peu plus large */
+  margin: 50px auto;
+  padding: 40px; /* plus de padding pour remplir l'espace */
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  color: #ddd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.request-form-container h2 {
+  margin: 0;
+  color: #ff3d00;
+  font-size: 2rem;
+  font-family: 'Titan One', cursive;
+  text-align: center;
+}
+
+.intro-text {
+  color: #ccc;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form elements */
+form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+input, select, textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #121212;
+  color: #ddd;
+  font-size: 14px;
+  transition: border 0.2s, background 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border: 1px solid #ff3d00;
+  background-color: #1c1c1c;
+}
+
+/* Submit button */
+button[type="submit"] {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ff3d00;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #ff5e2b;
+  transform: translateY(-2px);
+}
+
+/* Error messages */
+.error-message { color: #f44336; font-size: 0.85rem; display: none; }
+.error-message.active { display: block; }
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+.toast.show { opacity: 1; transform: translateY(0); }

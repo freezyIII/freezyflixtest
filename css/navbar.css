@@ -12,8 +12,8 @@ header {background: #0d0d0d;padding: 0 20px;display: flex;align-items: center;he
 .login-profile-container {position: relative;display: flex;align-items: center;gap: 15px;margin-left: auto;z-index: 10;}
 
 /* Bouton de Connexion */
-.login-button {background: linear-gradient(135deg, #ff3d00 0%, #ff5e2b 100%);color: #fff;padding: 10px 22px;font-size: 16px;font-weight: 700;border-radius: 12px;text-decoration: none;box-shadow: 0 4px 8px rgba(0,0,0,0.3);transition: all 0.3s ease;border: none;display: inline-block;letter-spacing: 0.5px;text-transform: uppercase;cursor: pointer;}
-.login-button:hover {background: linear-gradient(135deg, #e63600 0%, #ff3d00 100%);box-shadow: 0 6px 15px rgba(0,0,0,0.4);transform: translateY(-2px) scale(1.02);}
+.login-button {background: #121212;color: #fff;padding: 9px 18px;font-size: 15px;font-weight: 600;border-radius: 10px;border: 1px solid #333;cursor: pointer;display: flex;align-items: center;gap: 10px;transition: all 0.25s ease;}
+.login-button:hover {background: #2a2a2a;border-color: #ff3d00;box-shadow: 0 0 0 3px rgba(255, 61, 0, 0.15);transform: translateY(-1px);}
 .profile-menu {position: relative;display: inline-block;cursor: pointer;}
 .dropdown-menu {position: absolute;top: 55px;right: 0;background: #1c1c1c;width: 170px;border-radius: 4px;box-shadow: 0 6px 15px rgba(0,0,0,0.5);display: none;flex-direction: column;overflow: hidden;z-index: 999;}
 .dropdown-menu a {padding: 12px;color: white;font-size: 14px;text-decoration: none;display: block;transition: background 0.2s;}
