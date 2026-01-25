@@ -413,11 +413,28 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
+  // 1️⃣ Supprimer toutes les sous-collections du compte
   const subcollections = ["favorites", "followers", "following"];
   for (const col of subcollections) {
     const snapshot = await getDocs(collection(db, "users", uid, col));
     for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
   }
+
+  // 2️⃣ Supprimer ce compte des following des autres utilisateurs
+  const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
+  for (const followerDoc of followersSnap.docs) {
+    const followerUid = followerDoc.id;
+    await deleteDoc(doc(db, "users", followerUid, "following", uid));
+  }
+
+  // 3️⃣ Supprimer ce compte des followers des autres utilisateurs
+  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
+  for (const followingDoc of followingSnap.docs) {
+    const followingUid = followingDoc.id;
+    await deleteDoc(doc(db, "users", followingUid, "followers", uid));
+  }
+
+  // 4️⃣ Supprimer le document utilisateur
   await deleteDoc(doc(db, "users", uid));
 };
 
