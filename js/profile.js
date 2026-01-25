@@ -421,24 +421,6 @@ const deleteUserData = async (uid) => {
   await deleteDoc(doc(db, "users", uid));
 };
 
-const cleanUpFollows = async (uid) => {
-  const usersSnap = await getDocs(collection(db, "users"));
-  
-  for (const userDoc of usersSnap.docs) {
-    const userId = userDoc.id;
-
-    // Supprimer ce uid des followers de tous les utilisateurs
-    const followerRef = doc(db, "users", userId, "followers", uid);
-    const followerSnap = await getDoc(followerRef);
-    if (followerSnap.exists()) await deleteDoc(followerRef);
-
-    // Supprimer ce uid des following de tous les utilisateurs
-    const followingRef = doc(db, "users", userId, "following", uid);
-    const followingSnap = await getDoc(followingRef);
-    if (followingSnap.exists()) await deleteDoc(followingRef);
-  }
-};
-
 
 deleteAccountBtn.addEventListener('click', e => {
   e.preventDefault();
@@ -453,36 +435,26 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
-    // Tenter directement de supprimer le compte Auth
-    await deleteUser(user);
-
-    // Si réussi, supprimer toutes les données Firestore
-    await cleanUpFollows(user.uid);
     await deleteUserData(user.uid);
-
+    await deleteUser(user);
     window.location.href = "index.html";
   } catch (error) {
     if (error.code === "auth/requires-recent-login") {
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
-
-        // Après reauthentification, on refait la suppression Auth + Firestore
-        await deleteUser(user);
-        await cleanUpFollows(user.uid);
         await deleteUserData(user.uid);
-
+        await deleteUser(user);
         window.location.href = "index.html";
       } catch (e) {
         console.error("Suppression annulée :", e);
-        showToast("Impossible de supprimer le compte", 4000);
+        window.location.href = "index.html";
       }
     } else {
       console.error("Erreur suppression compte :", error);
-      showToast("Impossible de supprimer le compte", 4000);
+      window.location.href = "index.html";
     }
   }
 });
-
 
 // ==============================
 // AUTHENTIFICATION & ADMIN
