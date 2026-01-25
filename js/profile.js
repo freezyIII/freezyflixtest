@@ -413,13 +413,33 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
-  const subcollections = ["favorites"];
+  // 1️⃣ Supprimer les sous-collections du compte
+  const subcollections = ["favorites", "followers", "following"];
   for (const col of subcollections) {
     const snapshot = await getDocs(collection(db, "users", uid, col));
     for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
   }
+
+  // 2️⃣ Supprimer les entrées dans les abonnements des autres utilisateurs
+  // Supprimer le uid dans following de tous ceux qui le suivaient
+  const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
+  for (const docSnap of followersSnap.docs) {
+    const followerUid = docSnap.id;
+    await deleteDoc(doc(db, "users", followerUid, "following", uid));
+  }
+
+  // Supprimer le uid dans followers de tous ceux qu'il suivait
+  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
+  for (const docSnap of followingSnap.docs) {
+    const followedUid = docSnap.id;
+    await deleteDoc(doc(db, "users", followedUid, "followers", uid));
+  }
+
+  // 3️⃣ Supprimer le document utilisateur principal
   await deleteDoc(doc(db, "users", uid));
 };
+
+
 
 deleteAccountBtn.addEventListener('click', e => {
   e.preventDefault();
@@ -552,34 +572,38 @@ async function setupFollowButton(button, targetUid) {
     button.querySelector('span').textContent = 'Abonné';
   }
 
-  button.addEventListener('click', async (e) => {
-    e.stopPropagation();
+button.addEventListener('click', async (e) => {
+  e.stopPropagation();
 
-    const isFollowing = button.classList.contains('following');
+  const isFollowing = button.classList.contains('following');
 
-    try {
-      if (isFollowing) {
-        await deleteDoc(followersRef);
-        await deleteDoc(followingRef);
-        button.classList.remove('following');
-        button.querySelector('span').textContent = 'Suivre';
-      } else {
-        await setDoc(followersRef, {
-          uid: currentUid,
-          followedAt: new Date().toISOString()
-        });
-        await setDoc(followingRef, {
-          uid: targetUid,
-          followedAt: new Date().toISOString()
-        });
-        button.classList.add('following');
-        button.querySelector('span').textContent = 'Abonné';
-      }
-    } catch (err) {
-      console.error("Erreur follow depuis panel amis :", err);
-      showToast("Erreur lors du suivi", 3000);
+  try {
+    if (isFollowing) {
+      await deleteDoc(followersRef);
+      await deleteDoc(followingRef);
+      button.classList.remove('following');
+      button.querySelector('span').textContent = 'Suivre';
+    } else {
+      await setDoc(followersRef, {
+        uid: currentUid,
+        followedAt: new Date().toISOString()
+      });
+      await setDoc(followingRef, {
+        uid: targetUid,
+        followedAt: new Date().toISOString()
+      });
+      button.classList.add('following');
+      button.querySelector('span').textContent = 'Abonné';
     }
-  });
+
+    // 🔥 AJOUT ICI
+    await updateFollowCounts();
+
+  } catch (err) {
+    console.error("Erreur follow depuis panel amis :", err);
+    showToast("Erreur lors du suivi", 3000);
+  }
+});
 }
 
 
@@ -718,19 +742,31 @@ const showFollowPanel = async (type) => {
   }
 
   // Pour chaque document, on récupère les infos utilisateur
-  for (const docSnap of snapshot.docs) {
+for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
-    const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
+
+    if (!userSnap.exists()) {
+        // Supprimer le document fantôme de la collection following
+        await deleteDoc(doc(db, "users", profileUid, "following", userUid));
+        continue; // ne pas afficher
+    }
+
+    const userData = userSnap.data();
 
     const div = document.createElement('div');
     div.className = 'follow-item';
     div.innerHTML = `
       <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
-      <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
+      <span>${userData.nomUtilisateur}</span>
     `;
+
+    div.addEventListener('click', () => {
+        window.location.href = `profile.html?uid=${userUid}`;
+    });
+
     followList.appendChild(div);
-  }
+}
 
   followPanel.style.display = 'flex';
 };

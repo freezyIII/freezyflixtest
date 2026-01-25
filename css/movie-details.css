@@ -67,9 +67,9 @@
 
 /* Tableau de Téléchargements */
 .movie-info-table-container {width: 100%;max-width: 1000px;margin: auto;padding: 0 20px;box-sizing: border-box;}
-.movie-table-with-button {width: 100%;border-collapse: separate;border-spacing: 0;font-family: 'Federant', sans-serif;border-left: 1px solid rgba(255,255,255,0.2);border-right: 1px solid rgba(255,255,255,0.2);border-top-left-radius: 12px;border-top-right-radius: 12px;overflow: hidden;}
+.movie-table-with-button {width: 100%;border-collapse: separate;border-spacing: 0;border-left: 1px solid rgba(255,255,255,0.2);border-right: 1px solid rgba(255,255,255,0.2);border-top-left-radius: 12px;border-top-right-radius: 12px;overflow: hidden;}
 .movie-table-with-button th, .movie-table-with-button td {border-top: 1px solid rgba(255, 255, 255, 0.2);border-bottom: 1px solid rgba(255, 255, 255, 0.2);border-left: none;border-right: none;padding: 10px 15px;text-align: center;background-color: transparent;color: #fff;font-weight: normal;}
-.movie-table-with-button th {font-weight: normal;font-family: 'Federant', sans-serif;}
+.movie-table-with-button th {font-weight: normal;}
 .table-button-container {display: flex;justify-content: center;}
 .table-button-container .download-btn {padding: 6px 12px;font-size: 1rem;min-width: 100px;}
 .movie-title-row {display: flex;align-items: center;gap: 15px;flex-wrap: wrap;}
