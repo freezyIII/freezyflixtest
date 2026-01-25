@@ -539,29 +539,78 @@ async function loadFriends() {
   displayFriends(allFriends);
 }
 
-// Afficher les profils
+async function setupFollowButton(button, targetUid) {
+  const currentUid = auth.currentUser.uid;
+
+  const followersRef = doc(db, "users", targetUid, "followers", currentUid);
+  const followingRef = doc(db, "users", currentUid, "following", targetUid);
+
+  // État initial
+  const snap = await getDoc(followersRef);
+  if (snap.exists()) {
+    button.classList.add('following');
+    button.querySelector('span').textContent = 'Abonné';
+  }
+
+  button.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    const isFollowing = button.classList.contains('following');
+
+    try {
+      if (isFollowing) {
+        await deleteDoc(followersRef);
+        await deleteDoc(followingRef);
+        button.classList.remove('following');
+        button.querySelector('span').textContent = 'Suivre';
+      } else {
+        await setDoc(followersRef, {
+          uid: currentUid,
+          followedAt: new Date().toISOString()
+        });
+        await setDoc(followingRef, {
+          uid: targetUid,
+          followedAt: new Date().toISOString()
+        });
+        button.classList.add('following');
+        button.querySelector('span').textContent = 'Abonné';
+      }
+    } catch (err) {
+      console.error("Erreur follow depuis panel amis :", err);
+      showToast("Erreur lors du suivi", 3000);
+    }
+  });
+}
+
+
 function displayFriends(friends) {
   friendsList.innerHTML = '';
+  const currentUid = auth.currentUser.uid;
+
   if (friends.length === 0) {
     friendsList.innerHTML = `<p style="color:#ccc; text-align:center; margin-top:20px;">Aucun résultat</p>`;
     return;
   }
 
   friends.forEach(friend => {
+    if (friend.id === currentUid) return; // ne pas s'afficher soi-même
+
     const div = document.createElement('div');
-    div.classList.add('friend-item');
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
-    div.style.padding = '5px 10px';
-    div.style.cursor = 'pointer';
-    div.style.borderBottom = '1px solid #444';
+    div.className = 'friend-item';
+
     div.innerHTML = `
-      <img src="${friend.photoURL || friend.customAvatarURL || 'default-avatar.png'}" 
-           alt="${friend.nomUtilisateur}" 
-           style="width:40px; height:40px; border-radius:50%; margin-right:10px;">
-      <span style="color:#fff;">${friend.nomUtilisateur || 'Utilisateur'}</span>
+      <div class="friend-left">
+        <img src="${friend.photoURL || friend.customAvatarURL || 'https://via.placeholder.com/40'}">
+        <span>${friend.nomUtilisateur || 'Utilisateur'}</span>
+      </div>
+      <button class="friend-follow-btn" data-uid="${friend.id}">
+        <span>Suivre</span>
+      </button>
     `;
+
     friendsList.appendChild(div);
+
+    setupFollowButton(div.querySelector('.friend-follow-btn'), friend.id);
   });
 }
 
