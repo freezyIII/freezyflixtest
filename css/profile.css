@@ -140,48 +140,13 @@ textarea { min-height: 100px; }
 #banUserPopup .popup-buttons .btn {width: 100%;}}
 
 /* Pannel amis */
-.friend-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  border-bottom: 1px solid #444;
-}
-
-.friend-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.friend-left img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.friend-follow-btn {
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  transition: 0.2s ease;
-}
-
-.friend-follow-btn:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.friend-follow-btn.following {
-  background: rgba(255, 120, 40, 0.25);
-  border-color: rgba(255, 120, 40, 0.6);
-}
-
+.friend-avatar-link {cursor: pointer;}
+.friend-item {display: flex;align-items: center;justify-content: space-between;padding: 8px 10px;border-bottom: 1px solid #444;}
+.friend-left {display: flex;align-items: center;gap: 10px;}
+.friend-left img {width: 40px;height: 40px;border-radius: 50%;object-fit: cover;}
+.friend-follow-btn {padding: 6px 14px;border-radius: 14px;font-size: 0.8rem;font-weight: 600;cursor: pointer;border: 1px solid rgba(255,255,255,0.25);background: rgba(255,255,255,0.06);color: #fff;transition: 0.2s ease;}
+.friend-follow-btn:hover {background: rgba(255,255,255,0.15);}
+.friend-follow-btn.following {background: rgba(255, 120, 40, 0.25);border-color: rgba(255, 120, 40, 0.6);}
 .friends-btn {position: fixed;bottom: 30px;right: 30px;width: 60px;height: 60px;border-radius: 50%;background-color: #ff7733;color: #fff;display: flex;align-items: center;justify-content: center;font-size: 32px;cursor: pointer;z-index: 1500;border: none;box-shadow: 0 4px 15px rgba(0,0,0,0.4);transition: transform 0.2s ease;}
 .friends-btn:hover { transform: scale(1.05); }
 .friends-panel {position: fixed;top: 15%;           bottom: 15%;        right: 30px;        width: 300px;       max-width: 90%;background-color: #1c1c1c;border: 1px solid #555;border-radius: 12px;box-shadow: 0 6px 25px rgba(0,0,0,0.5);display: none;flex-direction: column;z-index: 2000;}
@@ -200,46 +165,10 @@ textarea { min-height: 100px; }
 .follower-text {font-size: 0.85rem;color: #ccc;}
 .profile-main {flex: 1;display: flex;flex-direction: column;gap: 10px;}
 
+.panel-center {background:#111;padding:20px;border-radius:10px;width:90%;max-width:400px;max-height:80%;overflow-y:auto;color:#fff;position:relative;}
+.panel-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+.close-panel {background:none;border:none;font-size:24px;color:#fff;cursor:pointer;}
+.follow-list .follow-item {display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #444;}
+.follow-list .follow-item img {width:40px;height:40px;border-radius:50%;object-fit:cover;}
+
 #friendsBtn {display: none;}
-
-.panel-center {
-  background:#111;
-  padding:20px;
-  border-radius:10px;
-  width:90%;
-  max-width:400px;
-  max-height:80%;
-  overflow-y:auto;
-  color:#fff;
-  position:relative;
-}
-
-.panel-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.close-panel {
-  background:none;
-  border:none;
-  font-size:24px;
-  color:#fff;
-  cursor:pointer;
-}
-
-.follow-list .follow-item {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 0;
-  border-bottom:1px solid #444;
-}
-
-.follow-list .follow-item img {
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  object-fit:cover;
-}

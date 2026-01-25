@@ -598,20 +598,30 @@ function displayFriends(friends) {
     const div = document.createElement('div');
     div.className = 'friend-item';
 
-    div.innerHTML = `
-      <div class="friend-left">
-        <img src="${friend.photoURL || friend.customAvatarURL || 'https://via.placeholder.com/40'}">
-        <span>${friend.nomUtilisateur || 'Utilisateur'}</span>
-      </div>
-      <button class="friend-follow-btn" data-uid="${friend.id}">
-        <span>Suivre</span>
-      </button>
-    `;
+div.innerHTML = `
+  <div class="friend-left">
+    <img 
+      class="friend-avatar-link"
+      data-uid="${friend.id}"
+      src="${friend.photoURL || friend.customAvatarURL || 'https://via.placeholder.com/40'}"
+    >
+    <span>${friend.nomUtilisateur || 'Utilisateur'}</span>
+  </div>
+  <button class="friend-follow-btn" data-uid="${friend.id}">
+    <span>Suivre</span>
+  </button>
+`;
 
-    friendsList.appendChild(div);
+friendsList.appendChild(div);
 
-    setupFollowButton(div.querySelector('.friend-follow-btn'), friend.id);
-  });
+// clic uniquement sur l’avatar
+div.querySelector('.friend-avatar-link').addEventListener('click', () => {
+  window.location.href = `profile.html?uid=${friend.id}`;
+});
+
+// bouton suivre
+setupFollowButton(div.querySelector('.friend-follow-btn'), friend.id);  
+});
 }
 
 // Filtrage en direct
