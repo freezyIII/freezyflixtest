@@ -412,6 +412,24 @@ await setDoc(userDocRef, {
 // ==============================
 // SUPPRESSION COMPTE
 // ==============================
+const cleanUpFollowersAndFollowing = async (uid) => {
+  const usersSnap = await getDocs(collection(db, "users"));
+
+  for (const userDoc of usersSnap.docs) {
+    const otherUid = userDoc.id;
+
+    // Supprimer dans followers
+    const followerDocRef = doc(db, "users", otherUid, "followers", uid);
+    const followerSnap = await getDoc(followerDocRef);
+    if (followerSnap.exists()) await deleteDoc(followerDocRef);
+
+    // Supprimer dans following
+    const followingDocRef = doc(db, "users", otherUid, "following", uid);
+    const followingSnap = await getDoc(followingDocRef);
+    if (followingSnap.exists()) await deleteDoc(followingDocRef);
+  }
+};
+
 const deleteUserData = async (uid) => {
   const subcollections = ["favorites", "followers", "following"];
   for (const col of subcollections) {
@@ -435,6 +453,7 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
+    await cleanUpFollowersAndFollowing(user.uid); // <-- important !
     await deleteUserData(user.uid);
     await deleteUser(user);
     window.location.href = "index.html";
@@ -442,6 +461,7 @@ confirmDeleteBtn.addEventListener('click', async () => {
     if (error.code === "auth/requires-recent-login") {
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
+        await cleanUpFollowersAndFollowing(user.uid);
         await deleteUserData(user.uid);
         await deleteUser(user);
         window.location.href = "index.html";
