@@ -413,14 +413,35 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
+  // 1️⃣ Supprimer ses sous-collections locales
   const subcollections = ["favorites", "followers", "following"];
   for (const col of subcollections) {
     const snapshot = await getDocs(collection(db, "users", uid, col));
-    for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
+    for (const docSnap of snapshot.docs) {
+      await deleteDoc(docSnap.ref);
+    }
   }
+
+  // 2️⃣ Supprimer ce compte des followers/following des autres
+  const usersSnapshot = await getDocs(collection(db, "users"));
+  for (const userDoc of usersSnapshot.docs) {
+    const otherUid = userDoc.id;
+    if (otherUid === uid) continue; // ignorer soi-même
+
+    // Supprimer dans "followers" si présent
+    const followerRef = doc(db, "users", otherUid, "followers", uid);
+    const followerSnap = await getDoc(followerRef);
+    if (followerSnap.exists()) await deleteDoc(followerRef);
+
+    // Supprimer dans "following" si présent
+    const followingRef = doc(db, "users", otherUid, "following", uid);
+    const followingSnap = await getDoc(followingRef);
+    if (followingSnap.exists()) await deleteDoc(followingRef);
+  }
+
+  // 3️⃣ Supprimer le compte lui-même
   await deleteDoc(doc(db, "users", uid));
 };
-
 
 deleteAccountBtn.addEventListener('click', e => {
   e.preventDefault();
@@ -435,7 +456,7 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
-    await deleteUserData(user.uid);
+    await deleteUserData(user.uid); // <-- notre nouvelle fonction
     await deleteUser(user);
     window.location.href = "index.html";
   } catch (error) {
