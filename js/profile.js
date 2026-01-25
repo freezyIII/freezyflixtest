@@ -453,33 +453,36 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
-    // 🔥 Supprimer les références follow dans les autres comptes
-    await cleanUpFollows(user.uid);
+    // Tenter directement de supprimer le compte Auth
+    await deleteUser(user);
 
-    // Supprimer ses propres données
+    // Si réussi, supprimer toutes les données Firestore
+    await cleanUpFollows(user.uid);
     await deleteUserData(user.uid);
 
-    // Supprimer le compte Firebase Auth
-    await deleteUser(user);
     window.location.href = "index.html";
   } catch (error) {
     if (error.code === "auth/requires-recent-login") {
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
+
+        // Après reauthentification, on refait la suppression Auth + Firestore
+        await deleteUser(user);
         await cleanUpFollows(user.uid);
         await deleteUserData(user.uid);
-        await deleteUser(user);
+
         window.location.href = "index.html";
       } catch (e) {
         console.error("Suppression annulée :", e);
-        window.location.href = "index.html";
+        showToast("Impossible de supprimer le compte", 4000);
       }
     } else {
       console.error("Erreur suppression compte :", error);
-      window.location.href = "index.html";
+      showToast("Impossible de supprimer le compte", 4000);
     }
   }
 });
+
 
 // ==============================
 // AUTHENTIFICATION & ADMIN
