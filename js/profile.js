@@ -413,32 +413,13 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
-  // 1️⃣ Supprimer les sous-collections du compte
   const subcollections = ["favorites", "followers", "following"];
   for (const col of subcollections) {
     const snapshot = await getDocs(collection(db, "users", uid, col));
     for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
   }
-
-  // 2️⃣ Supprimer les entrées dans les abonnements des autres utilisateurs
-  // Supprimer le uid dans following de tous ceux qui le suivaient
-  const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
-  for (const docSnap of followersSnap.docs) {
-    const followerUid = docSnap.id;
-    await deleteDoc(doc(db, "users", followerUid, "following", uid));
-  }
-
-  // Supprimer le uid dans followers de tous ceux qu'il suivait
-  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
-  for (const docSnap of followingSnap.docs) {
-    const followedUid = docSnap.id;
-    await deleteDoc(doc(db, "users", followedUid, "followers", uid));
-  }
-
-  // 3️⃣ Supprimer le document utilisateur principal
   await deleteDoc(doc(db, "users", uid));
 };
-
 
 
 deleteAccountBtn.addEventListener('click', e => {
