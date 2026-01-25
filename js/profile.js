@@ -412,30 +412,33 @@ await setDoc(userDocRef, {
 // ==============================
 // SUPPRESSION COMPTE
 // ==============================
-const cleanUpFollowersAndFollowing = async (uid) => {
-  const usersSnap = await getDocs(collection(db, "users"));
-
-  for (const userDoc of usersSnap.docs) {
-    const otherUid = userDoc.id;
-
-    // Supprimer dans followers
-    const followerDocRef = doc(db, "users", otherUid, "followers", uid);
-    const followerSnap = await getDoc(followerDocRef);
-    if (followerSnap.exists()) await deleteDoc(followerDocRef);
-
-    // Supprimer dans following
-    const followingDocRef = doc(db, "users", otherUid, "following", uid);
-    const followingSnap = await getDoc(followingDocRef);
-    if (followingSnap.exists()) await deleteDoc(followingDocRef);
-  }
-};
-
 const deleteUserData = async (uid) => {
   const subcollections = ["favorites", "followers", "following"];
+  
+  // 1️⃣ Supprimer toutes les sous-collections de l'utilisateur
   for (const col of subcollections) {
     const snapshot = await getDocs(collection(db, "users", uid, col));
     for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
   }
+
+  // 2️⃣ Supprimer les traces dans les followers/following des autres utilisateurs
+  const usersSnap = await getDocs(collection(db, "users"));
+  for (const userDoc of usersSnap.docs) {
+    const userId = userDoc.id;
+    if (userId === uid) continue; // ignorer notre propre doc
+
+    // Supprimer l'utilisateur des followers des autres
+    const followerRef = doc(db, "users", userId, "followers", uid);
+    const followerSnap = await getDoc(followerRef);
+    if (followerSnap.exists()) await deleteDoc(followerRef);
+
+    // Supprimer l'utilisateur des following des autres
+    const followingRef = doc(db, "users", userId, "following", uid);
+    const followingSnap = await getDoc(followingRef);
+    if (followingSnap.exists()) await deleteDoc(followingRef);
+  }
+
+  // 3️⃣ Supprimer le document utilisateur lui-même
   await deleteDoc(doc(db, "users", uid));
 };
 
@@ -453,7 +456,6 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
-    await cleanUpFollowersAndFollowing(user.uid); // <-- important !
     await deleteUserData(user.uid);
     await deleteUser(user);
     window.location.href = "index.html";
@@ -461,7 +463,6 @@ confirmDeleteBtn.addEventListener('click', async () => {
     if (error.code === "auth/requires-recent-login") {
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
-        await cleanUpFollowersAndFollowing(user.uid);
         await deleteUserData(user.uid);
         await deleteUser(user);
         window.location.href = "index.html";
