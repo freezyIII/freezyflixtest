@@ -421,6 +421,24 @@ const deleteUserData = async (uid) => {
   await deleteDoc(doc(db, "users", uid));
 };
 
+const cleanUpFollows = async (uid) => {
+  const usersSnap = await getDocs(collection(db, "users"));
+  
+  for (const userDoc of usersSnap.docs) {
+    const userId = userDoc.id;
+
+    // Supprimer ce uid des followers de tous les utilisateurs
+    const followerRef = doc(db, "users", userId, "followers", uid);
+    const followerSnap = await getDoc(followerRef);
+    if (followerSnap.exists()) await deleteDoc(followerRef);
+
+    // Supprimer ce uid des following de tous les utilisateurs
+    const followingRef = doc(db, "users", userId, "following", uid);
+    const followingSnap = await getDoc(followingRef);
+    if (followingSnap.exists()) await deleteDoc(followingRef);
+  }
+};
+
 
 deleteAccountBtn.addEventListener('click', e => {
   e.preventDefault();
@@ -435,13 +453,20 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
+    // 🔥 Supprimer les références follow dans les autres comptes
+    await cleanUpFollows(user.uid);
+
+    // Supprimer ses propres données
     await deleteUserData(user.uid);
+
+    // Supprimer le compte Firebase Auth
     await deleteUser(user);
     window.location.href = "index.html";
   } catch (error) {
     if (error.code === "auth/requires-recent-login") {
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
+        await cleanUpFollows(user.uid);
         await deleteUserData(user.uid);
         await deleteUser(user);
         window.location.href = "index.html";
