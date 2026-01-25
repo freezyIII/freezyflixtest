@@ -435,32 +435,23 @@ confirmDeleteBtn.addEventListener('click', async () => {
   if (!user) return window.location.href = "index.html";
 
   try {
-    // On supprime d'abord les données Firestore
     await deleteUserData(user.uid);
-
-    // On tente de supprimer le compte Firebase Auth
     await deleteUser(user);
-
-    // Redirection après suppression
     window.location.href = "index.html";
   } catch (error) {
     if (error.code === "auth/requires-recent-login") {
-      // Si l'utilisateur doit se ré-authentifier
       try {
         await reauthenticateWithPopup(user, new GoogleAuthProvider());
-        
-        // Réessaie la suppression après ré-authentification
-        await deleteUserData(user.uid);  // optionnel si déjà supprimé
+        await deleteUserData(user.uid);
         await deleteUser(user);
-        
         window.location.href = "index.html";
-      } catch (reauthError) {
-        console.error("Suppression annulée :", reauthError);
-        showToast("Vous devez vous reconnecter pour supprimer votre compte ❌", 4000);
+      } catch (e) {
+        console.error("Suppression annulée :", e);
+        window.location.href = "index.html";
       }
     } else {
       console.error("Erreur suppression compte :", error);
-      showToast("Erreur lors de la suppression du compte ❌", 4000);
+      window.location.href = "index.html";
     }
   }
 });
