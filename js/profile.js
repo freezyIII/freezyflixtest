@@ -726,28 +726,23 @@ const showFollowPanel = async (type) => {
 for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
-
-    if (!userSnap.exists()) {
-        // Supprimer le document fantôme de la collection following
-        await deleteDoc(doc(db, "users", profileUid, "following", userUid));
-        continue; // ne pas afficher
-    }
-
-    const userData = userSnap.data();
+    const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
 
     const div = document.createElement('div');
     div.className = 'follow-item';
     div.innerHTML = `
       <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
-      <span>${userData.nomUtilisateur}</span>
+      <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
     `;
 
+    // 🔥 Redirection vers le profil au clic
     div.addEventListener('click', () => {
         window.location.href = `profile.html?uid=${userUid}`;
     });
 
     followList.appendChild(div);
 }
+
 
   followPanel.style.display = 'flex';
 };
