@@ -735,8 +735,9 @@ const showFollowPanel = async (type) => {
     return;
   }
 
-  // Pour chaque document, on récupère les infos utilisateur
-for (const docSnap of snapshot.docs) {
+  const currentUid = auth.currentUser.uid;
+
+  for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
     const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
@@ -746,16 +747,56 @@ for (const docSnap of snapshot.docs) {
     div.innerHTML = `
       <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
       <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
+      <button class="follow-btn-panel">${userUid === currentUid ? '' : 'Suivre'}</button>
     `;
 
-    // 🔥 Redirection vers le profil au clic
-    div.addEventListener('click', () => {
-        window.location.href = `profile.html?uid=${userUid}`;
+    const btn = div.querySelector('.follow-btn-panel');
+
+    // 🔥 Si ce n’est pas moi, on gère l’état du bouton
+    if (userUid !== currentUid) {
+      const followersRef = doc(db, "users", userUid, "followers", currentUid);
+      const followingRef = doc(db, "users", currentUid, "following", userUid);
+
+      // Vérifier si déjà suivi
+      const isFollowingSnap = await getDoc(followersRef);
+      if (isFollowingSnap.exists()) {
+        btn.textContent = "Abonné";
+        btn.classList.add("following");
+      }
+
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        try {
+          if (btn.classList.contains("following")) {
+            await deleteDoc(followersRef);
+            await deleteDoc(followingRef);
+            btn.classList.remove("following");
+            btn.textContent = "Suivre";
+          } else {
+            await setDoc(followersRef, { uid: currentUid, followedAt: new Date().toISOString() });
+            await setDoc(followingRef, { uid: userUid, followedAt: new Date().toISOString() });
+            btn.classList.add("following");
+            btn.textContent = "Abonné";
+          }
+
+          // Mettre à jour le compteur dans le profil
+          await updateFollowCounts();
+        } catch (err) {
+          console.error("Erreur follow/unfollow depuis le panel :", err);
+          showToast("Impossible de modifier le suivi", 3000);
+        }
+      });
+    } else {
+      btn.style.display = 'none'; // Masquer le bouton pour soi-même
+    }
+
+    // Redirection vers le profil au clic sur l'image ou pseudo
+    div.querySelector('img, span').addEventListener('click', () => {
+      window.location.href = `profile.html?uid=${userUid}`;
     });
 
     followList.appendChild(div);
-}
-
+  }
 
   followPanel.style.display = 'flex';
 };
