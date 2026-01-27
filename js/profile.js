@@ -413,38 +413,25 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
-  // 1️⃣ Supprimer les abonnés (followers)
+  // 1️⃣ Supprimer MES followers
   const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
-  for (const docSnap of followersSnap.docs) {
-    const followerUid = docSnap.id;
-
-    // Supprimer "following/uid" chez l'abonné
-    await deleteDoc(doc(db, "users", followerUid, "following", uid));
-    // Supprimer le follower chez moi
-    await deleteDoc(docSnap.ref);
+  for (const d of followersSnap.docs) {
+    await deleteDoc(d.ref);
   }
 
-  // 2️⃣ Supprimer les abonnements (following)
+  // 2️⃣ Supprimer MES following
   const followingSnap = await getDocs(collection(db, "users", uid, "following"));
-  for (const docSnap of followingSnap.docs) {
-    const followedUid = docSnap.id;
-
-    // Supprimer "followers/uid" chez la personne suivie
-    await deleteDoc(doc(db, "users", followedUid, "followers", uid));
-    // Supprimer l’abonnement chez moi
-    await deleteDoc(docSnap.ref);
+  for (const d of followingSnap.docs) {
+    await deleteDoc(d.ref);
   }
 
-  // 3️⃣ Supprimer autres sous-collections
-  const subcollections = ["favorites"];
-  for (const col of subcollections) {
-    const snap = await getDocs(collection(db, "users", uid, col));
-    for (const d of snap.docs) {
-      await deleteDoc(d.ref);
-    }
+  // 3️⃣ Supprimer MES favoris
+  const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
+  for (const d of favSnap.docs) {
+    await deleteDoc(d.ref);
   }
 
-  // 4️⃣ Supprimer le document utilisateur
+  // 4️⃣ Supprimer MON document user
   await deleteDoc(doc(db, "users", uid));
 };
 
