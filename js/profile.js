@@ -735,8 +735,7 @@ const showFollowPanel = async (type) => {
     return;
   }
 
-  // Pour chaque document, on récupère les infos utilisateur
-for (const docSnap of snapshot.docs) {
+  for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
     const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
@@ -744,26 +743,22 @@ for (const docSnap of snapshot.docs) {
     const div = document.createElement('div');
     div.className = 'follow-item';
     div.innerHTML = `
-      <div class="follow-item-left">
-        <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
-        <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
-      </div>
-      <button class="follow-item-btn">
-        <span>Suivre</span>
-      </button>
+      <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
+      <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
+      <button class="follow-panel-btn"><span>Suivre</span></button>
     `;
 
-    // 🔥 Redirection vers le profil au clic sur la partie gauche
-    div.querySelector('.follow-item-left').addEventListener('click', () => {
+    // Redirection vers le profil au clic sur l'image ou pseudo
+    div.querySelector('img, span').addEventListener('click', () => {
         window.location.href = `profile.html?uid=${userUid}`;
     });
 
-    // 🔥 Bouton follow/unfollow exactement comme sur le profil
-    const btn = div.querySelector('.follow-item-btn');
+    // Setup bouton follow/unfollow dans le panel
+    const btn = div.querySelector('.follow-panel-btn');
     setupFollowButton(btn, userUid);
 
     followList.appendChild(div);
-}
+  }
 
   followPanel.style.display = 'flex';
 };
