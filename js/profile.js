@@ -735,7 +735,8 @@ const showFollowPanel = async (type) => {
     return;
   }
 
-  for (const docSnap of snapshot.docs) {
+  // Pour chaque document, on récupère les infos utilisateur
+for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
     const userData = userSnap.exists() ? userSnap.data() : { nomUtilisateur: 'Utilisateur', photoURL: '' };
@@ -745,20 +746,16 @@ const showFollowPanel = async (type) => {
     div.innerHTML = `
       <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
       <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
-      <button class="follow-panel-btn"><span>Suivre</span></button>
     `;
 
-    // Redirection vers le profil au clic sur l'image ou pseudo
-    div.querySelector('img, span').addEventListener('click', () => {
+    // 🔥 Redirection vers le profil au clic
+    div.addEventListener('click', () => {
         window.location.href = `profile.html?uid=${userUid}`;
     });
 
-    // Setup bouton follow/unfollow dans le panel
-    const btn = div.querySelector('.follow-panel-btn');
-    setupFollowButton(btn, userUid);
-
     followList.appendChild(div);
-  }
+}
+
 
   followPanel.style.display = 'flex';
 };
