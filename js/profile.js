@@ -413,14 +413,40 @@ await setDoc(userDocRef, {
 // SUPPRESSION COMPTE
 // ==============================
 const deleteUserData = async (uid) => {
-  const subcollections = ["favorites", "followers", "following"];
-  for (const col of subcollections) {
-    const snapshot = await getDocs(collection(db, "users", uid, col));
-    for (const docSnap of snapshot.docs) await deleteDoc(docSnap.ref);
+  // 1️⃣ Supprimer les abonnés (followers)
+  const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
+  for (const docSnap of followersSnap.docs) {
+    const followerUid = docSnap.id;
+
+    // Supprimer "following/uid" chez l'abonné
+    await deleteDoc(doc(db, "users", followerUid, "following", uid));
+    // Supprimer le follower chez moi
+    await deleteDoc(docSnap.ref);
   }
+
+  // 2️⃣ Supprimer les abonnements (following)
+  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
+  for (const docSnap of followingSnap.docs) {
+    const followedUid = docSnap.id;
+
+    // Supprimer "followers/uid" chez la personne suivie
+    await deleteDoc(doc(db, "users", followedUid, "followers", uid));
+    // Supprimer l’abonnement chez moi
+    await deleteDoc(docSnap.ref);
+  }
+
+  // 3️⃣ Supprimer autres sous-collections
+  const subcollections = ["favorites"];
+  for (const col of subcollections) {
+    const snap = await getDocs(collection(db, "users", uid, col));
+    for (const d of snap.docs) {
+      await deleteDoc(d.ref);
+    }
+  }
+
+  // 4️⃣ Supprimer le document utilisateur
   await deleteDoc(doc(db, "users", uid));
 };
-
 
 deleteAccountBtn.addEventListener('click', e => {
   e.preventDefault();
