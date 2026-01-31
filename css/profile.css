@@ -176,3 +176,32 @@ textarea { min-height: 100px; }
 .follow-list .follow-item:hover img {transform: scale(1.05);}
 
 #friendsBtn {display: none;}
+
+
+.follow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.follow-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.follow-left img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* bouton dans la liste */
+.follow-list-btn {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}

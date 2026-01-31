@@ -1,20 +1,7 @@
-// profile.js
 import { auth, db } from './database.js';
-import {
-  doc, getDoc, setDoc, collection, getDocs, query, where, orderBy, deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
-import {
-  updateProfile,
-  onAuthStateChanged,
-  reauthenticateWithPopup,
-  GoogleAuthProvider,
-  deleteUser,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-
-// ==============================
-// CONSTANTES ET ÉLÉMENTS DOM
-// ==============================
+import {doc, getDoc, setDoc, collection, getDocs, query, where, orderBy, deleteDoc}
+from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+import {updateProfile,onAuthStateChanged,reauthenticateWithPopup,GoogleAuthProvider,deleteUser,signOut} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
 const profileAvatar = document.getElementById('profileAvatar');
 const profilePseudo = document.getElementById('profilePseudo');
@@ -80,9 +67,6 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const profileUid = urlParams.get("uid");
 
-// ==============================
-// UTILITAIRES
-// ==============================
 const showToast = (message, duration = 3000) => {
   toast.textContent = message;
   toast.classList.add('show');
@@ -115,7 +99,6 @@ const resetCounter = (input, counterEl, max) => {
   counterEl.style.color = length >= max ? '#ff3d00' : '#aaa';
 };
 
-// Vérifie si un nom d'utilisateur est disponible
 const isUsernameAvailable = async (username, currentUid) => {
   const q = query(
     collection(db, "users"),
@@ -126,9 +109,6 @@ const isUsernameAvailable = async (username, currentUid) => {
   return snap.docs.every(doc => doc.id === currentUid);
 };
 
-// ==============================
-// GESTION DES ONGLETS FAVORIS/ÉVALUATIONS
-// ==============================
 const showTab = (tabName) => {
   favoritesContent.style.display = tabName === "Favoris" ? "block" : "none";
   evaluationContent.style.display = tabName === "Évaluation" ? "block" : "none";
@@ -148,16 +128,12 @@ links.forEach(link => {
 const activeLink = document.querySelector('.profile-link.active');
 if (activeLink) showTab(activeLink.textContent.trim());
 
-// ==============================
-// AFFICHAGE DU PROFIL
-// ==============================
 const displayUserProfileByUid = async (uidToDisplay, currentUserUid) => {
   try {
     const userSnap = await getDoc(doc(db, "users", uidToDisplay));
     if (!userSnap.exists()) { alert("Profil introuvable"); return; }
     const userData = userSnap.data();
 
-    // Infos de base
     profileAvatar.src = userData.photoURL || 'https://via.placeholder.com/150';
     profilePseudo.textContent = userData.nomUtilisateur || 'Utilisateur';
     profileFirstname.textContent = userData.firstname || '';
@@ -175,16 +151,11 @@ const displayUserProfileByUid = async (uidToDisplay, currentUserUid) => {
     loadFavorites();
     loadEvaluations();
 
-// ==============================
-// Animation fondateur (visible par tous)
-// ==============================
 const avatarAnimationDiv = document.getElementById('avatarAnimation');
 
-// userData = données DU PROFIL affiché
 if (userData?.founder === true) {
   avatarAnimationDiv.style.display = 'block';
 
-  // éviter double chargement lottie
   if (!avatarAnimationDiv.dataset.loaded) {
     lottie.loadAnimation({
       container: avatarAnimationDiv,
@@ -204,9 +175,6 @@ if (userData?.founder === true) {
   }
 };
 
-// ==============================
-// FONCTIONS FAVORIS & ÉVALUATIONS
-// ==============================
 async function loadFavorites() {
   const container = favoritesContent;
   container.innerHTML = "";
@@ -256,9 +224,6 @@ function loadEvaluations() {
   container.innerHTML = evaluations.length ? "" : `<div class="evaluation-empty"><p>Aucune évaluation pour l'instant</p></div>`;
 }
 
-// ==============================
-// RESET FORMULAIRE ET INITIALISATION
-// ==============================
 const resetProfileForm = (userData) => {
   usernameInput.value = userData.nomUtilisateur || '';
   resetCounter(usernameInput, usernameCounter, MAX_USERNAME_CHARS);
@@ -269,22 +234,17 @@ const resetProfileForm = (userData) => {
   descriptionInput.value = userData.description || '';
   resetCounter(descriptionInput, descriptionCounter, MAX_DESCRIPTION_CHARS);
 
-  // Afficher avatar actuel
   panelAvatar.src = userData.photoURL || 'https://via.placeholder.com/150';
 
-  // Si avatar personnalisé → afficher l'URL, sinon laisser vide
   const isDefaultAvatar = !userData.customAvatarURL || userData.customAvatarURL.includes('via.placeholder.com');
   avatarUrlInput.value = isDefaultAvatar ? '' : userData.customAvatarURL;
 
-  // Temporaire = rien
   tempAvatarUrl = null;
 
-  // Stocker état initial pour annuler
   editProfilePanel.dataset.initialAvatar = panelAvatar.src;
   editProfilePanel.dataset.initialCustomAvatar = avatarUrlInput.value;
 };
 
-// Limites caractères
 [usernameInput, firstnameInput, descriptionInput].forEach(input => {
   const max = (input === usernameInput) ? MAX_USERNAME_CHARS :
               (input === firstnameInput) ? MAX_FIRSTNAME_CHARS : MAX_DESCRIPTION_CHARS;
@@ -297,7 +257,6 @@ const resetProfileForm = (userData) => {
   });
 });
 
-// Afficher panel modification
 editProfileBtn.addEventListener('click', async e => {
   e.preventDefault();
   const user = auth.currentUser;
@@ -308,23 +267,19 @@ editProfileBtn.addEventListener('click', async e => {
   editProfilePanel.style.display = 'flex';
 });
 
-// Fermer panel
 [closePanelBtn, cancelBtn].forEach(btn =>
   btn.addEventListener('click', e => {
     e.preventDefault();
 
-    // Restaurer l'état initial (avatar et URL)
     panelAvatar.src = editProfilePanel.dataset.initialAvatar;
     avatarUrlInput.value = editProfilePanel.dataset.initialCustomAvatar;
 
-    // Supprimer toute modification temporaire
     tempAvatarUrl = null;
 
     editProfilePanel.style.display = 'none';
   })
 );
 
-// Changement avatar
 panelAvatarWrapper.addEventListener('click', () => {
   changeAvatarPanel.style.display = 'flex';
 });
@@ -340,13 +295,10 @@ changeAvatarForm.addEventListener('submit', e => {
   e.preventDefault();
   const inputUrl = avatarUrlInput.value.trim();
 
-  if (inputUrl) {
-    // L’utilisateur a saisi une nouvelle URL → prévisualisation temporaire
+  if (inputUrl) {e
     tempAvatarUrl = inputUrl;
     panelAvatar.src = tempAvatarUrl;
   } else {
-    // Champ vide → prévisualisation = avatar de base
-    // Ne change pas initialAvatar, juste pour prévisualiser
     tempAvatarUrl = editProfilePanel.dataset.initialAvatar.includes('via.placeholder.com') || auth.currentUser.photoURL 
       ? auth.currentUser.photoURL || 'https://via.placeholder.com/150' 
       : 'https://via.placeholder.com/150';
@@ -356,7 +308,6 @@ changeAvatarForm.addEventListener('submit', e => {
   changeAvatarPanel.style.display = 'none';
 });
 
-// Soumission modification profil
 editProfileForm.addEventListener('submit', async e => {
   e.preventDefault();
   const user = auth.currentUser;
@@ -372,10 +323,8 @@ editProfileForm.addEventListener('submit', async e => {
   try {
     const userDocRef = doc(db, "users", user.uid);
 
-// Si tempAvatarUrl existe → utiliser
 const finalAvatarUrl = tempAvatarUrl || editProfilePanel.dataset.initialAvatar;
 
-// Si champ vide ET avatar par défaut → customAvatarURL = null
 const customAvatarValue = avatarUrlInput.value.trim();
 const isDefault = finalAvatarUrl.includes('via.placeholder.com') || finalAvatarUrl === auth.currentUser.photoURL;
 const finalCustomAvatar = (!customAvatarValue || isDefault) ? null : customAvatarValue;
@@ -391,14 +340,12 @@ await setDoc(userDocRef, {
 
     await updateProfile(user, { displayName: newUsername });
 
-    // Mise à jour interface
     profilePseudo.textContent = newUsername;
     profileFirstname.textContent = firstnameInput.value.trim();
     profileDescription.textContent = descriptionInput.value.trim();
     profileAvatar.src = finalAvatarUrl;
     panelAvatar.src = finalAvatarUrl;
 
-    // Reset temporaire
     tempAvatarUrl = null;
 
     showToast("Profil mis à jour !");
@@ -409,29 +356,22 @@ await setDoc(userDocRef, {
   }
 });
 
-// ==============================
-// SUPPRESSION COMPTE
-// ==============================
 const deleteUserData = async (uid) => {
-  // 1️⃣ Supprimer MES followers
   const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
   for (const d of followersSnap.docs) {
     await deleteDoc(d.ref);
   }
 
-  // 2️⃣ Supprimer MES following
   const followingSnap = await getDocs(collection(db, "users", uid, "following"));
   for (const d of followingSnap.docs) {
     await deleteDoc(d.ref);
   }
 
-  // 3️⃣ Supprimer MES favoris
   const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
   for (const d of favSnap.docs) {
     await deleteDoc(d.ref);
   }
 
-  // 4️⃣ Supprimer MON document user
   await deleteDoc(doc(db, "users", uid));
 };
 
@@ -469,10 +409,6 @@ confirmDeleteBtn.addEventListener('click', async () => {
   }
 });
 
-// ==============================
-// AUTHENTIFICATION & ADMIN
-// ==============================
-
 onAuthStateChanged(auth, async (user) => {
   if (!user) return window.location.href = "index.html";
 
@@ -482,7 +418,6 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
-  // Vérification du ban
   if (data.banned) {
       alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
       await signOut(auth);
@@ -490,8 +425,7 @@ onAuthStateChanged(auth, async (user) => {
       return;
   }
 
-  // Vérifier token forcé
-  const token = await user.getIdTokenResult(true); // rafraîchit le token
+  const token = await user.getIdTokenResult(true);
   const tokenValidSince = data.tokenValidSince ? new Date(data.tokenValidSince) : null;
   if (tokenValidSince && token.issuedAtTime * 1000 < tokenValidSince.getTime()) {
       alert("Vous avez été banni !");
@@ -500,22 +434,17 @@ onAuthStateChanged(auth, async (user) => {
       return;
   }
 
-  // ----------------------------
-  // Affichage du profil et actions admin
-  // ----------------------------
   const uidToDisplay = profileUid || user.uid;
   
   await displayUserProfileByUid(uidToDisplay, user.uid);
   await updateFollowCounts();
 
 if (uidToDisplay === user.uid) {
-    // Mon profil
     followBtn.style.display = 'none';
     friendsBtn.style.display = 'flex';
 } else {
-    // Profil d'un autre utilisateur
     followBtn.style.display = 'flex';
-    friendsBtn.style.display = 'none'; // <-- bien cacher
+    friendsBtn.style.display = 'none';
 }
 
 
@@ -546,7 +475,6 @@ document.getElementById('friendsBtn').addEventListener('click', () => {
   friendsPanel.style.display = friendsPanel.style.display === 'flex' ? 'none' : 'flex';
 });
 
-// Charger tous les utilisateurs depuis Firebase
 async function loadFriends() {
   const snapshot = await getDocs(collection(db, "users"));
   allFriends = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -559,7 +487,6 @@ async function setupFollowButton(button, targetUid) {
   const followersRef = doc(db, "users", targetUid, "followers", currentUid);
   const followingRef = doc(db, "users", currentUid, "following", targetUid);
 
-  // État initial
   const snap = await getDoc(followersRef);
   if (snap.exists()) {
     button.classList.add('following');
@@ -590,7 +517,6 @@ button.addEventListener('click', async (e) => {
       button.querySelector('span').textContent = 'Abonné';
     }
 
-    // 🔥 AJOUT ICI
     await updateFollowCounts();
 
   } catch (err) {
@@ -611,7 +537,7 @@ function displayFriends(friends) {
   }
 
   friends.forEach(friend => {
-    if (friend.id === currentUid) return; // ne pas s'afficher soi-même
+    if (friend.id === currentUid) return;
 
     const div = document.createElement('div');
     div.className = 'friend-item';
@@ -632,17 +558,14 @@ div.innerHTML = `
 
 friendsList.appendChild(div);
 
-// clic uniquement sur l’avatar
 div.querySelector('.friend-avatar-link').addEventListener('click', () => {
   window.location.href = `profile.html?uid=${friend.id}`;
 });
 
-// bouton suivre
 setupFollowButton(div.querySelector('.friend-follow-btn'), friend.id);  
 });
 }
 
-// Filtrage en direct
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.toLowerCase();
   const filtered = allFriends.filter(friend => 
@@ -651,7 +574,6 @@ searchInput.addEventListener('input', () => {
   displayFriends(filtered);
 });
 
-// Initialisation
 loadFriends();
 
 
@@ -674,12 +596,10 @@ followBtn.addEventListener('click', async () => {
     const followersSnap = await getDoc(followersRef);
 
     if (followersSnap.exists()) {
-      // Déjà suivi → unfollow
       await deleteDoc(followersRef);
       await deleteDoc(followingRef);
       followBtn.querySelector('.btn-text').textContent = "Suivre";
     } else {
-      // Suivre
       await setDoc(followersRef, {
         uid: currentUserUid,
         followedAt: new Date().toISOString()
@@ -702,15 +622,12 @@ followBtn.addEventListener('click', async () => {
 const updateFollowCounts = async () => {
   if (!profileUid) return;
 
-  // Les personnes qui suivent le profil affiché
   const followersSnap = await getDocs(collection(db, "users", profileUid, "followers"));
-  // Les personnes que le profil affiché suit
   const followingSnap = await getDocs(collection(db, "users", profileUid, "following"));
 
   document.getElementById('followersCount').textContent = followersSnap.size;
   document.getElementById('followingCount').textContent = followingSnap.size;
 
-  // Ajuster l'état du bouton : est-ce que moi je suis dans ses followers ?
   const isFollowing = followersSnap.docs.some(doc => doc.id === auth.currentUser.uid);
   followBtn.querySelector('.btn-text').textContent = isFollowing ? "Abonné" : "Suivre";
   followBtn.disabled = false;
@@ -723,7 +640,7 @@ closeFollowPanel.addEventListener('click', () => {
 
 const showFollowPanel = async (type) => {
   if (!profileUid) return;
-  followList.innerHTML = ''; // vider le panel
+  followList.innerHTML = '';
   followPanelTitle.textContent = type === 'followers' ? 'Abonnés' : 'Abonnement';
 
   const collectionRef = collection(db, "users", profileUid, type);
@@ -735,7 +652,6 @@ const showFollowPanel = async (type) => {
     return;
   }
 
-  // Pour chaque document, on récupère les infos utilisateur
 for (const docSnap of snapshot.docs) {
     const userUid = docSnap.id;
     const userSnap = await getDoc(doc(db, "users", userUid));
@@ -743,15 +659,63 @@ for (const docSnap of snapshot.docs) {
 
     const div = document.createElement('div');
     div.className = 'follow-item';
-    div.innerHTML = `
-      <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}" alt="${userData.nomUtilisateur}">
-      <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
-    `;
+div.innerHTML = `
+  <div class="follow-left">
+    <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}">
+    <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
+  </div>
 
-    // 🔥 Redirection vers le profil au clic
-    div.addEventListener('click', () => {
-        window.location.href = `profile.html?uid=${userUid}`;
-    });
+  ${userUid !== auth.currentUser.uid ? `
+    <button class="follow-btn follow-list-btn">
+      <span class="btn-text">Suivre</span>
+    </button>
+  ` : ``}
+`;
+
+div.querySelector('.follow-left').addEventListener('click', () => {
+  window.location.href = `profile.html?uid=${userUid}`;
+});
+
+const followBtn = div.querySelector('.follow-list-btn');
+
+if (followBtn) {
+  const currentUid = auth.currentUser.uid;
+
+  const followersRef = doc(db, "users", userUid, "followers", currentUid);
+  const followingRef = doc(db, "users", currentUid, "following", userUid);
+
+  const snap = await getDoc(followersRef);
+  if (snap.exists()) {
+    followBtn.classList.add('following');
+    followBtn.querySelector('.btn-text').textContent = "Abonné";
+  }
+
+  followBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    const isFollowing = followBtn.classList.contains('following');
+
+    if (isFollowing) {
+      await deleteDoc(followersRef);
+      await deleteDoc(followingRef);
+      followBtn.classList.remove('following');
+      followBtn.querySelector('.btn-text').textContent = "Suivre";
+    } else {
+      await setDoc(followersRef, {
+        uid: currentUid,
+        followedAt: new Date().toISOString()
+      });
+      await setDoc(followingRef, {
+        uid: userUid,
+        followedAt: new Date().toISOString()
+      });
+      followBtn.classList.add('following');
+      followBtn.querySelector('.btn-text').textContent = "Abonné";
+    }
+
+    await updateFollowCounts();
+  });
+}
 
     followList.appendChild(div);
 }
