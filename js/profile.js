@@ -672,7 +672,7 @@ div.innerHTML = `
   ` : ``}
 `;
 
-div.querySelector('.follow-left').addEventListener('click', () => {
+div.querySelector('.follow-item').addEventListener('click', () => {
   window.location.href = `profile.html?uid=${userUid}`;
 });
 
