@@ -357,33 +357,31 @@ await setDoc(userDocRef, {
 });
 
 const deleteUserData = async (uid) => {
-  // Supprimer des followers
+  // 1️⃣ Supprime tous les abonnés (followers)
   const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
-  for (const docSnap of followersSnap.docs) {
-    const followerUid = docSnap.id;
-    // Supprimer de ton côté
-    await deleteDoc(doc(db, "users", uid, "followers", followerUid));
-    // Supprimer dans leur "following"
+  for (const d of followersSnap.docs) {
+    const followerUid = d.id;
+    // Supprime l'abonnement correspondant chez le follower
     await deleteDoc(doc(db, "users", followerUid, "following", uid));
-  }
-
-  // Supprimer des following
-  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
-  for (const docSnap of followingSnap.docs) {
-    const followingUid = docSnap.id;
-    // Supprimer de ton côté
-    await deleteDoc(doc(db, "users", uid, "following", followingUid));
-    // Supprimer dans leur "followers"
-    await deleteDoc(doc(db, "users", followingUid, "followers", uid));
-  }
-
-  // Supprimer favoris
-  const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
-  for (const d of favSnap.docs) {
+    // Supprime le follower dans le document de l'utilisateur
     await deleteDoc(d.ref);
   }
 
-  // Supprimer ton profil
+  // 2️⃣ Supprime tous les abonnements (following)
+  const followingSnap = await getDocs(collection(db, "users", uid, "following"));
+  for (const d of followingSnap.docs) {
+    const followedUid = d.id;
+    // Supprime l'abonné correspondant chez l'utilisateur suivi
+    await deleteDoc(doc(db, "users", followedUid, "followers", uid));
+    // Supprime le following dans le document de l'utilisateur
+    await deleteDoc(d.ref);
+  }
+
+  // 3️⃣ Supprime les favoris
+  const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
+  for (const d of favSnap.docs) await deleteDoc(d.ref);
+
+  // 4️⃣ Supprime le document utilisateur
   await deleteDoc(doc(db, "users", uid));
 };
 
@@ -399,26 +397,35 @@ confirmDeleteBtn.addEventListener('click', async () => {
   const user = auth.currentUser;
   if (!user) return window.location.href = "index.html";
 
-  try {
-    await deleteUserData(user.uid);
-    await deleteUser(user);
-    window.location.href = "index.html";
-  } catch (error) {
-    if (error.code === "auth/requires-recent-login") {
-      try {
-        await reauthenticateWithPopup(user, new GoogleAuthProvider());
-        await deleteUserData(user.uid);
-        await deleteUser(user);
-        window.location.href = "index.html";
-      } catch (e) {
-        console.error("Suppression annulée :", e);
-        window.location.href = "index.html";
-      }
-    } else {
-      console.error("Erreur suppression compte :", error);
+try {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  // 1. Supprime Firestore
+  await deleteUserData(user.uid);
+
+  // 2. Supprime Auth
+  await deleteUser(user);
+
+  // 3. Redirection
+  window.location.href = "index.html";
+} catch (error) {
+  // Si Firebase demande une re-auth
+  if (error.code === "auth/requires-recent-login") {
+    try {
+      await reauthenticateWithPopup(user, new GoogleAuthProvider());
+      await deleteUserData(user.uid);
+      await deleteUser(user);
+      window.location.href = "index.html";
+    } catch (e) {
+      console.error("Suppression annulée :", e);
       window.location.href = "index.html";
     }
+  } else {
+    console.error("Erreur suppression compte :", error);
+    window.location.href = "index.html";
   }
+}
 });
 
 onAuthStateChanged(auth, async (user) => {
