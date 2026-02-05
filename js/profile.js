@@ -357,31 +357,23 @@ await setDoc(userDocRef, {
 });
 
 const deleteUserData = async (uid) => {
-  // 1️⃣ Supprime tous les abonnés (followers)
   const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
   for (const d of followersSnap.docs) {
     const followerUid = d.id;
-    // Supprime l'abonnement correspondant chez le follower
     await deleteDoc(doc(db, "users", followerUid, "following", uid));
-    // Supprime le follower dans le document de l'utilisateur
     await deleteDoc(d.ref);
   }
 
-  // 2️⃣ Supprime tous les abonnements (following)
   const followingSnap = await getDocs(collection(db, "users", uid, "following"));
   for (const d of followingSnap.docs) {
     const followedUid = d.id;
-    // Supprime l'abonné correspondant chez l'utilisateur suivi
     await deleteDoc(doc(db, "users", followedUid, "followers", uid));
-    // Supprime le following dans le document de l'utilisateur
     await deleteDoc(d.ref);
   }
 
-  // 3️⃣ Supprime les favoris
   const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
   for (const d of favSnap.docs) await deleteDoc(d.ref);
 
-  // 4️⃣ Supprime le document utilisateur
   await deleteDoc(doc(db, "users", uid));
 };
 
@@ -401,16 +393,12 @@ try {
   const user = auth.currentUser;
   if (!user) return;
 
-  // 1. Supprime Firestore
   await deleteUserData(user.uid);
 
-  // 2. Supprime Auth
   await deleteUser(user);
 
-  // 3. Redirection
   window.location.href = "index.html";
 } catch (error) {
-  // Si Firebase demande une re-auth
   if (error.code === "auth/requires-recent-login") {
     try {
       await reauthenticateWithPopup(user, new GoogleAuthProvider());
@@ -431,67 +419,58 @@ try {
 onAuthStateChanged(auth, async (user) => {
   if (!user) return window.location.href = "index.html";
 
-    document.getElementById('followersCount').addEventListener('click', () => showFollowPanel('followers'));
-  document.getElementById('followingCount').addEventListener('click', () => showFollowPanel('following'));
+  const uidToDisplay = profileUid || user.uid;
+  const isOwnProfile = uidToDisplay === user.uid;
 
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
   if (data.banned) {
-      alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
-      await signOut(auth);
-      window.location.href = "index.html";
-      return;
+    alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
+    await signOut(auth);
+    return window.location.href = "index.html";
   }
 
   const token = await user.getIdTokenResult(true);
   const tokenValidSince = data.tokenValidSince ? new Date(data.tokenValidSince) : null;
   if (tokenValidSince && token.issuedAtTime * 1000 < tokenValidSince.getTime()) {
-      alert("Vous avez été banni !");
-      await signOut(auth);
-      window.location.href = "index.html";
-      return;
+    alert("Vous avez été banni !");
+    await signOut(auth);
+    return window.location.href = "index.html";
   }
 
-  const uidToDisplay = profileUid || user.uid;
-  
+  editProfileBtn.style.display = isOwnProfile ? 'flex' : 'none';
+  followBtn.style.display = isOwnProfile ? 'none' : 'flex';
+  friendsBtn.style.display = isOwnProfile ? 'flex' : 'none';
+
+  document.getElementById('followersCount').addEventListener('click', () => showFollowPanel('followers'));
+  document.getElementById('followingCount').addEventListener('click', () => showFollowPanel('following'));
+
   await displayUserProfileByUid(uidToDisplay, user.uid);
   await updateFollowCounts();
 
-if (uidToDisplay === user.uid) {
-    followBtn.style.display = 'none';
-    friendsBtn.style.display = 'flex';
-} else {
-    followBtn.style.display = 'flex';
-    friendsBtn.style.display = 'none';
-}
+  if (data.founder && !isOwnProfile) {
+    adminActions.style.display = 'flex';
+    document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
+    cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
+    confirmBanBtn.onclick = async () => {
+      const reason = banReasonInput.value.trim();
+      const duration = banDurationSelect.value;
+      if (!reason) return;
+      await setDoc(doc(db, "users", uidToDisplay), {
+        banned: true,
+        banReason: reason,
+        banDuration: duration,
+        banStart: new Date().toISOString(),
+        tokenValidSince: new Date().toISOString()
+      }, { merge: true });
+      banUserPopup.style.display = 'none';
+    };
+  }
 
-
-  const adminActions = document.getElementById('adminActions');
-  if (data.founder && uidToDisplay !== user.uid) {
-      adminActions.style.display = 'flex';
-      document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
-      cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
-
-confirmBanBtn.onclick = async () => {
-  const reason = banReasonInput.value.trim();
-  const duration = banDurationSelect.value;
-  if (!reason) return;
-
-  await setDoc(doc(db, "users", uidToDisplay), {
-      banned: true,
-      banReason: reason,
-      banDuration: duration,
-      banStart: new Date().toISOString(),
-      tokenValidSince: new Date().toISOString()
-  }, { merge: true });
-
-  banUserPopup.style.display = 'none';
-};
-}
-
-document.getElementById('friendsBtn').addEventListener('click', () => {
-  friendsPanel.style.display = friendsPanel.style.display === 'flex' ? 'none' : 'flex';
+  document.getElementById('friendsBtn').addEventListener('click', () => {
+    friendsPanel.style.display = friendsPanel.style.display === 'flex' ? 'none' : 'flex';
+  });
 });
 
 async function loadFriends() {
@@ -502,7 +481,6 @@ async function loadFriends() {
 
 async function setupFollowButton(button, targetUid) {
   const currentUid = auth.currentUser.uid;
-
   const followersRef = doc(db, "users", targetUid, "followers", currentUid);
   const followingRef = doc(db, "users", currentUid, "following", targetUid);
 
@@ -512,39 +490,28 @@ async function setupFollowButton(button, targetUid) {
     button.querySelector('span').textContent = 'Abonné';
   }
 
-button.addEventListener('click', async (e) => {
-  e.stopPropagation();
-
-  const isFollowing = button.classList.contains('following');
-
-  try {
-    if (isFollowing) {
-      await deleteDoc(followersRef);
-      await deleteDoc(followingRef);
-      button.classList.remove('following');
-      button.querySelector('span').textContent = 'Suivre';
-    } else {
-      await setDoc(followersRef, {
-        uid: currentUid,
-        followedAt: new Date().toISOString()
-      });
-      await setDoc(followingRef, {
-        uid: targetUid,
-        followedAt: new Date().toISOString()
-      });
-      button.classList.add('following');
-      button.querySelector('span').textContent = 'Abonné';
+  button.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const isFollowing = button.classList.contains('following');
+    try {
+      if (isFollowing) {
+        await deleteDoc(followersRef);
+        await deleteDoc(followingRef);
+        button.classList.remove('following');
+        button.querySelector('span').textContent = 'Suivre';
+      } else {
+        await setDoc(followersRef, { uid: currentUid, followedAt: new Date().toISOString() });
+        await setDoc(followingRef, { uid: targetUid, followedAt: new Date().toISOString() });
+        button.classList.add('following');
+        button.querySelector('span').textContent = 'Abonné';
+      }
+      await updateFollowCounts();
+    } catch (err) {
+      console.error("Erreur follow :", err);
+      showToast("Erreur lors du suivi", 3000);
     }
-
-    await updateFollowCounts();
-
-  } catch (err) {
-    console.error("Erreur follow depuis panel amis :", err);
-    showToast("Erreur lors du suivi", 3000);
-  }
-});
+  });
 }
-
 
 function displayFriends(friends) {
   friendsList.innerHTML = '';
@@ -595,12 +562,6 @@ searchInput.addEventListener('input', () => {
 
 loadFriends();
 
-
-});
-
-
-
-
 followBtn.addEventListener('click', async () => {
   const user = auth.currentUser;
   if (!user || !profileUid) return;
@@ -647,9 +608,13 @@ const updateFollowCounts = async () => {
   document.getElementById('followersCount').textContent = followersSnap.size;
   document.getElementById('followingCount').textContent = followingSnap.size;
 
-  const isFollowing = followersSnap.docs.some(doc => doc.id === auth.currentUser.uid);
-  followBtn.querySelector('.btn-text').textContent = isFollowing ? "Abonné" : "Suivre";
-  followBtn.disabled = false;
+followBtn.style.visibility = 'hidden';
+
+const isFollowing = followersSnap.docs.some(doc => doc.id === auth.currentUser.uid);
+followBtn.querySelector('.btn-text').textContent = isFollowing ? "Abonné" : "Suivre";
+
+followBtn.style.visibility = 'visible';
+followBtn.disabled = false;
 };
 
 
