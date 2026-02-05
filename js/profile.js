@@ -357,21 +357,33 @@ await setDoc(userDocRef, {
 });
 
 const deleteUserData = async (uid) => {
+  // Supprimer des followers
   const followersSnap = await getDocs(collection(db, "users", uid, "followers"));
-  for (const d of followersSnap.docs) {
-    await deleteDoc(d.ref);
+  for (const docSnap of followersSnap.docs) {
+    const followerUid = docSnap.id;
+    // Supprimer de ton côté
+    await deleteDoc(doc(db, "users", uid, "followers", followerUid));
+    // Supprimer dans leur "following"
+    await deleteDoc(doc(db, "users", followerUid, "following", uid));
   }
 
+  // Supprimer des following
   const followingSnap = await getDocs(collection(db, "users", uid, "following"));
-  for (const d of followingSnap.docs) {
-    await deleteDoc(d.ref);
+  for (const docSnap of followingSnap.docs) {
+    const followingUid = docSnap.id;
+    // Supprimer de ton côté
+    await deleteDoc(doc(db, "users", uid, "following", followingUid));
+    // Supprimer dans leur "followers"
+    await deleteDoc(doc(db, "users", followingUid, "followers", uid));
   }
 
+  // Supprimer favoris
   const favSnap = await getDocs(collection(db, "users", uid, "favorites"));
   for (const d of favSnap.docs) {
     await deleteDoc(d.ref);
   }
 
+  // Supprimer ton profil
   await deleteDoc(doc(db, "users", uid));
 };
 
@@ -640,6 +652,7 @@ closeFollowPanel.addEventListener('click', () => {
 
 const showFollowPanel = async (type) => {
   if (!profileUid) return;
+  const isOwner = auth.currentUser.uid === profileUid;
   followList.innerHTML = '';
   followPanelTitle.textContent = type === 'followers' ? 'Abonnés' : 'Abonnement';
 
@@ -661,9 +674,15 @@ for (const docSnap of snapshot.docs) {
     div.className = 'follow-item';
 div.innerHTML = `
   <div class="follow-left">
-    <img src="${userData.photoURL || userData.customAvatarURL || 'https://via.placeholder.com/40'}">
+    <img src="${userData.photoURL || 'https://via.placeholder.com/40'}">
     <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
   </div>
+
+  ${
+    isOwner && type === 'followers'
+      ? `<button class="remove-follower-btn">✕</button>`
+      : ''
+  }
 
   ${userUid !== auth.currentUser.uid ? `
     <button class="follow-btn follow-list-btn">
@@ -671,6 +690,21 @@ div.innerHTML = `
     </button>
   ` : ``}
 `;
+
+const removeBtn = div.querySelector('.remove-follower-btn');
+
+if (removeBtn) {
+  removeBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    await deleteDoc(doc(db, "users", profileUid, "followers", userUid));
+    await deleteDoc(doc(db, "users", userUid, "following", profileUid));
+
+    div.remove();
+    await updateFollowCounts();
+  });
+}
+
 
 div.querySelector('.follow-left').addEventListener('click', () => {
   window.location.href = `profile.html?uid=${userUid}`;
