@@ -221,11 +221,8 @@ function setupCommentsSection() {
       elements.commentAvatarEl.src = photoURL;
 
       if (user) {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          isFounder = !!userData.founder;
-        }
+const ADMIN_UID = "jEieTIrVAiSdeUKEvkho7sZ1Czu2";
+isFounder = user.uid === ADMIN_UID;
       }
     } else {
       elements.loginToCommentMessage.style.display = "block";
@@ -362,11 +359,11 @@ function createCommentElement(commentId, data, username, photoURL, timestamp, is
           </svg>
           <span class="more-text">Plus</span>
         </button>
-        <div class="more-menu" style="display:none;">
-          ${isOwner || isFounder
-            ? `<button class="delete-comment">Supprimer</button>`
-            : `<button class="report-comment">Signaler</button>`}
-        </div>
+<div class="more-menu" style="display:none;">
+  ${isOwner || isFounder
+    ? `<button class="delete-comment">Supprimer</button>`
+    : `<button class="report-comment">Signaler</button>`}
+</div>
       </div>
     </div>
   `;
