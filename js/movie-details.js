@@ -221,6 +221,8 @@ function setupCommentsSection() {
       elements.commentAvatarEl.src = photoURL;
 
       if (user) {
+const ADMIN_UID = "xdAv2rqiuNTqALPeWaj5FdOYyHl1";
+isFounder = user.uid === ADMIN_UID;
       }
     } else {
       elements.loginToCommentMessage.style.display = "block";
