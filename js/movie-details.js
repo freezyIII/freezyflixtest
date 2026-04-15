@@ -291,7 +291,7 @@ function setupCommentsRealtime() {
     orderBy("timestamp", "desc")
   );
 
-async function setupCommentsRealtime() {
+async function loadComments() {
   const commentsQuery = query(
     collection(db, "comments", movieTitle, "comments"),
     orderBy("timestamp", "desc")
@@ -304,7 +304,9 @@ async function setupCommentsRealtime() {
 
   for (const docSnap of snapshot.docs) {
     const data = docSnap.data();
-    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
+    const timestamp = data.timestamp?.toDate
+      ? data.timestamp.toDate()
+      : new Date(data.timestamp);
 
     let username = "Utilisateur";
     let photoURL = "default-avatar.png";
@@ -316,11 +318,21 @@ async function setupCommentsRealtime() {
         username = userData.nomUtilisateur || username;
         photoURL = userData.photoURL || photoURL;
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
 
     const isOwner = currentUser && currentUser.uid === data.userId;
 
-    const div = createCommentElement(docSnap.id, data, username, photoURL, timestamp, isOwner);
+    const div = createCommentElement(
+      docSnap.id,
+      data,
+      username,
+      photoURL,
+      timestamp,
+      isOwner
+    );
+
     elements.commentsList.appendChild(div);
   }
 }
