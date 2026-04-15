@@ -210,13 +210,12 @@ function setupCommentsSection() {
       elements.loginToCommentMessage.style.display = "none";
       elements.commentBoxContainer.style.visibility = "visible";
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
+const userRef = doc(db, "users", user.uid);
+const snap = await getDoc(userRef);
 
-      const data = snap.exists() ? snap.data() : {};
+const data = snap.data() || {};
 
-      // ✅ SYSTEME PROPRE
-      isFounder = data.role === "founder";
+isFounder = data.role === "founder";
 
       const displayName = data.nomUtilisateur || user.displayName || "Utilisateur";
       const photoURL = data.photoURL || user.photoURL || "default-avatar.png";
