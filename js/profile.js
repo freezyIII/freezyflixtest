@@ -380,34 +380,45 @@ cancelDeleteBtn.addEventListener('click', () => deleteConfirmPopup.style.display
 
 confirmDeleteBtn.addEventListener('click', async () => {
   deleteConfirmPopup.style.display = 'none';
+
   const user = auth.currentUser;
   if (!user) return window.location.href = "index.html";
 
-try {
-  const user = auth.currentUser;
-  if (!user) return;
+  try {
+    // 1. Supprime Firestore
+    await deleteUserData(user.uid);
 
-  await deleteUserData(user.uid);
+    // 2. Supprime Auth
+    await deleteUser(user);
 
-  await deleteUser(user);
+    window.location.href = "index.html";
 
-  window.location.href = "index.html";
-} catch (error) {
-  if (error.code === "auth/requires-recent-login") {
-    try {
-      await reauthenticateWithPopup(user, new GoogleAuthProvider());
-      await deleteUserData(user.uid);
-      await deleteUser(user);
-      window.location.href = "index.html";
-    } catch (e) {
-      console.error("Suppression annulée :", e);
+  } catch (error) {
+
+    // CAS: login pas assez récent
+    if (error.code === "auth/requires-recent-login") {
+      try {
+        const provider = new GoogleAuthProvider();
+
+        // 🔥 IMPORTANT : reauth obligatoire
+        await reauthenticateWithPopup(user, provider);
+
+        // retry suppression après reauth
+        await deleteUserData(user.uid);
+        await deleteUser(user);
+
+        window.location.href = "index.html";
+
+      } catch (e) {
+        console.error("Reauth échouée :", e);
+        window.location.href = "index.html";
+      }
+
+    } else {
+      console.error("Erreur suppression :", error);
       window.location.href = "index.html";
     }
-  } else {
-    console.error("Erreur suppression compte :", error);
-    window.location.href = "index.html";
   }
-}
 });
 
 onAuthStateChanged(auth, async (user) => {
