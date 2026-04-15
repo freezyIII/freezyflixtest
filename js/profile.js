@@ -33,12 +33,6 @@ const deleteConfirmPopup = document.getElementById('deleteConfirmPopup');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
 const confirmDeleteBtn = document.getElementById('confirmDelete');
 
-const banUserPopup = document.getElementById('banUserPopup');
-const banReasonInput = document.getElementById('banReason');
-const banDurationSelect = document.getElementById('banDuration');
-const cancelBanBtn = document.getElementById('cancelBan');
-const confirmBanBtn = document.getElementById('confirmBan');
-
 const favoritesContent = document.getElementById('favoritesContent');
 const evaluationContent = document.getElementById('evaluationContent');
 const links = document.querySelectorAll('.profile-link');
@@ -425,20 +419,6 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(doc(db, "users", user.uid));
   const data = snap.data();
 
-  if (data.banned) {
-    alert(`Vous êtes banni ! Raison : ${data.banReason || "non spécifiée"}`);
-    await signOut(auth);
-    return window.location.href = "index.html";
-  }
-
-  const token = await user.getIdTokenResult(true);
-  const tokenValidSince = data.tokenValidSince ? new Date(data.tokenValidSince) : null;
-  if (tokenValidSince && token.issuedAtTime * 1000 < tokenValidSince.getTime()) {
-    alert("Vous avez été banni !");
-    await signOut(auth);
-    return window.location.href = "index.html";
-  }
-
   editProfileBtn.style.display = isOwnProfile ? 'flex' : 'none';
   followBtn.style.display = isOwnProfile ? 'none' : 'flex';
   friendsBtn.style.display = isOwnProfile ? 'flex' : 'none';
@@ -448,25 +428,6 @@ onAuthStateChanged(auth, async (user) => {
 
   await displayUserProfileByUid(uidToDisplay, user.uid);
   await updateFollowCounts();
-
-  if (data.founder && !isOwnProfile) {
-    adminActions.style.display = 'flex';
-    document.getElementById('banUserBtn').onclick = () => banUserPopup.style.display = 'flex';
-    cancelBanBtn.onclick = () => banUserPopup.style.display = 'none';
-    confirmBanBtn.onclick = async () => {
-      const reason = banReasonInput.value.trim();
-      const duration = banDurationSelect.value;
-      if (!reason) return;
-      await setDoc(doc(db, "users", uidToDisplay), {
-        banned: true,
-        banReason: reason,
-        banDuration: duration,
-        banStart: new Date().toISOString(),
-        tokenValidSince: new Date().toISOString()
-      }, { merge: true });
-      banUserPopup.style.display = 'none';
-    };
-  }
 
   document.getElementById('friendsBtn').addEventListener('click', () => {
     friendsPanel.style.display = friendsPanel.style.display === 'flex' ? 'none' : 'flex';

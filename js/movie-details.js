@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  getDocs,
   query,
   orderBy,
   onSnapshot,
@@ -221,7 +222,7 @@ function setupCommentsSection() {
       elements.commentAvatarEl.src = photoURL;
 
       if (user) {
-const ADMIN_UID = "..............";
+const ADMIN_UID = "xdAv2rqiuNTqALPeWaj5FdOYyHl1";
 isFounder = user.uid === ADMIN_UID;
       }
     } else {
@@ -290,32 +291,39 @@ function setupCommentsRealtime() {
     orderBy("timestamp", "desc")
   );
 
-  onSnapshot(commentsQuery, async snapshot => {
-    elements.commentsList.innerHTML = '';
-    const currentUser = auth.currentUser;
+async function setupCommentsRealtime() {
+  const commentsQuery = query(
+    collection(db, "comments", movieTitle, "comments"),
+    orderBy("timestamp", "desc")
+  );
 
-    for (const docSnap of snapshot.docs) {
-      const data = docSnap.data();
-      const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
+  const snapshot = await getDocs(commentsQuery);
 
-      let username = "Utilisateur";
-      let photoURL = "default-avatar.png";
+  elements.commentsList.innerHTML = '';
+  const currentUser = auth.currentUser;
 
-      try {
-        const userDoc = await getDoc(doc(db, "users", data.userId));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          username = userData.nomUtilisateur || username;
-          photoURL = userData.photoURL || photoURL;
-        }
-      } catch (err) { console.error(err); }
+  for (const docSnap of snapshot.docs) {
+    const data = docSnap.data();
+    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
 
-      const isOwner = currentUser && currentUser.uid === data.userId;
+    let username = "Utilisateur";
+    let photoURL = "default-avatar.png";
 
-      const div = createCommentElement(docSnap.id, data, username, photoURL, timestamp, isOwner);
-      elements.commentsList.appendChild(div);
-    }
-  });
+    try {
+      const userDoc = await getDoc(doc(db, "users", data.userId));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        username = userData.nomUtilisateur || username;
+        photoURL = userData.photoURL || photoURL;
+      }
+    } catch (err) { console.error(err); }
+
+    const isOwner = currentUser && currentUser.uid === data.userId;
+
+    const div = createCommentElement(docSnap.id, data, username, photoURL, timestamp, isOwner);
+    elements.commentsList.appendChild(div);
+  }
+}
 
   // Fermer les menus si clic ailleurs
   document.addEventListener("click", () => {
