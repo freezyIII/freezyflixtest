@@ -205,35 +205,60 @@ function setupFavoriteButton() {
 
 // ---------------------- ESPACE COMMENTAIRES ----------------------
 function setupCommentsSection() {
+  const ADMIN_UID = "KtbPQGILOOezNNhfHn91L0prAIx2";
+
   onAuthStateChanged(auth, async user => {
     if (user) {
       elements.loginToCommentMessage.style.display = "none";
       elements.commentBoxContainer.style.visibility = "visible";
-      elements.commentsList.style.display = "block"; // ✅ AJOUT
+      elements.commentsList.style.display = "block";
+
+      elements.commentButtons.style.display = "none";
+      elements.textarea.value = "";
 
       const userRef = doc(db, "users", user.uid);
       const snap = await getDoc(userRef);
       const data = snap.exists() ? snap.data() : {};
 
-      const displayName = data.nomUtilisateur || user.displayName || "Utilisateur";
-      const photoURL = data.photoURL || user.photoURL || "default-avatar.png";
+      const displayName =
+        data.nomUtilisateur || user.displayName || "Utilisateur";
+
+      const photoURL =
+        data.photoURL || user.photoURL || "default-avatar.png";
 
       elements.commentUsernameEl.textContent = displayName;
       elements.commentAvatarEl.src = photoURL;
 
-      const ADMIN_UID = "KtbPQGILOOezNNhfHn91L0prAIx2";
       isFounder = user.uid === ADMIN_UID;
 
-      loadComments(); // ✅ important : charger seulement si connecté
+      loadComments();
     } else {
       elements.loginToCommentMessage.style.display = "block";
       elements.commentBoxContainer.style.visibility = "hidden";
-      elements.commentsList.style.display = "none"; // ✅ AJOUT
-      elements.commentsList.innerHTML = ""; // ✅ nettoyage
+      elements.commentsList.style.display = "none";
+      elements.commentsList.innerHTML = "";
+
+      elements.commentButtons.style.display = "none";
+      elements.textarea.value = "";
     }
   });
 
-  elements.submitBtn.addEventListener('click', handleCommentSubmit);
+  elements.textarea.addEventListener("focus", () => {
+    elements.commentButtons.style.display = "flex";
+  });
+
+  elements.textarea.addEventListener("blur", () => {
+    if (elements.textarea.value.trim() === "") {
+      elements.commentButtons.style.display = "none";
+    }
+  });
+
+  elements.cancelBtn.addEventListener("click", () => {
+    elements.textarea.value = "";
+    elements.commentButtons.style.display = "none";
+  });
+
+  elements.submitBtn.addEventListener("click", handleCommentSubmit);
 }
 
 async function handleCommentSubmit() {
