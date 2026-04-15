@@ -611,17 +611,31 @@ div.innerHTML = `
     <span>${userData.nomUtilisateur || 'Utilisateur'}</span>
   </div>
 
-  ${
-    isOwner && type === 'followers'
-      ? `<button class="remove-follower-btn">✕</button>`
-      : ''
-  }
+  <div class="follow-right">
 
-  ${userUid !== auth.currentUser.uid ? `
-    <button class="follow-btn follow-list-btn">
-      <span class="btn-text">Suivre</span>
-    </button>
-  ` : ``}
+    ${
+      userUid !== auth.currentUser.uid
+        ? `
+          <button class="follow-btn follow-list-btn">
+            <span class="btn-text">Suivre</span>
+          </button>
+        `
+        : ''
+    }
+
+    ${
+      isOwner && type === 'followers'
+        ? `
+          <button class="remove-follower-btn" aria-label="Retirer">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.7 2.88 18.29 9.17 12 2.88 5.71 4.29 4.29l6.3 6.29 6.3-6.29z" fill="currentColor"/>
+            </svg>
+          </button>
+        `
+        : ''
+    }
+
+  </div>
 `;
 
 const removeBtn = div.querySelector('.remove-follower-btn');
