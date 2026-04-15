@@ -209,6 +209,7 @@ function setupCommentsSection() {
     if (user) {
       elements.loginToCommentMessage.style.display = "none";
       elements.commentBoxContainer.style.visibility = "visible";
+      elements.commentsList.style.display = "block"; // ✅ AJOUT
 
       const userRef = doc(db, "users", user.uid);
       const snap = await getDoc(userRef);
@@ -220,31 +221,19 @@ function setupCommentsSection() {
       elements.commentUsernameEl.textContent = displayName;
       elements.commentAvatarEl.src = photoURL;
 
-      if (user) {
-const ADMIN_UID = "KtbPQGILOOezNNhfHn91L0prAIx2";
-isFounder = user.uid === ADMIN_UID;
-      }
+      const ADMIN_UID = "KtbPQGILOOezNNhfHn91L0prAIx2";
+      isFounder = user.uid === ADMIN_UID;
+
+      loadComments(); // ✅ important : charger seulement si connecté
     } else {
       elements.loginToCommentMessage.style.display = "block";
       elements.commentBoxContainer.style.visibility = "hidden";
+      elements.commentsList.style.display = "none"; // ✅ AJOUT
+      elements.commentsList.innerHTML = ""; // ✅ nettoyage
     }
   });
 
-  // Gestion des boutons de commentaire
-  elements.textarea.addEventListener('focus', () => { elements.commentButtons.style.display = 'flex'; });
-  elements.textarea.addEventListener('blur', () => {
-    if (elements.textarea.value.trim() === '') elements.commentButtons.style.display = 'none';
-  });
-  elements.cancelBtn.addEventListener('click', () => {
-    elements.textarea.value = '';
-    elements.commentButtons.style.display = 'none';
-  });
-
-  // Soumission du commentaire
   elements.submitBtn.addEventListener('click', handleCommentSubmit);
-
-  // Récupération et affichage des commentaires
-  if (movieTitle) loadComments();
 }
 
 async function handleCommentSubmit() {
