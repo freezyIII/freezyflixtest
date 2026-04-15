@@ -6,10 +6,9 @@ import {
   doc,
   getDoc,
   setDoc,
-  getDocs,
   query,
   orderBy,
-  onSnapshot,
+  getDocs,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
@@ -245,7 +244,7 @@ isFounder = user.uid === ADMIN_UID;
   elements.submitBtn.addEventListener('click', handleCommentSubmit);
 
   // Récupération et affichage des commentaires
-  if (movieTitle) setupCommentsRealtime();
+  if (movieTitle) loadComments();
 }
 
 async function handleCommentSubmit() {
@@ -271,11 +270,13 @@ async function handleCommentSubmit() {
   if (!user) return alert("Vous devez être connecté pour commenter.");
 
   try {
-    await addDoc(collection(db, "comments", movieTitle, "comments"), {
-      userId: user.uid,
-      text,
-      timestamp: new Date()
-    });
+await addDoc(collection(db, "comments", movieTitle, "comments"), {
+  userId: user.uid,
+  text,
+  timestamp: new Date()
+});
+
+loadComments();
 
     elements.textarea.value = '';
     elements.commentButtons.style.display = 'none';
@@ -285,12 +286,6 @@ async function handleCommentSubmit() {
 }
 
 // ---------------------- AFFICHAGE EN TEMPS RÉEL ----------------------
-function setupCommentsRealtime() {
-  const commentsQuery = query(
-    collection(db, "comments", movieTitle, "comments"),
-    orderBy("timestamp", "desc")
-  );
-
 async function loadComments() {
   const commentsQuery = query(
     collection(db, "comments", movieTitle, "comments"),
@@ -304,9 +299,7 @@ async function loadComments() {
 
   for (const docSnap of snapshot.docs) {
     const data = docSnap.data();
-    const timestamp = data.timestamp?.toDate
-      ? data.timestamp.toDate()
-      : new Date(data.timestamp);
+    const timestamp = data.timestamp?.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
 
     let username = "Utilisateur";
     let photoURL = "default-avatar.png";
@@ -318,21 +311,11 @@ async function loadComments() {
         username = userData.nomUtilisateur || username;
         photoURL = userData.photoURL || photoURL;
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
 
     const isOwner = currentUser && currentUser.uid === data.userId;
 
-    const div = createCommentElement(
-      docSnap.id,
-      data,
-      username,
-      photoURL,
-      timestamp,
-      isOwner
-    );
-
+    const div = createCommentElement(docSnap.id, data, username, photoURL, timestamp, isOwner);
     elements.commentsList.appendChild(div);
   }
 }
@@ -341,7 +324,6 @@ async function loadComments() {
   document.addEventListener("click", () => {
     document.querySelectorAll(".more-menu").forEach(menu => menu.style.display = "none");
   });
-}
 
 function createCommentElement(commentId, data, username, photoURL, timestamp, isOwner) {
   const div = document.createElement("div");
