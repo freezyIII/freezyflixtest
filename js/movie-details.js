@@ -397,6 +397,7 @@ function setupCommentActions(div, commentId, data, isOwner) {
       try {
         await deleteDoc(doc(db, "comments", movieTitle, "comments", commentId));
         showToast("Commentaire supprimé !");
+        loadComments();
       } catch (err) {
         console.error(err);
         showToast("Erreur lors de la suppression", 4000);
