@@ -210,12 +210,9 @@ function setupCommentsSection() {
       elements.loginToCommentMessage.style.display = "none";
       elements.commentBoxContainer.style.visibility = "visible";
 
-const userRef = doc(db, "users", user.uid);
-const snap = await getDoc(userRef);
-
-const data = snap.data() || {};
-
-isFounder = data.role === "founder";
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      const data = snap.exists() ? snap.data() : {};
 
       const displayName = data.nomUtilisateur || user.displayName || "Utilisateur";
       const photoURL = data.photoURL || user.photoURL || "default-avatar.png";
@@ -223,31 +220,30 @@ isFounder = data.role === "founder";
       elements.commentUsernameEl.textContent = displayName;
       elements.commentAvatarEl.src = photoURL;
 
+      if (user) {
+const ADMIN_UID = "xdAv2rqiuNTqALPeWaj5FdOYyHl1";
+isFounder = user.uid === ADMIN_UID;
+      }
     } else {
-      isFounder = false; // important
       elements.loginToCommentMessage.style.display = "block";
       elements.commentBoxContainer.style.visibility = "hidden";
     }
   });
 
-  // Gestion des boutons
-  elements.textarea.addEventListener('focus', () => {
-    elements.commentButtons.style.display = 'flex';
-  });
-
+  // Gestion des boutons de commentaire
+  elements.textarea.addEventListener('focus', () => { elements.commentButtons.style.display = 'flex'; });
   elements.textarea.addEventListener('blur', () => {
-    if (elements.textarea.value.trim() === '') {
-      elements.commentButtons.style.display = 'none';
-    }
+    if (elements.textarea.value.trim() === '') elements.commentButtons.style.display = 'none';
   });
-
   elements.cancelBtn.addEventListener('click', () => {
     elements.textarea.value = '';
     elements.commentButtons.style.display = 'none';
   });
 
+  // Soumission du commentaire
   elements.submitBtn.addEventListener('click', handleCommentSubmit);
 
+  // Récupération et affichage des commentaires
   if (movieTitle) loadComments();
 }
 
